@@ -58,7 +58,22 @@ class ModalEstadosComponent extends Component
 
         
         try {
+            $repartdorEmail = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')
+            ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->get();
+            $userNotification = User::where('id',$repartdorEmail[0]->id)->select('users.*')->get();
+           
+            $numero = $this->id_pedido;
+            $state = 'El pedido No '.$this->id_pedido.' esta disponible siendo preparado';
+            $to = 'diegouriel.martinez15@gmail.com';
             
+            /*falta poner esto en el to del email repartidor  $repartdorEmail[0]->email*/
+            Pedido::emailToUsersPedido($to,$numero,$state);
+            //Mail::to('diegouriel.martinez15@gmail.com')->send(new StatusPedido($numero,$state));
+            $data = [                
+                'concepto' => $state
+            ];
+            
+            Notification::send($userNotification , new StatePedido($data));            
             Pedido::where('id',$this->id_pedido)->update([
                 'estado' => 2
             ]);
@@ -86,25 +101,22 @@ class ModalEstadosComponent extends Component
         try {
             $repartdorEmail = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')
             ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->get();
-            $userNotify = User::where('id',$repartdorEmail[0]->id)->get();
+            $userNotification = User::where('id',$repartdorEmail[0]->id)->select('users.*')->get();
            
             $numero = $this->id_pedido;
             $state = 'El pedido No '.$this->id_pedido.' esta disponible para recogida';
-           
-            /* falta poner esto en el to del email   $repartdorEmail[0]->email*/
-            Mail::to('diegouriel.martinez15@gmail.com')->send(new StatusPedido($numero,$state));
+            $to = 'diegouriel.martinez15@gmail.com';
+            
+            /* falta poner esto en el to del email repartidor  $repartdorEmail[0]->email*/
+            Pedido::emailToUsersPedido($to,$numero,$state);
+            //Mail::to('diegouriel.martinez15@gmail.com')->send(new StatusPedido($numero,$state));
             $data = [                
                 'concepto' => $state
-            ];
-            
-            Notification::send($userNotify, new StatePedido($data));
-
-
-        
+            ];            
+            Notification::send($userNotification, new StatePedido($data));        
             Pedido::where('id',$this->id_pedido)->update([
                 'estado' => 3
-            ]);
-           
+            ]);        
             $this->alert('success', 'Estado del pedido actualizando correctamente!',[
                 'position' => 'center',
                 'showConfirmButton' => true,
@@ -117,7 +129,7 @@ class ModalEstadosComponent extends Component
             ]);
 
         } catch (\Throwable $th) {
-            $this->alert('warning', $th->getMessage(),[
+            $this->alert('warning', 'Error al actualizar el estado del pedido, intenta nuevamente',[
                 'position' => 'center',
                 'timer'=>15000
             ]);

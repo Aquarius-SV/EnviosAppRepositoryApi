@@ -86,6 +86,22 @@
                 </div>
               </div>            
         </div>
+        <div class="form-outline mb-4 ">
+            <div class="row">
+                <div class="col">
+                    <input type="text" placeholder="Peso maximo que tu vehículo soporta" class="form-control @error('peso') is-invalid @enderror" wire:model="peso">
+                    @error('peso') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>               
+              </div>            
+        </div>
+        <div class="form-outline mb-4 ">
+            <div class="row">
+                <div class="col">
+                    <input type="text" placeholder="Tamaño máximo del paquete que tu vehículo podrá cargar" class="form-control @error('size') is-invalid @enderror" wire:model="size">
+                    @error('size') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>               
+              </div>            
+        </div>
         <br>
         <div class="form-outline mb-4 ">
             

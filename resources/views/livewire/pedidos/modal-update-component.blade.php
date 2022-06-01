@@ -10,24 +10,57 @@
             <div class="modal-body">
               <form>
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Direccion de recogida</label>
-                  <input type="text" class="form-control @error('direccion_recogida') is-invalid  @enderror" id="exampleInputEmail1" aria-describedby="emailHelp" wire:model="direccion_recogida">
-                  <div id="emailHelp" class="form-text">Dirección donde el repartidor recogerá el paquete <br>
+                  <label for="direccionR" class="form-label">Dirección de recogida</label>
+                  <textarea class="form-control @error('direccion_recogida') is-invalid @enderror"  wire:model="direccion_recogida" rows="5"></textarea>
+                  <div id="emailHelp" class="form-text">Dirección donde el repartidor recogerá el paquete
+                    <br>
                     @error('direccion_recogida') <span class="text-danger">{{ $message }}</span> @enderror
-                   </div>
+                  </div>
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Direccion de entrega</label>
-                  <input type="text" class="form-control @error('direccion_entrega') is-invalid @enderror" id="exampleInputEmail1" aria-describedby="emailHelp" wire:model="direccion_entrega">
+                  <label for="direccionE" class="form-label">Dirección de entrega</label>
+                  <textarea class="form-control @error('direccion_entrega') is-invalid @enderror"  wire:model="direccion_entrega" rows="5"></textarea>
                   <div id="emailHelp" class="form-text">Dirección donde el repartidor entregará el paquete
                     <br>
                     @error('direccion_entrega') <span class="text-danger">{{ $message }}</span> @enderror
-                  </div>  
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Teléfono del cliente</label>
+                  <input type="text" class="form-control @error('tel_cliente') is-invalid @enderror" maxlength="8" wire:model="tel_cliente">
+                  <div id="emailHelp" class="form-text">Teléfono del cliente a quien se le entregará el paquete
+                    <br>
+                    @error('tel_cliente') <span class="text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Peso del paquete</label>
+                  <input type="text" class="form-control @error('tel_cliente') is-invalid @enderror"  wire:model="peso">
+                  <div id="emailHelp" class="form-text">Especificar el peso del paquete para que el repartidor lo tome en consideración
+                    <br>
+                    @error('peso') <span class="text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Tamaño del paquete</label>
+                  <input type="text" class="form-control @error('tel_cliente') is-invalid @enderror"  wire:model="size">
+                  <div id="emailHelp" class="form-text">Especificar el tamaño del paquete para que el repartidor lo tome en consideración
+                    <br>
+                    @error('size') <span class="text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class=" mb-3">
+                  <label class="form-label">Fragil</label>
+                  <select class="form-select @error('fragil') is-invalid @enderror" aria-label="Fragil" wire:model="fragil">  
+                    <option value="0">No</option>                
+                    <option value="1">Si</option>                  
+                  </select>
+                  @error('fragil') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>                    
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               <button type="button" class="btn btn-primary" wire:click="PUpdate">Actualizar</button>
             </div>
           </div>
@@ -35,13 +68,8 @@
       </div>
     </div>
   </div>
-  @push('scripts')
-      <script>         
-           window.addEventListener('closeModal', event => {
-           $("#UpdateModal").modal('hide');  
-           });   
-      </script>
-  @endpush
+ 
+   
   
   
   

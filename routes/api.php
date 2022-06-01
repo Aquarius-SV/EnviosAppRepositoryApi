@@ -23,3 +23,5 @@ Route::post('/pedidos/login','PedidoApiController@userLogin');
 Route::post('/pedidos/logout','PedidoApiController@logoutUser');
 
 Route::get('/pedidos/zonas/{id}','PedidoApiController@deliveryZones');
+Route::get('/zonas/all','PedidoApiController@allZonesDelivery');
+Route::post('/pedidos/new','PedidoApiController@storePedido');

@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class RegisterRepartidorComponent extends Component
 {
-    public $name, $email, $password, $confirm_password, $dui, $nit, $phone, $license, $zones = [],$vehicle,$vehicle_model,$placa,$brand,$color;
+    public $name, $email, $password, $confirm_password, $dui, $nit, $phone, $license, $zones = [],$vehicle,$vehicle_model,$placa,$brand,$color,$peso,$size;
     public $zonaList = [];
 
     protected $rules = [
@@ -32,6 +32,8 @@ class RegisterRepartidorComponent extends Component
         'vehicle_model' => 'required|min:6|max:45',
         'brand' => 'required|min:4|max:45',
         'color' => 'required|min:4|max:45',
+        'peso' => 'required|min:4',
+        'size' => 'required|min:4',
     ];
 
     protected $messages = [
@@ -89,7 +91,14 @@ class RegisterRepartidorComponent extends Component
 
         'brand.required' => 'La marca del vehiculo es obligatoria',
         'brand.min' => 'La marca del vehiculo debe contener un minimo de :min caracteres',
-        'brand.max' => 'La marca del vehiculo debe contener un maximo de :max caracteres'
+        'brand.max' => 'La marca del vehiculo debe contener un maximo de :max caracteres',
+
+        'peso.required' => 'El peso máximo del vehiculo es obligatorio',
+        'peso.min' => 'El color del vehiculo debe contener un minimo de :min caracteres',
+
+        'size.required' => 'El tamaño máximo con cual el vehiculo puede cargar es obligatorio',
+        'size.min' => 'El tamaño máximo con cual el vehiculo puede cargar debe contener un minimo de :min caracteres',
+        
     ];
 
     public function updated($propertyName)
@@ -136,6 +145,8 @@ class RegisterRepartidorComponent extends Component
                 $datoVehiculo->marca = $this->brand;
                 $datoVehiculo->color = $this->color;
                 $datoVehiculo->id_user = $user->id;
+                $datoVehiculo->peso = $this->peso;
+                $datoVehiculo->size = $this->size;
                 $datoVehiculo->save();
               
                 foreach ($this->zones as $z ) {

@@ -17,7 +17,8 @@ class PedidoController extends Controller
     public function index()
     {
        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
+       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
+       'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
        ->where('pedidos.id_usuario',Auth::user()->id)->get();
 
       
@@ -35,7 +36,8 @@ class PedidoController extends Controller
     public function completados()
     {
         $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
+       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
+       'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
        ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',6)->get();
 
        return view('admin.pedidos-completados')->with('allp',$allPedidos);
@@ -50,7 +52,8 @@ class PedidoController extends Controller
     public function rechazados(Request $request)
     {
         $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
+        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
+        'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
         ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',7)->get();
  
         return view('admin.pedidos-rechazados')->with('allp',$allPedidos);
@@ -65,7 +68,8 @@ class PedidoController extends Controller
     public function pendientes()
     {
         $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
+        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
+        'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
         ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',0)->get();
  
         return view('admin.pedidos-pendientes')->with('allp',$allPedidos);

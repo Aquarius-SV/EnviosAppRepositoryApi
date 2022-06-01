@@ -4,9 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Mail\StatusPedido;
+use Illuminate\Support\Facades\Mail;
 
 class Pedido extends Model
 {
+
+
+
     use HasFactory;
     protected $table = 'pedidos';
     protected $primaryKey ='id';
@@ -19,6 +24,15 @@ class Pedido extends Model
         'created_at',
         'updated_at',
         'delivered_at',
-        'motivo'
+        'motivo',
+        'id_api_venta',
+        'tel_cliente'
     ];
+
+
+
+    public function emailToUsersPedido($toEmail,$numero,$state)
+    {
+        Mail::to($toEmail)->send(new StatusPedido($numero,$state));
+    }
 }

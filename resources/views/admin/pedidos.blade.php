@@ -54,6 +54,10 @@
                 <th>Repartidor</th>
                 <th>Dirección de recogida</th>
                 <th>Dirección de entrega</th>
+                <th class="text-center">Teléfono del cliente</th>
+                <th>Peso</th>
+                <th>Tamaño</th>
+                <th class="text-center">Fragil</th>
                 <th>Estado</th>
                 <th class="text-center">Acciones</th>
               </tr>
@@ -72,6 +76,16 @@
                 </td>
                 <td>{{ $pedido->direccion_recogida }}</td>
                 <td>{{ $pedido->direccion_entrega }}</td>
+                <td class="text-center">{{ $pedido->tel_cliente }}</td>
+                <td>{{ $pedido->peso }}</td>
+                <td>{{ $pedido->size }}</td>
+                <td class="text-center">
+                  @if ($pedido->fragil == 0)
+                      No
+                  @else
+                      Si
+                  @endif
+                </td>
                 <td>
                   @switch($pedido->estado)
                   @case(0)
@@ -149,9 +163,9 @@
   return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 
-
-
-
-  
+ 
 </script>
+
+    
+
 @endpush

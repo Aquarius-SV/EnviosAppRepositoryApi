@@ -14,9 +14,14 @@
           <table class="table" id="myTable">
             <thead>
               <tr>
+                <th class="text-center">No</th>
                 <th>Repartidor</th>
                 <th>Dirección de recogida</th>
                 <th>Dirección de entrega</th>
+                <th class="text-center">Teléfono del cliente</th>
+                <th>Peso</th>
+                <th>Tamaño</th>
+                
                 
               </tr>
             </thead>
@@ -26,11 +31,17 @@
                 @php
                     $repartidor = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
                 @endphp
-                <td>
-                  {{ $repartidor->name }}
-                </td>
-                <td>{{ $pedido->direccion_recogida }}</td>
-                <td>{{ $pedido->direccion_entrega }}</td>
+                  <td class="text-center">
+                    {{ $pedido->id_pedido }}
+                  </td>
+                  <td>
+                    {{ $repartidor->name }}
+                  </td>
+                  <td>{{ $pedido->direccion_recogida }}</td>
+                  <td>{{ $pedido->direccion_entrega }}</td>
+                  <td class="text-center">{{ $pedido->tel_cliente }}</td>
+                  <td>{{ $pedido->peso }}</td>
+                  <td>{{ $pedido->size }}</td>
                
                 
               </tr>

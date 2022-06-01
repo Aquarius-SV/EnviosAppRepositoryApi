@@ -14,6 +14,10 @@ class ModalUpdateComponent extends Component
     use LivewireAlert;
     
     public $id_pedido;
+    public $repartidor;
+    public $tel_cliente;
+    public $peso;
+    public $size;
     public $direccion_recogida;
     public $direccion_entrega;
     public $listeners = ['asingPedido'=>'asingPedido','confirmed'];
@@ -22,7 +26,9 @@ class ModalUpdateComponent extends Component
     protected $rules = [
         'direccion_recogida'=> 'required|min:20',
         'direccion_entrega'=> 'required|min:20',
-        
+        'tel_cliente'=> 'required|min:8|max:20|regex:/(01)[0-9]{9}/',        
+        'peso' => 'required',
+        'size' => 'required'
 
     ];
 
@@ -33,9 +39,17 @@ class ModalUpdateComponent extends Component
         'direccion_entrega.required'=>'Dirección de entrega es obligatoria',
         'direccion_entrega.min'=>'Dirección de entrega debe contener un minimo de :min caracteres',
 
+        'tel_cliente.required' => 'El teléfono del cliente es obligatorio',
+        'tel_cliente.min' => 'Debe contener un mínimo de :min caracteres',
+        'tel_cliente.max' => 'Debe contener un máximo de :max caracteres',
+        'tel_cliente.regex' => 'Formato no valido',
 
-        
-    
+        'repartidor.required'=>'Debes selecionar un repartidor',
+        'zoneSelected.required'=>'Debes selecionar una zona de entrega',
+
+
+        'peso.required'=>'El peso del paquete es obligatorio',
+        'size.required'=>'El tamaña del paquete es obligatorio'
     ];
 
     public function updated($propertyName)
@@ -49,15 +63,20 @@ class ModalUpdateComponent extends Component
     {
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset(['direccion_recogida','direccion_entrega']);
+        $this->reset(['repartidor','zoneSelected','direccion_recogida','direccion_entrega','tel_cliente','peso','size','fragil']);
     }
 
     public function asingPedido($pedido)
     {
+        $this->id_pedido = $pedido['id_pedido'];
         $this->direccion_recogida = $pedido['direccion_recogida'];
         $this->direccion_entrega = $pedido['direccion_entrega'];
-        $this->id_pedido = $pedido['id_pedido'];
+        $this->repartidor = $pedido['id_repartidor'];
+        $this->tel_cliente = $pedido['tel_cliente'];
+        $this->peso = $pedido['peso'];
+        $this->size = $pedido['size'];         
     }
+
     public function confirmed()
     {
        return redirect('/pedidos');
@@ -68,9 +87,12 @@ class ModalUpdateComponent extends Component
         try {
             Pedido::where('id',$this->id_pedido)->update([
                 'direccion_recogida' => $this->direccion_recogida,
-                'direccion_entrega' => $this->direccion_entrega
+                'direccion_entrega' => $this->direccion_entrega,
+                'peso' => $this->peso,
+                'size' => $this->size,
+                'tel_cliente' => $this->tel_cliente
             ]);
-            $this->dispatchBrowserEvent('closeModal'); 
+            $this->dispatchBrowserEvent('closeModalUpd'); 
             $this->alert('success', 'Pedido actualizado correctamente', [
                 'position' => 'center',
                 'showConfirmButton' => true,
@@ -79,7 +101,7 @@ class ModalUpdateComponent extends Component
             ]);
 
         } catch (\Throwable $th) {
-            $this->dispatchBrowserEvent('closeModal'); 
+            $this->dispatchBrowserEvent('closeModalUpd'); 
             $this->alert('warning','Ocurrio un problema, intenta nuevamente', [
             'position' => 'center'
             ]);

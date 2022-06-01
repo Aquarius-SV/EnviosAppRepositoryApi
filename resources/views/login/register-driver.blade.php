@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                <h1 class="mb-4 text-white text-center"> Regristro de Repartidor </h1>
+                                <h1 class="mb-4 text-white text-center"> Regristro de Repartidor</h1>
                                 <p class="text-center mb-0">No pierdas la oportunidad de progresar en el comercio
                                     electrónico en chalatenango,
                                     envia tus productos a tus clientes hasta la puerta de su casa.</p>

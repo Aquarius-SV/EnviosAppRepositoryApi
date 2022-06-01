@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\User;
+use App\Models\Zona;
 use App\Models\Repartidor;
 use Illuminate\Support\Facades\Auth;
 class PedidoApiController extends Controller
@@ -72,8 +73,39 @@ class PedidoApiController extends Controller
         $deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
         ->join('datos_vehiculos','datos_vehiculos.id_user','=','users.id')
         ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$id)
-        ->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor','datos_vehiculos.tipo as tipo_vehiculo')->get();
+        ->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor','datos_vehiculos.tipo as tipo_vehiculo','datos_vehiculos.marca','datos_vehiculos.modelo',
+        'datos_vehiculos.peso','datos_vehiculos.size')->get();     
 
         return $deliveries;
    }
+
+
+   public function allZonesDelivery()
+   {
+        $zones = Zona::where('estado',1)->select('nombre','id as id_zone')->get();    
+
+        return $zones;
+   }
+
+
+   public function storePedido(Request $request)
+   {
+       try {
+           $pedido = new Pedido;
+           $pedido->direccion_recogida = $request->direccion_recogida;
+           $pedido->direccion_entrega = $request->direccion_entrega;
+           $pedido->id_api_venta = $request->id_api_venta;
+           $pedido->id_repartidor = $request->id_repartidor;
+           $pedido->save();
+           return response()->json([
+            'message' => 'ok'
+        ]);
+       } catch (\Throwable $th) {
+        return response()->json([
+            'message' => $th->getMessage(),              
+        ]);
+       }
+   }
+
+
 }

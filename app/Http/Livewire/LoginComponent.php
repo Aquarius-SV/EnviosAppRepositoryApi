@@ -30,25 +30,29 @@ class LoginComponent extends Component
     {
        $this->validate();
 
-        $checkUser = User::where('email', '=', $this->email)->select('password')->first();
+        $checkUser = User::where('email', '=', $this->email)->select('password','estado')->first();
 
         if ($checkUser == null) {
             $this->addError('email', 'No hay registros con este correo electronico.');
 
-        }
-
-        $credentials = [
-            'email' => $this->email,
-            'password' => $this->password
-        ];
-        $login = Auth::attempt($credentials);
-        
-        if ($login == false) {
-            $this->addError('password', 'La contraseña es incorrecta.');
-        }else {
-            
-            return redirect('/pedidos');
-        }
+        }else{
+            if ($checkUser->estado == 0) {
+                $this->addError('email', 'Usuario eliminado, no puede acceder.');
+            }else {
+                $credentials = [
+                    'email' => $this->email,
+                    'password' => $this->password
+                ];
+                $login = Auth::attempt($credentials);
+                
+                if ($login == false) {
+                    $this->addError('password', 'La contraseña es incorrecta.');
+                }else {
+                    
+                    return redirect('/pedidos');
+                }
+            }
+        }        
     }
     public function render()
     {

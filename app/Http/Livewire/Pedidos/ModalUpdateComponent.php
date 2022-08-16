@@ -18,9 +18,10 @@ class ModalUpdateComponent extends Component
     public $tel_cliente;
     public $peso;
     public $size;
+    public $fragil;
     public $direccion_recogida;
     public $direccion_entrega;
-    public $listeners = ['asingPedido'=>'asingPedido','confirmed'];
+    public $listeners = ['resetUp'=>'resetInput','asingPedido'=>'asingPedido','confirmed'];
 
 
     protected $rules = [
@@ -45,7 +46,7 @@ class ModalUpdateComponent extends Component
         'tel_cliente.regex' => 'Formato no valido',
 
         'repartidor.required'=>'Debes selecionar un repartidor',
-        'zoneSelected.required'=>'Debes selecionar una zona de entrega',
+        
 
 
         'peso.required'=>'El peso del paquete es obligatorio',
@@ -63,7 +64,7 @@ class ModalUpdateComponent extends Component
     {
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset(['repartidor','zoneSelected','direccion_recogida','direccion_entrega','tel_cliente','peso','size','fragil']);
+        $this->reset(['repartidor','direccion_recogida','direccion_entrega','tel_cliente','peso','size','fragil']);
     }
 
     public function asingPedido($pedido)
@@ -74,7 +75,8 @@ class ModalUpdateComponent extends Component
         $this->repartidor = $pedido['id_repartidor'];
         $this->tel_cliente = $pedido['tel_cliente'];
         $this->peso = $pedido['peso'];
-        $this->size = $pedido['size'];         
+        $this->size = $pedido['size'];   
+        $this->fragil = $pedido['fragil'];         
     }
 
     public function confirmed()
@@ -90,7 +92,8 @@ class ModalUpdateComponent extends Component
                 'direccion_entrega' => $this->direccion_entrega,
                 'peso' => $this->peso,
                 'size' => $this->size,
-                'tel_cliente' => $this->tel_cliente
+                'tel_cliente' => $this->tel_cliente,
+                'fragil' => $this->fragil,
             ]);
             $this->dispatchBrowserEvent('closeModalUpd'); 
             $this->alert('success', 'Pedido actualizado correctamente', [

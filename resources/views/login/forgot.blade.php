@@ -20,7 +20,7 @@
                   </div>
                   <div class="text-center">
                     <img src="{{ asset('assets/img/gallery/forgot.png') }}" style="width: 185px;" alt="logo" class="mb-3">
-                    <h4 class="mt-1 mb-5 pb-1">Traffico</h4>
+                    <h4 class="mt-1 mb-5 pb-1">{{ env('APP_NAME') }}</h4>
                   </div>
   
                   @livewire('forgot-component')

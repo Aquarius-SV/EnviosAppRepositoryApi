@@ -17,16 +17,35 @@
         </div>
 
         <div class="form-outline mb-4">
-            <input type="password"  class="form-control @error('password') is-invalid @enderror"
-                placeholder="Contraseña" wire:model="password" />
-                @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                    <i id="eye" class="fas fa-eye-slash" type="button" onclick="showPasswordRegister()"></i>
+                </span>
+                
+                <input type="password" id="password"  class="form-control @error('password') is-invalid @enderror"
+                placeholder="Contraseña" wire:model="password" aria-describedby="basic-addon1"/>
+                
+              </div>
+              @error('password') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
         <div class="form-outline mb-4">
-            <input type="password" class="form-control @error('confirm_password') is-invalid @enderror"
-                placeholder="Confirmación de contraseña" wire:model="confirm_password" />
-                @error('confirm_password') <span class="text-danger">{{ $message }}</span> @enderror
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">
+                    <i id="eye2" class="fas fa-eye-slash" type="button" onclick="showPasswordRegister()"></i>
+                    
+                </span>
+                
+                <input type="password" id="confirm_password" class="form-control @error('confirm_password') is-invalid @enderror"
+                placeholder="Confirmación de contraseña" wire:model="confirm_password" aria-describedby="basic-addon2"/>
+                
+            </div>
+            @error('confirm_password') <span class="text-danger">{{ $message }}</span> @enderror
+            
         </div>
-
+        <!--<div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="showPassword()">
+            <label class="form-check-label" for="exampleCheck1" >Mostrar contraseña</label>
+        </div>-->
         <div class="form-outline mb-4 ">
             <div class="row">
                 <div class="col">

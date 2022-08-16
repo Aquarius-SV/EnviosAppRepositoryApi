@@ -69,8 +69,10 @@ var colors = {
   secondary: '#424D83',
   success: '#00d27a',
   info: '#27bcfd',
-  warning: '#FFC928',
-  danger: '#EE4D47',
+  //color de la barra
+  danger: '#F9FAFD',
+
+
   light: '#F9FAFD',
   dark: '#000'
 };
@@ -173,32 +175,11 @@ var settings = {
 };
 /* -------------------------- Chart Initialization -------------------------- */
 
-var newChart = function newChart(chart, config) {
-  var ctx = chart.getContext('2d');
-  return new window.Chart(ctx, config);
-};
+
 /* ---------------------------------- Store --------------------------------- */
 
 
-var getItemFromStore = function getItemFromStore(key, defaultValue) {
-  var store = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : localStorage;
 
-  try {
-    return JSON.parse(store.getItem(key)) || defaultValue;
-  } catch (_unused) {
-    return store.getItem(key) || defaultValue;
-  }
-};
-
-var setItemToStore = function setItemToStore(key, payload) {
-  var store = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : localStorage;
-  return store.setItem(key, payload);
-};
-
-var getStoreSpace = function getStoreSpace() {
-  var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorage;
-  return parseFloat((escape(encodeURIComponent(JSON.stringify(store))).length / (1024 * 1024)).toFixed(2));
-};
 
 var utils = {
   docReady: docReady,
@@ -217,11 +198,9 @@ var utils = {
   getBreakpoint: getBreakpoint,
   setCookie: setCookie,
   getCookie: getCookie,
-  newChart: newChart,
+  
   settings: settings,
-  getItemFromStore: getItemFromStore,
-  setItemToStore: setItemToStore,
-  getStoreSpace: getStoreSpace
+  
 };
 /* -------------------------------------------------------------------------- */
 

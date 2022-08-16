@@ -27,6 +27,7 @@ class RegisterRepartidorComponent extends Component
         'phone' => 'required|min:8|max:9',
         'license' => 'required|min:9|max:12',
         'zones.*' => 'required',
+        'zones' => 'required',
         'vehicle' => 'required|min:4|max:45',
         'placa' => 'required|min:3|max:7',
         'vehicle_model' => 'required|min:6|max:45',
@@ -70,7 +71,7 @@ class RegisterRepartidorComponent extends Component
         'license.numeric' => 'Numero de licencia no valido',
 
         'zones.*.required' => 'La zona de trabajo es obligatoria',
-
+        'zones.required' => 'La zona de trabajo es obligatoria',
 
         'vehicle.required' => 'El tipo de vehiculo es obligatorio',
         'vehicle.min' => 'El tipo de vehiculo debe contener un minimo de :min caracteres',
@@ -119,58 +120,63 @@ class RegisterRepartidorComponent extends Component
 
         $this->validate();
         if ($this->password === $this->confirm_password) {
+            $checkUser = User::where('email', '=', $this->email)->select('password','estado')->first();
 
-            try {
-                DB::beginTransaction();
-
-                $user = new User;
-                $user->name = $this->name;
-                $user->email = $this->email;
-                $user->password = Hash::make($this->password);
-                $user->id_tipo_usuario = 3;
-                $user->save();
-
-                $repartidor = new Repartidor();
-                $repartidor->dui = $this->dui;
-                $repartidor->nit = $this->nit;
-                $repartidor->telefono = $this->phone;
-                $repartidor->licencia = $this->license;
-                $repartidor->id_usuario = $user->id;
-                $repartidor->save();
-
-                $datoVehiculo = new DatoVehiculo;
-                $datoVehiculo->tipo = $this->vehicle;
-                $datoVehiculo->placa = $this->placa;
-                $datoVehiculo->modelo = $this->vehicle_model;
-                $datoVehiculo->marca = $this->brand;
-                $datoVehiculo->color = $this->color;
-                $datoVehiculo->id_user = $user->id;
-                $datoVehiculo->peso = $this->peso;
-                $datoVehiculo->size = $this->size;
-                $datoVehiculo->save();
-              
-                foreach ($this->zones as $z ) {
-                    $detalle = new DetalleZona;
-                    $detalle->id_repartidor = $repartidor->id;
-                    $detalle->id_zona = $z;
-                    $detalle->save();
-                }
-                DB::commit();
-                $credentials = [
-                    'email' => $this->email,
-                    'password' => $this->password
-                ];
-                Auth::attempt($credentials);
-                return redirect('/registro-repartidor');  
-
-                
-            } catch (\Throwable $th) {
-               $this->addError('error-all', $th->getMessage());
-
-                DB::rollBack();
-            }                      
-           
+            if ($checkUser <>  null) {
+                $this->addError('email', 'Ya existe una cuenta con este correo  electronico.');
     
+            }else {
+                try {
+                    DB::beginTransaction();
+    
+                    $user = new User;
+                    $user->name = $this->name;
+                    $user->email = $this->email;
+                    $user->password = Hash::make($this->password);
+                    $user->id_tipo_usuario = 3;
+                    $user->save();
+    
+                    $repartidor = new Repartidor();
+                    $repartidor->dui = $this->dui;
+                    $repartidor->nit = $this->nit;
+                    $repartidor->telefono = $this->phone;
+                    $repartidor->licencia = $this->license;
+                    $repartidor->id_usuario = $user->id;
+                    $repartidor->save();
+    
+                    $datoVehiculo = new DatoVehiculo;
+                    $datoVehiculo->tipo = $this->vehicle;
+                    $datoVehiculo->placa = $this->placa;
+                    $datoVehiculo->modelo = $this->vehicle_model;
+                    $datoVehiculo->marca = $this->brand;
+                    $datoVehiculo->color = $this->color;
+                    $datoVehiculo->id_user = $user->id;
+                    $datoVehiculo->peso = $this->peso;
+                    $datoVehiculo->size = $this->size;
+                    $datoVehiculo->save();
+                  
+                    foreach ($this->zones as $z ) {
+                        $detalle = new DetalleZona;
+                        $detalle->id_repartidor = $repartidor->id;
+                        $detalle->id_zona = $z;
+                        $detalle->save();
+                    }
+                    DB::commit();
+                    $credentials = [
+                        'email' => $this->email,
+                        'password' => $this->password
+                    ];
+                    Auth::attempt($credentials);
+                    return redirect('/mis-pedidos');  
+    
+                    
+                } catch (\Throwable $th) {
+                   $this->addError('error-all','Ocurrió un error, intenta nuevamente');
+    
+                    DB::rollBack();
+                }
+            }
+                            
         } else {
 
             $this->addError('password_confirmation', 'Las contraseñas no coinciden!');

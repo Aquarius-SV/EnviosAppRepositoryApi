@@ -11,9 +11,9 @@
     <div class="container">
       <div class="row align-items-center min-vh-50 min-vh-sm-100">
         <div class="col-md-7 col-lg-6 text-md-start text-center">
-          <h1 class="text-black fs-3 fs-xl-8 mb-5">Nosotros llevamos tus paquetes
-             a cuarlquier parte de Chalatenango.</h1>
-          <a class="btn btn-primary" href="{{ url('inicio-sesion') }}" role="button">Empieza hora!
+          <h1 class="text-black fs-3 fs-xl-8 mb-5">Llevamos tus paquetes
+             a cualquier parte de Chalatenango.</h1>
+          <a class="btn btn-primary" href="{{ url('inicio-sesion') }}" role="button">Empieza ahora!
             
         </a>
         </div>
@@ -32,13 +32,13 @@
             <img class="img-fluid" src="assets/img/gallery/about-delivery.png" alt="..." />
         </div>
         <div class="col-md-6 text-center text-md-start mb-6">
-          <h4 class="text-danger">Envios</h4>
-          <p class="my-5 fs-1 pe-xl-8">No pierdas lo oportunidad de progresar en el comercio electrónico, envia tus productos a cualquier parte de Chalatenango.
-               Tambien puedes incluir a tu web nuestros servicios de paqueteria. </p>
+          <h4 class="text-danger">Envíos</h4>
+          <p class="my-5 fs-1 pe-xl-8">Te apoyamos en el comercio electrónico, llevamos los paquetes del comercio al cliente.</p>
           <div class="card card-span bg-soft-primary border-start border-primary border-5 mt-3">
             <div class="card-body">
               <h4 class="lh-base px-lg-5 py-3">
-               Registrate para se parte de nuestros servicios, como repartidor o comerciante.
+                Utiliza nuestra plataforma para enviar los pedidos del comercio electrónico a tus clientes.
+                Registra tu comercio o regístrate como repartidor
               </h4>
             </div>
           </div>
@@ -64,9 +64,28 @@
         <div class="col-md-6 text-center text-md-start mb-6 px-4">
           <h4 class="text-danger text-uppercase">Como aplicar a nuestros servicios</h4>
           <p class="my-5 fs-1 pe-xl-7">
-            Puedes registrarte como conductor para poder optar a los envios de los negociantes,
-            tambien puedes registrarte como negociante, registrar tu negocio y listo empieza a distribuir tus productos.
-            Puedes ponerte en contacto con nosotros si deseas incluir nuestros servicios de paqueteria en tu sitio web.</p>
+            Puedes registrarte en las siguientes opciones:
+            <br>
+            <span class="text-primary">
+              Conductor: 
+            </span> 
+            Para repartir los pedidos de los comercios a los clientes finales.
+            <br>
+            <span class="text-primary">
+              Comercio: 
+            </span> 
+            Registra tú negocio para que puedas enviar a tus clientes sus pedidos.  
+            <br>
+            <br>
+          
+            <span class="text-primary mt-5">
+              Contacto: 
+            </span> 
+            <a type="button" class="btn btn-whatsapp btn-circle" href="https://api.whatsapp.com/send?phone=50371921807&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20precios." class="float" target="_blank">
+              <i class="fab fa-whatsapp my-float"></i>
+            </a>
+          </p>
+         
         </div>
       </div>
     </div>
@@ -77,11 +96,9 @@
   <!-- ============================================-->
 
 
-  <section class="bg-primary-gradient" id="faq">
+  <!--<section class="bg-primary-gradient" id="faq">
     <div class="bg-holder" style="background-image:url(assets/img/gallery/faq-bg.png);background-position:right;background-size:contain;">
     </div>
-    <!--/.bg-holder-->
-
     <div class="container">
       <div class="row flex-center">
         <div class="col-md-6">
@@ -189,12 +206,12 @@
         </div>
       </div>
     </div>
-  </section>
+  </section>-->
 
 
   <!-- ============================================-->
   <!-- <section> begin ============================-->
-  <section id="clients">
+ <!-- <section id="clients">
 
     <div class="container">
       <div class="row">
@@ -331,9 +348,9 @@
         </div>
       </div>
     </div>
-    <!-- end of .container-->
+   
 
-  </section>
+  </section>-->
   <!-- <section> close ============================-->
   <!-- ============================================-->
 @endsection

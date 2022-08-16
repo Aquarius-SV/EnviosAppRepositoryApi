@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>traffico || @yield('title')</title>
+    <title>{{ env('APP_NAME') }} | @yield('title')</title>
 
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicons/apple-touch-icon.png') }}">
@@ -60,11 +60,12 @@
     <script src="{{ asset('vendors/@popperjs/popper.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
+    @stack('script')
     <script>
         function showPassword() {
             var password = document.getElementById("password");
             var confirm_password = document.getElementById("confirm_password");
-            if (password.type === "password" && confirm_password.type === "password") {
+            if (password.type === "password") {
                 password.type = "text";
                 confirm_password.type = "text";
             } else {
@@ -72,6 +73,44 @@
                 confirm_password.type = "password";
             }
         }
+        function showPasswordLogin() {
+            var icon = document.getElementById("eye");
+            var passwordLogin = document.getElementById("passwordLogin");
+            if (passwordLogin.type == "password") {
+                passwordLogin.type = "text";
+                icon.classList.remove("fa-eye-slash");                
+                icon.classList.add("fa-eye")
+                                
+            } else {
+                passwordLogin.type = "password";   
+                icon.classList.remove("fa-eye");                
+                icon.classList.add("fa-eye-slash")                             
+            }
+        }
+
+        function showPasswordRegister() {
+            var icon = document.getElementById("eye");
+            var icon2 = document.getElementById("eye2");
+            var password = document.getElementById("password");
+            var confirm_password = document.getElementById("confirm_password");
+            if (password.type === "password") {
+                password.type = "text";
+                confirm_password.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon2.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye")
+                icon2.classList.add("fa-eye")
+            } else {
+                password.type = "password";
+                confirm_password.type = "password";
+
+                icon.classList.remove("fa-eye");
+                icon2.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash")
+                icon2.classList.add("fa-eye-slash")
+            }
+        }
+        
     </script>
 </body>
 </html>

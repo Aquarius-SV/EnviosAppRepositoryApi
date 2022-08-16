@@ -15,6 +15,17 @@ class Repartidor extends Model
         'dui',
         'nit',
         'licencia',
-        'id_usuario'
+        'id_usuario',
+        'estado'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
+    public function areas()
+    {
+        return $this->hasMany(DetalleZona::class, 'id_repartidor');
+    }
 }

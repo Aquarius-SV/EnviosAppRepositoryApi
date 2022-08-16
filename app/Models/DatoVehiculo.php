@@ -18,6 +18,8 @@ class DatoVehiculo extends Model
         'modelo',
         'marca',
         'color',
-        'id_user'        
+        'id_user',
+        'peso',
+        'size'
     ];
 }

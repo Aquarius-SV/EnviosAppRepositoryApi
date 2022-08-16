@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>CelestialUI Admin</title>
-  <!-- base:css -->
+  <title>{{ env('APP_NAME') }}| Envios en Chalatenango</title>
   <link rel="stylesheet" href="{{ asset('admin/vendors/typicons.font/font/typicons.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
   @livewireStyles
   <link rel="stylesheet" href="{{ asset('admin/css/vertical-layout-light/style.css') }}">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="{{ asset('admin/images/favicon.png') }}" />
-
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('admin/images/favicons/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('admin/images/favicons/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admin/images/favicons/favicon-16x16.png') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/images/favicons/favicon.ico') }}">
+  <link rel="manifest" href="{{ asset('admin/images/favicons/manifest.json') }}">
+  
 </head>
-
 <body>
-
   <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo" href="{{ url("/pedidos") }}"><img src="{{ asset('admin/images/logo.svg') }}"
@@ -40,41 +32,54 @@
         </button>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-
         <ul class="navbar-nav navbar-nav-right">
-
           <li class="nav-item dropdown d-flex">
-
           <li class="nav-item dropdown  d-flex">
              @livewire('notificacion.notificacion-component')
           </li>
-        
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle  pl-0 pr-0" href="#" data-toggle="dropdown" id="profileDropdown">
               <i class="typcn typcn-user-outline mr-0"></i>
-
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-
+              @if (Auth::user()->id_tipo_usuario == 3)
+                <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#deliveryModal" onclick="Livewire.emit('asignRepartidor',@js(Auth::user()->id))">               
+                  <i class="typcn typcn-user text-primary" ></i>
+                  Perfil
+                </a>
+              @else
+                <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#profileModal" onclick="Livewire.emit('asignName',@js(Auth::user()->name))">               
+                  <i class="typcn typcn-user text-primary" ></i>
+                  Perfil
+                </a>
+              @endif
+             
+              <hr>
               <a class="dropdown-item" href="{{ url('/logout') }}">
-                <i class="typcn typcn-power text-primary"></i>
-                Cerrar Sesion
+                <i class="typcn typcn-arrow-back text-primary"></i>
+                Cerrar sesión
               </a>
+
+             
             </div>
           </li>
+          
         </ul>
+        
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
           data-toggle="offcanvas">
           <span class="typcn typcn-th-menu"></span>
         </button>
       </div>
     </nav>
-    <!-- partial -->
+    @livewire('perfil.perfil-component')
+    @if (Auth::user()->id_tipo_usuario == 3)
+        
+    @livewire('perfil.delivery-component',['usuario'=>Auth::user()->id])
+        
+    @endif
+   
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_settings-panel.html -->
-
-      <!-- partial -->
-      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -84,15 +89,15 @@
                 <span class="sidebar-status-indicator"></span>
               </div>
               <div class="sidebar-profile-name ">
-                <p class="sidebar-name text-black">
-                  {{ Auth::user()->name }}
-                </p>
+                
                 <p class="sidebar-designation">
                   Bienvenido
                 </p>
+                <p class="sidebar-name text-black">
+                  {{ Auth::user()->name }}
+                </p>
               </div>
             </div>
-
             <p class="sidebar-menu-title">Menú</p>
           </li>
           @if (Auth::user()->id_tipo_usuario == 2)
@@ -128,39 +133,24 @@
             </a>
           </li>
           @endif
-
-
-
-
         </ul>
-
       </nav>
-      <!-- partial -->
+      
       <div class="main-panel">
         <div class="content-wrapper">
           @yield('content')
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-
-
           </div>
         </footer>
-        <!-- partial -->
       </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-  <!-- base:js -->
   @livewireScripts
   <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
   <script src="{{ asset('admin/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   <x-livewire-alert::scripts />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
@@ -171,8 +161,6 @@
   <script src="{{ asset('admin/js/settings.js') }}"></script>
   <script src="{{ asset('admin/js/active.js') }}"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-  <!-- endinject -->
-  <!-- plugin js for this page -->
   <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

@@ -48,7 +48,7 @@ class ForgotComponent extends Component
             $url = URL::temporarySignedRoute(
                 'restablecimiento', now()->addMinutes(5), ['user' => $emailVerify->id]
             );
-            Mail::to('diegouriel.martinez15@gmail.com')->send(new ForgotPassword($url));
+            Mail::to($this->email)->send(new ForgotPassword($url));
 
             $this->alert('success', 'Se a enviado un link de restablecimiento de tu contraseña a tu correo electrónico.',[
                 'position' => 'center',

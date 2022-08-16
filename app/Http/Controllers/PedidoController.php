@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Pedido;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use ExpoSDK\Expo;
+use ExpoSDK\ExpoMessage;
+use App\Models\ExpoNotification;
 class PedidoController extends Controller
 {
     /**
@@ -14,33 +15,115 @@ class PedidoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
-       'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
-       ->where('pedidos.id_usuario',Auth::user()->id)->get();
-
-      
-
-       return view('admin.pedidos')->with('allp',$allPedidos);
+        $pedidos = Pedido::join('repartidores', 'pedidos.id_repartidor', '=', 'repartidores.id')->join('users', 'pedidos.id_usuario', '=', 'users.id')->where([
+            ['repartidores.id', 48],
+            ['pedidos.estado', 0]
+        ])->select('pedidos.*', 'users.name')->orderBy('pedidos.id', 'desc')->get();
+        
+        return $pedidos;
     }
 
-   
+    /**
+     * Api index method
+     * 
+    **/
+
+    public function indexApi($id, Request $request)
+    {
+        $pedidos = Pedido::join('repartidores', 'pedidos.id_repartidor', '=', 'repartidores.id')->join('users', 'pedidos.id_usuario', '=', 'users.id')->where([
+            ['repartidores.id', $id],
+            ['pedidos.estado', 0]
+        ])->select('pedidos.*', 'users.name')->orderBy('pedidos.id', 'desc')->get();
+        
+        return $pedidos;
+    }
+
+    /* public callClientData($id) {
+        $clients = Pedido::join('users', 'repartidores.id_usuario', '=', 'users.id')->where([['pedidos.id_usuario', $id],['estado', 0]])->
+    } */
+
+    public function changeStatement(Request $request, $id)
+    {
+        $state = $request->state;
+        if ($state == 7)
+        {
+            $motivo = $request->motivo;
+        }
+        if ($state == 3)
+        {
+            $expo = ExpoNotification::where('id_user',$request ->user('api')->id)->get();
+            $messages = [           
+                new ExpoMessage([
+                    'title' => 'Actualización de pedido',
+                    'body' => 'Pedido aceptado correctamente',
+                ]),];
+                foreach ($expo as $ex ) {
+                    (new Expo)->send($messages)->to([$ex->expo_token])->push();
+                }
+        }
+        
+
+        Pedido::where('id', $id)->update([
+            'pedidos.estado' => $state,
+            'pedidos.motivo' => isset($motivo) ? $motivo : NULL
+        ]);
+    }
+
+    /**
+      * Api return all with accept state
+     **/
+    public function getActiveState($id)
+    {
+        $pedidos = Pedido::join('repartidores', 'pedidos.id_repartidor', '=', 'repartidores.id')->join('users', 'pedidos.id_usuario', '=', 'users.id')->where([
+            ['repartidores.id', $id],
+            ['pedidos.estado', 2]
+        ])->orWhere([['repartidores.id', $id],['pedidos.estado', 3]])->select('pedidos.*', 'users.name as title')->orderBy('pedidos.estado', 'desc')->get();
+        
+        return $pedidos;
+    }
+
+    public function getNewActiveState($id)
+    {
+        $pedidos = Pedido::join('repartidores', 'pedidos.id_repartidor', '=', 'repartidores.id')->join('users', 'pedidos.id_usuario', '=', 'users.id')->where([
+            ['repartidores.id', $id],
+            ['pedidos.estado', 4]
+        ])->orWhere([['repartidores.id', $id],['pedidos.estado', 5]])->select('pedidos.*', 'users.name as title')->orderBy('pedidos.id', 'desc')->get();
+        
+        return $pedidos;
+    }
+
+    /** 
+     * Generate QR Code
+     **/
+    public function generate() 
+    {
+        $pedidos = Pedido::get();
+        return view('qrcode')->with('pedidos', $pedidos);
+    }
+
+    /** 
+     * Finished state
+     **/
+    public function finish($id)
+    {
+        $pedidos = Pedido::join('repartidores', 'pedidos.id_repartidor', '=', 'repartidores.id')->join('users', 'pedidos.id_usuario', '=', 'users.id')->where([
+            ['repartidores.id', $id],
+            ['pedidos.estado', 6]
+        ])->select('pedidos.*', 'users.name as title')->orderBy('pedidos.estado', 'desc')->get();
+        
+        return $pedidos;
+    } 
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function completados()
+    public function create()
     {
-        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-       ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
-       'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
-       ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',6)->get();
-
-       return view('admin.pedidos-completados')->with('allp',$allPedidos);
+        //
     }
 
     /**
@@ -49,60 +132,41 @@ class PedidoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function rechazados(Request $request)
+    public function store(Request $request)
     {
-        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
-        'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
-        ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',7)->get();
- 
-        return view('admin.pedidos-rechazados')->with('allp',$allPedidos);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Pedido  $pedido
      * @return \Illuminate\Http\Response
      */
-    public function pendientes()
+    public function show(Pedido $pedido)
     {
-        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado',
-        'pedidos.id as id_pedido','pedidos.tel_cliente','pedidos.peso','pedidos.size','pedidos.fragil')
-        ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',0)->get();
- 
-        return view('admin.pedidos-pendientes')->with('allp',$allPedidos);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Pedido  $pedido
      * @return \Illuminate\Http\Response
      */
-    public function pedidosRepartidor()
+    public function edit(Pedido $pedido)
     {
-
-        $repartidor = User::join('repartidores','repartidores.id_usuario','=','users.id')->select('repartidores.id')->where('users.id',Auth::user()->id)->get();
-
-
-
-        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->select('pedidos.direccion_entrega',
-        'pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido','pedidos.id_usuario')
-        ->where('pedidos.id_repartidor',$repartidor[0]->id)->get();
-
-        return view('admin.repartidores')->with('allp',$allPedidos);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Pedido  $pedido
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pedido $pedido)
     {
         //
     }
@@ -110,10 +174,10 @@ class PedidoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Pedido  $pedido
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pedido $pedido)
     {
         //
     }

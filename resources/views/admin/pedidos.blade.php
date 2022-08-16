@@ -4,48 +4,14 @@
 @section('content')
 
 <div class="row">
-  <div class="col-xl-3 d-flex grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex  justify-content-between">
-          <h4 class="card-title mb-3">Repartidores con mas entregas de tus paquetes</h4>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="d-flex justify-content-between mb-4">
-                  <div class="font-weight-medium">Repartidor</div>
-                  <div class="font-weight-medium">Cantidad</div>
-                </div>
-                @php
-                $repartidores = DB::table('repartidores')->join('users','users.id','repartidores.id_usuario')
-                ->join('pedidos','pedidos.id_repartidor','repartidores.id')->where('pedidos.id_usuario',Auth::user()->id)
-                ->where('pedidos.estado',6)->select('users.name',DB::raw('count(pedidos.id) as user_count'))
-                ->groupBy('users.name')->orderBy('user_count','desc')->get();
-                @endphp
-                 @forelse ($repartidores as $rp)
-                 <div class="d-flex justify-content-between mb-4">
-                   <div class=" font-weight-medium">{{ $rp->name }}</div>
-                   <div class="small">{{ $rp->user_count }}</div>
-                 </div>
-                 @empty
-                 <h1 class="text-center">No hay datos disponibles</h1>
-
-                 @endforelse
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-9 d-flex grid-margin stretch-card">
+ 
+  <div class="col-lg-12 d-flex grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Todos los pedidos</h4>
         @livewire('pedidos.modal-update-component')
         @livewire('pedidos.modal-pedido-component')
+        @livewire('pedidos.detalle-modal-component')
         <div class="table-responsive">
           <table class="table" id="myTable">
             <thead>
@@ -55,10 +21,10 @@
                 <th>Dirección de recogida</th>
                 <th>Dirección de entrega</th>
                 <th class="text-center">Teléfono del cliente</th>
-                <th>Peso</th>
-                <th>Tamaño</th>
+                <th>Peso</th>                
                 <th class="text-center">Fragil</th>
                 <th>Estado</th>
+                <th>QR</th>
                 <th class="text-center">Acciones</th>
               </tr>
             </thead>
@@ -69,7 +35,7 @@
                 $repartidor = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
                 @endphp
                 <td class="text-center">
-                  {{ $pedido->id_pedido }}
+                  {{ $pedido->id }}
                 </td>
                 <td>
                   {{ $repartidor->name }}
@@ -78,7 +44,7 @@
                 <td>{{ $pedido->direccion_entrega }}</td>
                 <td class="text-center">{{ $pedido->tel_cliente }}</td>
                 <td>{{ $pedido->peso }}</td>
-                <td>{{ $pedido->size }}</td>
+                
                 <td class="text-center">
                   @if ($pedido->fragil == 0)
                       No
@@ -104,7 +70,7 @@
                   <label class="badge badge-info">Paquete recogido</label>
                   @break
                   @case(5)
-                  <label class="badge badge-info">En proceso</label>
+                  <label class="badge badge-info">En trancito</label>
                   @break
                   @case(6)
                   <label class="badge badge-success">Entregado</label>
@@ -117,24 +83,44 @@
                   @break
                   @endswitch
                 </td>
+                <td>
+                  <div data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="Click para descargar" >
+                    <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->generate(json_encode(['id' =>  $pedido->id ]))); !!} " download="qr-pedido-{{ $pedido->id }}">
+                      <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->generate(json_encode(['id' =>  $pedido->id ]))); !!} ">
+                    </a>
+                    
+                  </div>
+                </td>
                 <td class="text-center">
                   
                   <button type="button" @if($pedido->estado === 6 || $pedido->estado === 7) disabled @else @endif   class="btn" data-toggle="modal" data-target="#UpdateModal" onclick="Livewire.emit('asingPedido',@js($pedido))">
                     <i class="typcn typcn-edit mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
                       title=" @if($pedido->estado === 6 || $pedido->estado === 7) Acción deshabilitada @else Editar pedido @endif"></i>
                   </button>
+
+                  <button type="button" class="btn" data-toggle="modal" data-target="#detalleModal" onclick="Livewire.emit('assignDetalle',@js($pedido), @js($pedido->id_usuario))">
+                    <i class="typcn typcn-clipboard mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Detalle de pedido"></i>
+                  </button>
+
                   @if ($pedido->estado === 1 || $pedido->estado === 2 )
                   @livewire('pedidos.modal-estados-component')
                   <button type="button" class="btn" data-toggle="modal" data-target="#stateModal" onclick="Livewire.emit('asingId',@js($pedido))">
                     <i class="typcn typcn-info-large-outline mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="Estados del pedido"></i>
                   </button>
+                  @elseif ($pedido->estado === 7)
+                  @livewire('pedidos.modal-asign-component')
+                  <button type="button" class="btn" data-toggle="modal" data-target="#AsignModal" onclick="Livewire.emit('asingIdPedido',@js($pedido->id))">
+                    <i class="typcn typcn-arrow-repeat mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Reasignar repartidor"></i>
+                  </button>
                   @endif
                   <button type="button" class="btn" @if($pedido->estado === 6 || $pedido->estado === 7) disabled @else @endif>
                     <i class="typcn typcn-cancel mx-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="@if($pedido->estado === 0 ||$pedido->estado === 1 ) Cancelar pedido  @else Acción deshabilitada  @endif "></i>
                   </button>
-
                 </td>
               </tr>
               @endforeach

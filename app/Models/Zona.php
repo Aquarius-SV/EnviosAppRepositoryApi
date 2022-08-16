@@ -15,4 +15,8 @@ class Zona extends Model
         'nombre',
         'estado',        
     ];
+    public function areasD()
+    {
+        return $this->hasMany(DetalleZona::class, 'id_zona');
+    }
 }

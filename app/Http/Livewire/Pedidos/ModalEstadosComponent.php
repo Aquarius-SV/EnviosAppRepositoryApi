@@ -3,13 +3,17 @@
 namespace App\Http\Livewire\Pedidos;
 
 use Livewire\Component;
-use App\Mail\StatusPedido;
 use App\Models\Pedido;
 use App\Models\User;
+use App\Models\ExpoNotification;
+use App\Mail\StatusPedido;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\StatePedido;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\StatePedido;
+use ExpoSDK\Expo;
+use ExpoSDK\ExpoMessage;
+
 class ModalEstadosComponent extends Component
 {
     use LivewireAlert;
@@ -23,7 +27,7 @@ class ModalEstadosComponent extends Component
     public function asingId($pedido)
     {
       
-        $this->id_pedido = $pedido['id_pedido'];
+        $this->id_pedido = $pedido['id'];
         $this->estado = $pedido['estado'];
     }
 
@@ -35,6 +39,7 @@ class ModalEstadosComponent extends Component
             'showCancelButton' => true,
             'cancelButtonText' => 'Cancelar',
             'position' => 'center',
+            'toast' => false,
             'timer' => 15000,
             'onConfirmed' => 'preparacionAccept'
         ]);
@@ -46,6 +51,7 @@ class ModalEstadosComponent extends Component
             'showConfirmButton' => true,
             'confirmButtonText' => 'Si',
             'showCancelButton' => true,
+            'toast' => false,
             'cancelButtonText' => 'Cancelar',
             'position' => 'center',
             'timer' => 15000,
@@ -59,16 +65,15 @@ class ModalEstadosComponent extends Component
         
         try {
             $repartdorEmail = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')
-            ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->get();
-            $userNotification = User::where('id',$repartdorEmail[0]->id)->select('users.*')->get();
-           
+            ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->first();
+            $userNotification = User::where('id',$repartdorEmail->id)->select('users.*')->get();          
             $numero = $this->id_pedido;
             $state = 'El pedido No '.$this->id_pedido.' esta disponible siendo preparado';
-            $to = 'diegouriel.martinez15@gmail.com';
+            $to = $repartdorEmail->email;
+            $expo = ExpoNotification::where('id_user',$repartdorEmail->id)->get();
             
-            /*falta poner esto en el to del email repartidor  $repartdorEmail[0]->email*/
             Pedido::emailToUsersPedido($to,$numero,$state);
-            //Mail::to('diegouriel.martinez15@gmail.com')->send(new StatusPedido($numero,$state));
+            
             $data = [                
                 'concepto' => $state
             ];
@@ -77,6 +82,17 @@ class ModalEstadosComponent extends Component
             Pedido::where('id',$this->id_pedido)->update([
                 'estado' => 2
             ]);
+            
+            //EXPO
+           $messages = [           
+            new ExpoMessage([
+                'title' => 'Actualización de pedido',
+                'body' => $state,
+            ]),];
+            foreach ($expo as $ex ) {
+                (new Expo)->send($messages)->to([$ex->expo_token])->push();
+            }
+           
             $this->alert('success', 'Estado del pedido actualizando correctamente!',[
                 'position' => 'center',
                 'showConfirmButton' => true,
@@ -86,6 +102,7 @@ class ModalEstadosComponent extends Component
                 'allowOutsideClick' => false,
                 'allowEscapeKey' => false,
                 'allowEnterKey' => false,
+                'toast' => false,
             ]);
 
         } catch (\Throwable $th) {
@@ -100,23 +117,33 @@ class ModalEstadosComponent extends Component
     {
         try {
             $repartdorEmail = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')
-            ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->get();
-            $userNotification = User::where('id',$repartdorEmail[0]->id)->select('users.*')->get();
-           
+            ->join('users','users.id','=','repartidores.id_usuario')->where('pedidos.id',$this->id_pedido)->select('users.email','users.id')->first();
+            $userNotification = User::where('id',$repartdorEmail->id)->select('users.*')->get();
+            $expo = ExpoNotification::where('id_user',$repartdorEmail->id)->get();
             $numero = $this->id_pedido;
             $state = 'El pedido No '.$this->id_pedido.' esta disponible para recogida';
-            $to = 'diegouriel.martinez15@gmail.com';
+            $to = $repartdorEmail->email;
             
-            /* falta poner esto en el to del email repartidor  $repartdorEmail[0]->email*/
+            
             Pedido::emailToUsersPedido($to,$numero,$state);
-            //Mail::to('diegouriel.martinez15@gmail.com')->send(new StatusPedido($numero,$state));
+            
             $data = [                
                 'concepto' => $state
             ];            
             Notification::send($userNotification, new StatePedido($data));        
             Pedido::where('id',$this->id_pedido)->update([
                 'estado' => 3
-            ]);        
+            ]);    
+           //EXPO
+            $messages = [           
+                new ExpoMessage([
+                    'title' => 'Actualización de pedido',
+                    'body' => $state,
+                ]),];
+            foreach ($expo as $ex ) {
+                (new Expo)->send($messages)->to([$ex->expo_token])->push();
+            }
+
             $this->alert('success', 'Estado del pedido actualizando correctamente!',[
                 'position' => 'center',
                 'showConfirmButton' => true,
@@ -126,12 +153,14 @@ class ModalEstadosComponent extends Component
                 'allowOutsideClick' => false,
                 'allowEscapeKey' => false,
                 'allowEnterKey' => false,
+                'toast' => false,
             ]);
 
         } catch (\Throwable $th) {
             $this->alert('warning', 'Error al actualizar el estado del pedido, intenta nuevamente',[
                 'position' => 'center',
-                'timer'=>15000
+                'timer'=>15000,
+                'toast' => false,
             ]);
         }
     }

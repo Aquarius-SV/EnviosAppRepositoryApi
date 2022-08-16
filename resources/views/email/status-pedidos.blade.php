@@ -349,7 +349,7 @@
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <h1 style=" text-align: center;color:#F95C19;" >Traffico</h1>
+                        <h1 style=" text-align: center;color:#F95C19;" >{{ env('APP_NAME') }}</h1>
                         <p style=" text-align: center;" >{{ $state }}</p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>

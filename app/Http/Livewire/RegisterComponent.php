@@ -44,17 +44,28 @@ class RegisterComponent extends Component
 
         $this->validate();
         if ($this->password === $this->password_confirmation) {
-            $user = new User;
-            $user->name = $this->name;
-            $user->email = $this->email;
-            $user->password = Hash::make($this->password);
-            $user->id_tipo_usuario = 2;
-            $user->save();
+            $checkUser = User::where('email', '=', $this->email)->select('password','estado')->first();
 
-            Auth::login($user);
-            return redirect('/');
-
-
+            if ($checkUser <>  null) {
+                $this->addError('email', 'Ya existe una cuenta con este correo  electronico.');
+    
+            }else {
+                try {
+                $user = new User;
+                $user->name = $this->name;
+                $user->email = $this->email;
+                $user->password = Hash::make($this->password);
+                $user->id_tipo_usuario = 2;
+                $user->save();
+    
+                Auth::login($user);
+                return redirect('/pedidos');
+                } catch (\Throwable $th) {
+                    $this->addError('email', 'Ocurrio un error, intenta nuevamente.');
+                }
+               
+            }
+        
             //login
             /*$credentials = [
                 'name' => $this->name,

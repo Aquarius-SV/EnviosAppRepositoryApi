@@ -20,13 +20,23 @@ class Pedido extends Model
         'direccion_recogida',
         'id_repartidor',
         'id_usuario',
-        'estado',
-        'created_at',
-        'updated_at',
+        'estado',        
         'delivered_at',
         'motivo',
         'id_api_venta',
-        'tel_cliente'
+        'tel_cliente',
+        'tipo_embalaje',
+        'peso',
+        'fragil',
+        'alto',
+        'ancho',
+        'nombre_cliente',
+        'negocio',
+        'profundidad',
+        'envio',
+        'dui',
+        'id_municipio',
+        'referencia'
     ];
 
 

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,17 +50,15 @@ Route::get('/registro-repartidor', function () {
     return view('login.register-driver');
 })->middleware('islogin');
 
-Route::get('/pedidos','PedidoController@index')->middleware(['isnotlogin','emailisverify','roleR']);
-Route::get('/pedidos/rechazados','PedidoController@rechazados')->middleware(['isnotlogin','emailisverify']);
-Route::get('/pedidos/pendientes','PedidoController@pendientes')->middleware(['isnotlogin','emailisverify']);
-Route::get('/pedidos/completados','PedidoController@completados')->middleware(['isnotlogin','emailisverify']);
-Route::get('/mis-pedidos','PedidoController@pedidosRepartidor')->middleware(['isnotlogin','emailisverify','roleC']);
+Route::get('/pedidos','PedidoRenderController@index')->middleware(['isnotlogin','emailisverify','roleR']);
+Route::get('/pedidos/rechazados','PedidoRenderController@rechazados')->middleware(['isnotlogin','emailisverify']);
+Route::get('/pedidos/pendientes','PedidoRenderController@pendientes')->middleware(['isnotlogin','emailisverify']);
+Route::get('/pedidos/completados','PedidoRenderController@completados')->middleware(['isnotlogin','emailisverify']);
+Route::get('/mis-pedidos','PedidoRenderController@pedidosRepartidor')->middleware(['isnotlogin','emailisverify','roleC']);
+
+Route::get('/test','PedidoRenderController@test');
 
 
-
-Route::get('/verificacion',function(){
-    return view('correo.verificacion');
-})->middleware(['isnotlogin','emailisnotverify']);
 
 Route::get('/codigo-verificacion',function(){
     return view('correo.generador');
@@ -73,3 +74,16 @@ Route::get('logout',[App\Http\Controllers\cerrarSesionController::class, 'logout
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/* Added Routes For confirmation */
+Route::get('/verificate-email/{user}', function (Request $request) {
+    $user = User::where('email', $request->user)->first();
+    Auth::login($user);
+    return redirect('/codigo-verificacion');
+    //return $request->user;
+})->name('verificate.email')->middleware(['signed']);
+
+
+
+Route::get('/eliminar-cuenta', 'EliminarCuentaController@index')/* ->middleware(['isnotlogin','emailisverify']) */;
+Route::get('/eliminar-cuenta/{email}', 'EliminarCuentaController@api');

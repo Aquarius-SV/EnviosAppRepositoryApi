@@ -4888,6 +4888,7 @@ fieldset:disabled .btn {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
+  
 }
 
 .navbar-nav-scroll {
@@ -5146,7 +5147,8 @@ fieldset:disabled .btn {
 }
 
 .navbar-light .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 254, 254, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M0 6h30M0 14h30M0 22h30'/%3E%3C/svg%3E");
+  color: black;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M0 6h30M0 14h30M0 22h30'/%3E%3C/svg%3E");
 }
 
 .navbar-light .navbar-text {
@@ -9648,7 +9650,7 @@ fieldset:disabled .btn {
 }
 
 .bg-danger {
-  background-color: #F95C19 !important;
+  background-color: #F9FAFD !important;
 }
 
 .bg-light {
@@ -18436,6 +18438,8 @@ ul {
 .backdrop {
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
+  border-bottom: 1px;
+  border-color: #f95c19;
 }
 
 .majestic-tabs {
@@ -18460,4 +18464,33 @@ ul {
 |   User Styles
 -----------------------------------------------*/
 
-/*# sourceMappingURL=theme.css.map */
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+}
+
+.btn-whatsapp {
+  color: #FFFEFE;
+  background-color: #25d366;
+  border-color: #25d366;
+}
+
+.btn-whatsapp:hover {
+  color: #FFFEFE;
+  background-color: #25d366;
+  border-color: #25d366;
+}

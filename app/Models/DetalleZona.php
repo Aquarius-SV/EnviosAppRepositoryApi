@@ -15,4 +15,13 @@ class DetalleZona extends Model
         'id_repartidor',
         'id_zona',        
     ];
+    public function repartidor()
+    {
+        return $this->belongsTo(Repartidor::class);
+    }
+
+    public function zona()
+    {
+        return $this->belongsTo(Zona::class, 'id_zona', 'id');
+    }
 }

@@ -13,15 +13,25 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class GeneradorComponent extends Component
 {
     use LivewireAlert;
-    public $codigo,$nice;
+    public $codigo,$nice,$codigo_validator;
+    protected  $listeners =['codeGenerator'];
+    protected $rules = [
+        'codigo_validator' => 'required|numeric|digits_between:6,6'
+    ];
 
-    protected  $listeners =['redirectCode'];
-
-    public function redirectCode()
-    {
+    protected $messages = [
+        'codigo_validator.required' => 'Codigo de verificación es obligatorio.',
         
-        return redirect('/verificacion');
+        'codigo_validator.digits_between' => 'Codigo de verificación debe contener 6 digitos.',
+        'codigo_validator.numeric' => 'Codigo de verificación debe ser numerico.'
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
+
+   
+
 
     public function codeGenerator()
     {
@@ -31,35 +41,14 @@ class GeneradorComponent extends Component
             $result .= mt_rand(0, 9);
         }
         
-    
-
         $this->codigo = $result;
 
         $verifyUserCode = CodigoVerificacion::where('id_usuario',Auth::user()->id)->select('cod')->first();
         if ($verifyUserCode != null) {
 
-            try {
-                CodigoVerificacion::where('id_usuario',Auth::user()->id)->update([
-                    'cod' => $this->codigo
-                ]);
-    
-                Mail::to('diegouriel.martinez15@gmail.com')->send(new CodeVerification($this->codigo));
-                $this->alert('success', 'Codigo de verificación enviado correctamente', [
-                    'position' => 'center',
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'Continuar',
-                    'timer' => 15000,
-                    'onConfirmed' => 'redirectCode',
-                ]);
-                
-            } catch (\Throwable $th) {
-                $this->addError('all', 'Ocurrio un error. intenta nuevamente.');
-            }
+            
         }else {
             try {
-
-
-
                 $cod = new CodigoVerificacion;
                 $cod->cod = $this->codigo;
                 $cod->id_usuario = Auth::user()->id;
@@ -67,23 +56,73 @@ class GeneradorComponent extends Component
     
     
     
-                Mail::to('diegouriel.martinez15@gmail.com')->send(new CodeVerification($this->codigo));
-                $this->alert('success', 'Codigo de verificación enviado correctamente', [
+                Mail::to(Auth::user()->email)->send(new CodeVerification($this->codigo));
+               /* $this->alert('success', 'Codigo de verificación enviado correctamente', [
                     'position' => 'center',
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Continuar',
                     'timer' => 15000,
                     'onConfirmed' => 'redirectCode',
-                ]);
+                ]);*/
                 
             } catch (\Throwable $th) {
-                $this->addError('all', 'Ocurrio un error. intenta nuevamente.');
+                $this->addError('all', 'Ocurrió un error al enviar el código de verificación,intenta nuevamente.');
             }
      
-        }
+        }       
+    }
 
-       //Auth::user()->email
-       
+
+    public function reassingCode()
+    {
+        $result = '';
+
+        for($i = 0; $i < 6; $i++) {
+            $result .= mt_rand(0, 9);
+        }
+        
+        $this->codigo = $result;
+        try {
+            CodigoVerificacion::where('id_usuario',Auth::user()->id)->update([
+                'cod' => $this->codigo
+            ]);
+
+            Mail::to(Auth::user()->email)->send(new CodeVerification($this->codigo));
+            /*$this->alert('success', 'Codigo de verificación enviado correctamente', [
+                'position' => 'center',
+                'showConfirmButton' => true,
+                'confirmButtonText' => 'Continuar',
+                'timer' => 15000,
+                'onConfirmed' => 'redirectCode',
+            ]);*/
+            
+        } catch (\Throwable $th) {
+            $this->addError('all', 'Ocurrió un error al enviar el código de verificación,intenta nuevamente.');
+        }
+    }
+
+    public function codeVerification()
+    {
+        $this->validate();
+        $verifyUserCode = CodigoVerificacion::where('id_usuario',Auth::user()->id)->select('cod')->first();
+
+        if ($verifyUserCode->cod === $this->codigo_validator) {
+
+            try {
+                User::where('id',Auth::user()->id)->update([
+                    'email_verified_at' => now(),
+                ]);
+    
+                CodigoVerificacion::where('id_usuario',Auth::user()->id)->delete();
+                return redirect('/pedidos');
+
+            } catch (\Throwable $th) {
+                $this->addError('all', 'Ocurrió un error al verificar el código de verificación,intenta nuevamente.');
+            }
+            
+        }else{
+            $this->addError('all', 'Código de verificación incorrecto.');
+        }
     }
 
     
@@ -91,6 +130,7 @@ class GeneradorComponent extends Component
 
     public function render()
     {
+        
         return view('livewire.correo.generador-component');
     }
 }

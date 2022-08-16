@@ -76,7 +76,10 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="card" style="width: 18rem;">
+                
+                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->merge('/public/assets/img/illustrations/aq.png',.32)->errorCorrection('H')->size(200)->generate('https://www.google.com')); !!} ">
+              </div>
         </main>
     </div>
 </body>

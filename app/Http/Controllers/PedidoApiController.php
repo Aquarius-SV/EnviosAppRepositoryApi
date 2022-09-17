@@ -62,7 +62,7 @@ class PedidoApiController extends Controller
             ]);
         }else {
             $user = User::where('email', $request->email)->first();
-            $token = $user->createToken('Personal Access Token')->accessToken;
+            $token = $user->createToken($user->name)->accessToken;
             User::where('email', $request->email)->update([
                 'remember_token' => $token
             ]);
@@ -224,11 +224,35 @@ class PedidoApiController extends Controller
                     'id_repartidor' => $request->repartidor,
                     'estado' => 0
                 ]);
+                $reparidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$request->repartidor)->select('users.*')->first();
                 $numero = $id;
                 $state = 'El pedido No '.$numero.' se te a asignado. Entra a tu aplicación para aceptar o denegar el pedido';
-                $to = 'diegouriel.martinez15@gmail.com';
-                /*falta poner esto en el to del email repartidor  $repartdorEmail->email*/
-               Pedido::emailToUsersPedido($to,$numero,$state);
+                //$to = 'diegouriel.martinez15@gmail.com';
+
+
+                $to = $reparidorEmail->email;             
+                $userNotification = User::where('id',$reparidorEmail->id)->select('users.*')->get();
+                $expo = ExpoNotification::where('id_user',$reparidorEmail->id)->get();
+                
+                
+                $data = [                
+                    'concepto' => $state
+                ];
+                Pedido::emailToUsersPedido($to,$numero,$state);
+                Notification::send($userNotification , new StatePedido($data));   
+                //EXPO
+                $messages = [           
+                new ExpoMessage([
+                    'title' => 'Nuevo pedido disponible',
+                    'body' => $state,
+                ]),];
+                foreach ($expo as $ex ) {
+                    (new Expo)->send($messages)->to([$ex->expo_token])->push();
+                
+                }
+
+                /*falta poner esto en el to del email repartidor  $repartdorEmail->email
+               Pedido::emailToUsersPedido($to,$numero,$state); */
                 return response()->json([
                     'message' => 'ok',              
                 ]);
@@ -353,5 +377,25 @@ class PedidoApiController extends Controller
         return response()->json([
             'state' => $pedido,              
         ]);
+   }
+
+   public function departamentos()
+   {
+        try {
+            $dpts = \DB::table('departamentos')->get();
+            return $dpts;
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(),], 500);
+        }
+   }
+
+   public function municipios($id)
+   {
+        try {
+            $mns = \DB::table('municipios')->where('id_departamento', $id)->get();
+            return $mns;
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(),], 500);
+        }
    }
 }

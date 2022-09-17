@@ -12,7 +12,7 @@
       <div class="row align-items-center min-vh-50 min-vh-sm-100">
         <div class="col-md-7 col-lg-6 text-md-start text-center">
           <h1 class="text-black fs-3 fs-xl-8 mb-5">Llevamos tus paquetes
-             a cualquier parte de Chalatenango.</h1>
+             a la puerta de tu casa.</h1>
           <a class="btn btn-primary" href="{{ url('inicio-sesion') }}" role="button">Empieza ahora!
             
         </a>
@@ -24,12 +24,12 @@
 
   <!-- ============================================-->
   <!-- <section> begin ============================-->
-  <section id="aboutUs">
+  <section id="envios">
 
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 text-center mb-6 mb-md-0 order-0 order-md-1">
-            <img class="img-fluid" src="assets/img/gallery/about-delivery.png" alt="..." />
+            <img class="img-fluid" src="assets/img/gallery/about-delivery.png" alt="Imagen sobre nosotros de la pagina principal de envios" />
         </div>
         <div class="col-md-6 text-center text-md-start mb-6">
           <h4 class="text-danger">Envíos</h4>
@@ -56,7 +56,7 @@
 
   <!-- ============================================-->
   <!-- <section> begin ============================-->
-  <section id="services">
+  <section id="aplicaciones">
 
     <div class="container">
       <div class="row align-items-center">

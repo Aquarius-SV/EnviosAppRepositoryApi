@@ -36,7 +36,14 @@ class Pedido extends Model
         'envio',
         'dui',
         'id_municipio',
-        'referencia'
+        'referencia',
+        'zona',
+        'sku',
+        'numero_whatsapp',
+        'correo',
+        'id_dato_cliente',
+        'contenido',
+        'show_pedido',
     ];
 
 

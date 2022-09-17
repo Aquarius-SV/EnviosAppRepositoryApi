@@ -30,7 +30,7 @@
               <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
                 <div class="text-white px-3 py-4 p-md-5 mx-md-4">
                   <h1 class="mb-4 text-white text-center"> Inicio de Sesión</h1>
-                  <p class="text-center mb-0">Llevamos tus paquetes a cualquier parte de Chalatenango.</p>
+                  <p class="text-center mb-0">Llevamos tus paquetes a la puerta de tu casa.</p>
                 </div>
               </div>
             </div>

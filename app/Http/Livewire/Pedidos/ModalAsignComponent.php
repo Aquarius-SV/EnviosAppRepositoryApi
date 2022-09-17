@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Pedidos;
 
 use Livewire\Component;
 use App\Models\Zona;
-use App\Models\Repartidor;
+use App\Models\{Repartidor,Departamento,Municipio};
 use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use ExpoSDK\Expo;
 use ExpoSDK\ExpoMessage;
 use App\Models\ExpoNotification;
-
+use Illuminate\Support\Facades\URL;
 class ModalAsignComponent extends Component
 {
     use LivewireAlert;
@@ -22,8 +22,10 @@ class ModalAsignComponent extends Component
     public $zoneSelected;
     public $deliveries = [];
     public $repartidor;
+    public $municipios = [],$departamentos = [];
+    public $departamento,$municipio;
     public $listeners = ['resetInputAsign'=>'resetInput','redirectPedidos','asingIdPedido'=>'asign'];
-
+    
 
     protected $rules = [
         'repartidor' => 'required',
@@ -46,7 +48,8 @@ class ModalAsignComponent extends Component
     }
     public function redirectPedidos()
     {
-       return redirect('/pedidos');
+        $url = url()->previous();
+        return redirect($url);
     }
    
     public function asign($id)
@@ -81,16 +84,22 @@ class ModalAsignComponent extends Component
 
             $this->dispatchBrowserEvent('closeModalReasign'); 
             $this->alert('success', 'Pedido reasignado correctamente', [
-                'position' => 'center',
-                'showConfirmButton' => true,
-                'confirmButtonText' => 'Entendido',
-                'onConfirmed' => 'redirectPedidos'
+                    'position' => 'center',
+                    'timer' => '',
+                    'toast' => false,
+                    'showConfirmButton' => true,
+                    'onConfirmed' => 'redirectPedidos',
+                    'confirmButtonText' => 'Continuar',
             ]);
         } catch (\Throwable $th) {
             $this->dispatchBrowserEvent('closeModalReasign'); 
-            $this->alert('warning', $th->getMessage(), [
-            'position' => 'center',
-            'timer' => null
+            $this->alert('error', 'Ocurrió un error, intenta nuevamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Entendido',
             ]);
         }
     }
@@ -109,7 +118,18 @@ class ModalAsignComponent extends Component
 
     public function render()
     {
-
+        $this->departamentos = Departamento::get();
+        if ($this->departamento) {
+            $this->municipios = Municipio::where('id_departamento',$this->departamento)->get();
+        }
+        if ($this->municipio) {
+            $this->zones = Zona::where([
+                ['estado',1],
+                ['id_municipio',$this->municipio]
+            ])->select('nombre','id as id_zone')->get();   
+        }
+        
+        
         if ($this->zoneSelected <> null) {
             $this->deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
             ->join('datos_vehiculos','datos_vehiculos.id_user','=','users.id')
@@ -117,8 +137,7 @@ class ModalAsignComponent extends Component
             ->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor','datos_vehiculos.tipo as tipo_vehiculo','datos_vehiculos.marca','datos_vehiculos.modelo',
             'datos_vehiculos.peso','datos_vehiculos.size')->get();     
         }    
-        $this->zones = Zona::where('estado',1)->select('nombre','id as id_zone')->get();   
-
+        
         return view('livewire.pedidos.modal-asign-component');
     }
 }

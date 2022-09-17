@@ -8,13 +8,13 @@ class DetalleModalComponent extends Component
 {
     public $direccion_recogida,$direccion_entrega,$referencia,$departamento,$municipio,
     $tel_cliente,$cliente,$dui,$peso,$alto,$ancho,$profundidad,$fragil,$embalaje,$envio,
-    $repartidor,$estado;
+    $repartidor,$estado,$zona,$contenido;
 
     protected $listeners = [
         'assignDetalle'
     ];
 
-    public function assignDetalle($detalle,$repartidor)
+    public function assignDetalle($detalle,$repartidor,$repartidorPedidoPunto = null)
     {
         $this->direccion_recogida = $detalle['direccion_recogida'];
         $this->direccion_entrega = $detalle['direccion_entrega'];
@@ -23,8 +23,8 @@ class DetalleModalComponent extends Component
         $this->departamento = $detalle['departamento'];
         $this->municipio = $detalle['municipio'];
 
-        $this->tel_cliente = $detalle['tel_cliente'];
-        $this->cliente = $detalle['nombre_cliente'];
+        $this->tel_cliente = $detalle['telefono'];
+        $this->cliente = $detalle['nombre'];
         $this->dui = $detalle['dui'];
 
 
@@ -37,10 +37,19 @@ class DetalleModalComponent extends Component
         $this->embalaje = $detalle['tipo_embalaje'];
 
         $this->envio = $detalle['envio'];
-        $this->estado = $detalle['estado'];
+        $this->estado = $detalle['estado_pedido'];
         $this->fragil = $detalle['fragil'];
+        $this->zona = $detalle['zona'];
+        
+        $this->contenido = $detalle['contenido'];
 
-        $this->repartidor = User::where('id',$repartidor)->value('name');
+        if ($repartidorPedidoPunto == null) {
+            $this->repartidor = User::join('repartidores','repartidores.id_usuario','=','users.id')->where('repartidores.id',$repartidor)->value('name');
+        }else {
+            $this->repartidor = User::join('repartidores','repartidores.id_usuario','=','users.id')->where('repartidores.id',$repartidorPedidoPunto)->value('name');
+        }
+
+        
     }
 
 

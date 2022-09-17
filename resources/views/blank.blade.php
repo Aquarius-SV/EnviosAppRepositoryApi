@@ -13,6 +13,7 @@
   <meta name="msapplication-TileImage" content="{{ asset('assets/img/favicons/mstile-150x150.png') }}">
   <meta name="theme-color" content="#ffffff">
   <link href="{{ asset('assets/css/theme.css') }}" rel="stylesheet" />
+  
   @livewireStyles
 
 </head>
@@ -31,8 +32,9 @@
           <ul class="navbar-nav ms-auto pt-2 pt-lg-0 font-base">
             <li class="nav-item px-2 " data-anchor="data-anchor"><a class="nav-link fw-medium text-black" aria-current="page"
                 href="#home">Inicio</a></li>
-            <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#aboutUs">Envíos</a></li>
-            <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#services">Aplicaciones</a>
+              <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#envios">Envíos</a></li>
+              <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#aplicaciones">Aplicaciones</a>                                 
+              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/GPSTracker-new.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
             </li>
             
           </ul>
@@ -182,6 +184,8 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
   <x-livewire-alert::scripts />
+  
+     
   <script src="{{ asset('vendors/@popperjs/popper.min.js') }}"></script>
   <script src="{{ asset('vendors/bootstrap/bootstrap.min.js') }}"></script>
   <script src="{{ asset('vendors/is/is.min.js') }}"></script>

@@ -49,8 +49,10 @@
     
 
 
-
-    @yield('content')
+    <div class="h-100" style="background-color: #eee;">
+        @yield('content')
+    </div>
+    
     
 
     @livewireScripts

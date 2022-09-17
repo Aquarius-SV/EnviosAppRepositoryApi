@@ -53,9 +53,30 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signUp');
     Route::post('validate', 'AuthController@realTimeValidation');
-    Route::get('zonas', function () {
-        $zonas = \DB::table('zonas')->where('estado', 1)->select('id as value', 'nombre as label')->limit(3)->get();
+    Route::get('zonas/{id}', function ($id) {
+        $zonas = \DB::table('zonas')->where([
+            ['estado', 1],
+            ['id_municipio', $id]
+        ])->select('id as value', 'nombre as label')->limit(3)->get();
         return $zonas;
+    });
+
+    Route::get('departamentos', function () {        
+        try {
+            $dpts = \DB::table('departamentos')->select('id as value', 'nombre as label')->get();
+            return $dpts;
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(),], 500);
+        }
+    });
+
+    Route::get('municipios/{id}', function ($id) {        
+        try {
+            $mns = \DB::table('municipios')->where('id_departamento', $id)->select('id as value', 'nombre as label')->get();
+            return $mns;
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(),], 500);
+        }
     });
 
     Route::get('corroborate-state/{id}', function ($id) {
@@ -91,5 +112,12 @@ Route::group([
             /* $userOwner->notify(new NewLikeNotification($request->expo_token)); */
             return $pushToken;
         });
+        Route::get('get-points/{municipio}', 'PedidoController@trackPoint');
+        Route::post('store-new-point/{pedido}/{punto}', 'PedidoController@storePoint');
+        Route::get('devoluciones/{id}', 'PedidoController@returnPackages');
+        Route::get('onComplete/{id}/{idP}/{idPP}', 'PedidoController@ifId');
+        Route::post('onCompleteButNotId', 'PedidoController@noId');
+        Route::post('pedidos/finishStates', 'PedidoController@finishState');
+        Route::post('entrega-mail/{email}/{id_pedido}', 'PedidoController@clientProblem');
     });
 });

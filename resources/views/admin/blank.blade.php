@@ -6,9 +6,14 @@
   <title>{{ env('APP_NAME') }}| Envios en Chalatenango</title>
   <link rel="stylesheet" href="{{ asset('admin/vendors/typicons.font/font/typicons.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/vendors/css/vendor.bundle.base.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+   integrity="sha512-+EoPw+Fiwh6eSeRK7zwIKG2MA8i3rV/DGa3tdttQGgWyatG/SkncT53KHQaS5Jh9MNOT3dmFL0FjTY08And/Cw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+  
   @livewireStyles
   <link rel="stylesheet" href="{{ asset('admin/css/vertical-layout-light/style.css') }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('admin/images/favicons/apple-touch-icon.png') }}">
@@ -42,16 +47,40 @@
               <i class="typcn typcn-user-outline mr-0"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+
+              @switch(Auth::user()->id_tipo_usuario)
+                  @case(3)
+                    <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#deliveryModal" onclick="Livewire.emit('asignRepartidor',@js(Auth::user()->id))">               
+                      <i class="typcn typcn-user text-primary" ></i>
+                      Perfil
+                    </a>
+                      @break
+                  @case(2)
+                      <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#profileModal" onclick="Livewire.emit('asignName',@js(Auth::user()->name))">               
+                        <i class="typcn typcn-user text-primary" ></i>
+                        Perfil
+                      </a>
+                      <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#direccionesListModal">               
+                        <i class="typcn typcn-bookmark text-primary" ></i>
+                        Direcciones
+                      </a>
+                      @break
+                  @case(1)
+                  @case(5)
+                  <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#profileModal" onclick="Livewire.emit('asignName',@js(Auth::user()->name))">               
+                    <i class="typcn typcn-user text-primary" ></i>
+                    Perfil
+                  </a>
+                  @break
+                      
+              @endswitch
+
+
+
               @if (Auth::user()->id_tipo_usuario == 3)
-                <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#deliveryModal" onclick="Livewire.emit('asignRepartidor',@js(Auth::user()->id))">               
-                  <i class="typcn typcn-user text-primary" ></i>
-                  Perfil
-                </a>
+               
               @else
-                <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#profileModal" onclick="Livewire.emit('asignName',@js(Auth::user()->name))">               
-                  <i class="typcn typcn-user text-primary" ></i>
-                  Perfil
-                </a>
+               
               @endif
              
               <hr>
@@ -100,39 +129,190 @@
             </div>
             <p class="sidebar-menu-title">Menú</p>
           </li>
-          @if (Auth::user()->id_tipo_usuario == 2)
-          <li class="nav-item" id="inicio">
-            <a class="nav-link " href="{{ url('/pedidos') }}">
-              <i class="typcn typcn-home menu-icon"></i>
-              <span class="menu-title">Inicio</span>
-            </a>
-          </li>
-          <li class="nav-item" id="pendientes">
-            <a class="nav-link" href="{{ url('/pedidos/pendientes') }}">
-              <i class="typcn typcn-download menu-icon"></i>
-              <span class="menu-title">Pedidos pendientes</span>
-            </a>
-          </li>
-          <li class="nav-item" id="completados">
-            <a class="nav-link" href="{{ url('/pedidos/completados') }}">
-              <i class="typcn typcn-tick menu-icon"></i>
-              <span class="menu-title">Pedidos completados</span>
-            </a>
-          </li>
-          <li class="nav-item" id="rechazados">
-            <a class="nav-link" href="{{ url('/pedidos/rechazados') }}">
-              <i class="typcn typcn-times menu-icon"></i>
-              <span class="menu-title">Pedidos Rechazados</span>
-            </a>
-          </li>
-          @else
-          <li class="nav-item" id="mis-Rpedidios">
-            <a class="nav-link" href="{{ url('/mis-pedidos') }}">
-              <i class="typcn typcn-clipboard menu-icon"></i>
-              <span class="menu-title">Mis Pedidos</span>
-            </a>
-          </li>
-          @endif
+
+          @switch(Auth::user()->id_tipo_usuario)
+              @case(2)
+              <li class="nav-item" id="inicio">
+                <a class="nav-link " href="{{ url('/pedidos') }}">
+                  <i class="typcn typcn-home menu-icon"></i>
+                  <span class="menu-title">Inicio</span>
+                </a>
+              </li>
+              
+               {{--  <li class="nav-item" id="pendientes">
+                <a class="nav-link" href="{{ url('/pedidos/pendientes') }}">
+                  <i class="typcn typcn-download menu-icon"></i>
+                  <span class="menu-title">Pedidos pendientes</span>
+                </a>
+              </li>
+              <li class="nav-item" id="completados">
+                <a class="nav-link" href="{{ url('/pedidos/completados') }}">
+                  <i class="typcn typcn-tick menu-icon"></i>
+                  <span class="menu-title">Pedidos completados</span>
+                </a>
+              </li>
+              <li class="nav-item" id="rechazados">
+                <a class="nav-link" href="{{ url('/pedidos/rechazados') }}">
+                  <i class="typcn typcn-times menu-icon"></i>
+                  <span class="menu-title">Pedidos rechazados</span>
+                </a>
+              </li> --}}
+              <li class="nav-item" id="devoluciones">
+                <a class="nav-link" href="{{ url('/pedidos/devoluciones') }}">
+                  <i class="typcn typcn-arrow-loop menu-icon"></i>
+                  <span class="menu-title">Devoluciones</span>
+                </a>
+              </li>
+
+              <li class="nav-item" id="direcciones-clientes">
+                <a class="nav-link" href="{{ url('/pedidos/direcciones-clientes') }}">
+                  <i class="typcn typcn-contacts menu-icon"></i>
+                  <span class="menu-title">Direcciones de clientes</span>
+                </a>
+              </li>
+
+              <li class="nav-item" id="mis-direcciones">
+                <a class="nav-link" href="{{ url('/pedidos/mis-direcciones') }}">
+                  <i class="typcn typcn-bookmark menu-icon"></i>
+                  <span class="menu-title">Mis direcciones</span>
+                </a>
+              </li>
+
+
+
+                  @break
+              @case(3)
+              <li class="nav-item" id="mis-Rpedidios">
+                <a class="nav-link" href="{{ url('/mis-pedidos') }}">
+                  <i class="typcn typcn-clipboard menu-icon"></i>
+                  <span class="menu-title">Mis pedidos</span>
+                </a>
+              </li>
+                  @break
+                  @case(1)
+
+                  <li class="nav-item" id="menu-administracion-li">
+                    <a class="nav-link" data-toggle="collapse" href="#administracion-menu-div" aria-expanded="false" aria-controls="administracion-menu-div">
+                      <i class="typcn typcn-briefcase menu-icon"></i>
+                      <span class="menu-title">Administración</span>
+                      <i class="typcn typcn-chevron-right menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="administracion-menu-div">
+                      <ul class="nav flex-column sub-menu">
+                        <li class="nav-item" id="admin-inicio">
+                          <a class="nav-link" href="{{ url('administracion/') }}">
+                            <i class="typcn typcn-home menu-icon"></i>
+                            <span class="menu-title">Inicio</span>
+                          </a>
+                        </li>
+                        <li class="nav-item" id="admin-repartidores">
+                          <a class="nav-link" href="{{ url('administracion/repartidores') }}">
+                            <i class="typcn typcn-user menu-icon"></i>
+                            <span class="menu-title">Repartidores</span>
+                          </a>
+                        </li>
+                        <li class="nav-item" id="admin-pedidos">
+                          <a class="nav-link" href="{{ url('administracion/pedidos') }}">
+                            <i class="typcn typcn-clipboard menu-icon"></i>
+                            <span class="menu-title">Pedidos</span>
+                          </a>
+                        </li>
+                        <li class="nav-item" id="admin-comercios">
+                          <a class="nav-link" href="{{ url('administracion/comercios') }}">
+                            <i class="typcn typcn-briefcase menu-icon"></i>
+                            <span class="menu-title">Comercios</span>
+                          </a>
+                        </li>
+      
+                        <li class="nav-item" id="admin-repartos">
+                          <a class="nav-link" href="{{ url('administracion/puntos-de-reparto') }}">
+                            <i class="typcn typcn-compass menu-icon"></i>
+                            <span class="menu-title">Puntos de departo</span>
+                          </a>
+                        </li>
+      
+                        <li class="nav-item" id="admin-users-repartos">
+                          <a class="nav-link" href="{{ url('administracion/administradores-puntos-reparto') }}">
+                            <i class="typcn typcn-user menu-icon"></i>
+                            <span class="menu-title">Administradores de puntos</span>
+                          </a>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </li>
+
+                  <li class="nav-item" id="menu-pedidos-li">
+                    <a class="nav-link" data-toggle="collapse" href="#pedidos-menu-div" aria-expanded="false" aria-controls="pedidos-menu-div">
+                      <i class="typcn typcn-clipboard menu-icon"></i>
+                      <span class="menu-title">Pedidos</span>
+                      <i class="typcn typcn-chevron-right menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="pedidos-menu-div">
+                      <ul class="nav flex-column sub-menu">
+                        <li class="nav-item" id="creacion-pedidos-admin">
+                          <a class="nav-link" href="{{ url('/administracion/creacion-pedidos') }}">
+                            <i class="typcn typcn-clipboard menu-icon"></i>
+                            <span class="menu-title">Lista de pedido</span>
+                          </a>
+                        </li>
+                        <li class="nav-item" id="direcciones-recogida-admin">
+                          <a class="nav-link" href="{{ url('/administracion/direcciones-recogida') }}">
+                            <i class="typcn typcn-filter menu-icon"></i>
+                            <span class="menu-title">Direcciones de recogida</span>
+                          </a>
+                        </li>
+                        <li class="nav-item" id="datos-cliente-admin">
+                          <a class="nav-link" href="{{ url('/administracion/datos-cliente') }}">
+                            <i class="typcn typcn-business-card menu-icon"></i>
+                            <span class="menu-title">Datos del comercio</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="direccion-cliente-final-admin">
+                          <a class="nav-link" href="{{ url('/administracion/direcciones-clientes-finales') }}">
+                            <i class="typcn typcn-flag menu-icon"></i>
+                            <span class="menu-title">Direcciones de clientes</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="pedidos-puntos-admin">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos') }}">
+                            <i class="typcn typcn-briefcase menu-icon"></i>
+                            <span class="menu-title">Pedidos de punto</span>
+                          </a>
+                        </li>
+
+                      
+                      </ul>
+                    </div>
+                  </li>
+
+                  @break
+                  @case(5)
+                  <li class="nav-item" id="puntos">
+                    <a class="nav-link" href="{{ url('puntos-repartos/') }}">
+                      <i class="typcn typcn-clipboard menu-icon"></i>
+                      <span class="menu-title">En movimiento</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item" id="asignacion">
+                    <a class="nav-link" href="{{ url('puntos-repartos/asignacion') }}">
+                      <i class="typcn typcn-arrow-minimise menu-icon"></i>
+                      <span class="menu-title">Asignación de pedido</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" id="puntos-completados">
+                    <a class="nav-link" href="{{ url('puntos-repartos/completados') }}">
+                      <i class="typcn typcn-input-checked menu-icon"></i>
+                      <span class="menu-title">Completados</span>
+                    </a>
+                  </li>
+
+                 
+                  @break                                
+          @endswitch        
         </ul>
       </nav>
       
@@ -160,12 +340,25 @@
   <script src="{{ asset('admin/js/template.js') }}"></script>
   <script src="{{ asset('admin/js/settings.js') }}"></script>
   <script src="{{ asset('admin/js/active.js') }}"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+ 
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"
+  integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>  
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script> 
   <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+
+
+   
+
+
   </script>
   @stack('scripts')
 </body>

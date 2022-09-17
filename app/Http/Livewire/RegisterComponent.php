@@ -86,10 +86,7 @@ class RegisterComponent extends Component
 
             $this->addError('password_confirmation', 'Las contraseñas no coinciden!');
             
-        }
-        
-
-
+        }        
     }
 
 

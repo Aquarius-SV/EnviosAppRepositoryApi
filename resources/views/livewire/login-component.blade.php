@@ -35,16 +35,16 @@
 
 
 
-        <div class="text-center  mb-5 pb-1">
+       {{--  <div class="text-center  mb-5 pb-1">
             <p class="">¿No tienes cuenta aún?</p>
             
             <p class="">Registrate</p>
-            <a href="{{ url('/registro') }}" type="button" class="btn btn-outline-danger me-3">Comercio</a>
+            <a href="{{ url('/registro') }}" type="button" class="btn btn-outline-danger ">Comercio</a>
           
             <a href="{{ url('/registro-repartidor') }}" type="button" class="btn btn-outline-danger">Repartidor</a>
           
               
-        </div>
+        </div> --}}
 
        
 

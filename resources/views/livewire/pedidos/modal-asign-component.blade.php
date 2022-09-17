@@ -7,13 +7,45 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+              @if ($errors->any())
+              @foreach ($errors->all() as $error)
+                  <div>{{$error}}</div>
+              @endforeach
+          @endif
+              <div class="row">
+                <div class="mb-3 col-6">
+                  <label for="">Departamento</label>
+                  <select class="form-select" aria-label="Seleciona" wire:model="departamento">
+                    <option selected style="display: none;">Seleciona</option>
+                    @forelse ($departamentos as $dps)
+                    <option value="{{ $dps->id }}">{{ $dps->nombre }}</option>
+                    @empty
+                    <option selected>No hay datos disponibles</option>
+                    @endforelse                                                            
+                  </select>
+                </div>
+
+                <div class="mb-3 col-6">
+                  <label for="">Municipio</label>
+                  <select class="form-select" aria-label="Seleciona" wire:model="municipio">
+                    <option selected style="display: none;">Seleciona</option>
+                    @forelse ($municipios as $mns)
+                    <option value="{{ $mns->id }}">{{ $mns->nombre }}</option>
+                    @empty
+                    <option selected>No hay datos disponibles</option>
+                    @endforelse
+                  </select>
+                </div>
+              </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Zonas de entrega</label>
                     <select class="form-select @error('zoneSelected') is-invalid  @enderror" wire:model="zoneSelected">
                       <option style="display:none;">Selecione la zona</option>
-                      @foreach ($zones as $zone)
+                      @forelse ($zones as $zone)
                       <option value="{{ $zone->id_zone }}">{{ $zone->nombre }}</option>
-                      @endforeach
+                      @empty
+                      <option selected>No hay datos disponibles</option>
+                      @endforelse
                     </select>    
                     @error('zoneSelected') <span class="text-danger text-center">{{ $message }}</span> @enderror
                   </div>            
@@ -63,7 +95,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" wire:click="reasignPedido">Actualizar</button>
+              <button type="button" class="btn btn-primary" wire:click="reasignPedido">Reasignar</button>
             </div>
           </div>
         </div>

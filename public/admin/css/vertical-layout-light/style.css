@@ -23361,7 +23361,7 @@ body.avgrund-active {
   margin-bottom: 0;
   margin-top: 0;
   list-style: none;
-  padding: 0.25rem 0 0 3.5rem;
+  padding: 0.25rem 0 0 0.5rem;
 }
 
 .sidebar .nav.sub-menu .nav-item {
@@ -23370,7 +23370,7 @@ body.avgrund-active {
 }
 
 .sidebar .nav.sub-menu .nav-item::before {
-  content: '';
+ 
   width: 2px;
   height: 8px;
   position: absolute;
@@ -23381,7 +23381,7 @@ body.avgrund-active {
 }
 
 .sidebar .nav.sub-menu .nav-item::after {
-  content: '';
+  
   width: 2px;
   height: 8px;
   position: absolute;
@@ -23393,7 +23393,7 @@ body.avgrund-active {
 
 .sidebar .nav.sub-menu .nav-item .nav-link {
   color: #939393;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   position: relative;
   font-size: 0.75rem;
   line-height: 1;
@@ -23402,11 +23402,11 @@ body.avgrund-active {
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover {
-  color: #fff;
+  color: #000;
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link.active {
-  color: #fff;
+  color: #000;
   background: transparent;
 }
 
@@ -24294,7 +24294,7 @@ body.avgrund-active {
     border-top: none;
   }
   .sidebar-mini:not(.sidebar-icon-only) .sidebar .nav.sub-menu .nav-item .nav-link {
-    padding: .75rem 0 .75rem 1.5rem;
+    padding: .75rem 0 .75rem 0.5rem;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -24387,7 +24387,7 @@ body.avgrund-active {
     text-align: left;
     top: 0;
     bottom: 0;
-    width: 190px;
+    width: 210px;
     z-index: 1;
     line-height: 1.8;
     box-shadow: 4px 0px 7px 0px rgba(182, 185, 189, 0.25);

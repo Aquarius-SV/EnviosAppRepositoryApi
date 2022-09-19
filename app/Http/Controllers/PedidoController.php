@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Pedido, PedidoPunto, CambioPedido};
+use App\Models\{Pedido, PedidoPunto, CambioPedido, LogChangePedido, Repartidor};
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use ExpoSDK\Expo;
@@ -43,7 +43,7 @@ class PedidoController extends Controller
             ->join('direcciones_clientes', 'pedidos.id_dato_cliente', '=', 'direcciones_clientes.id')->where([
                 ['repartidores.id', $id],
                 ['pedidos.estado', 0]
-            ])->select('pedidos.*', 'users.name', 'direcciones_clientes.nombre as nombre_cliente', 'direcciones_clientes.telefono as tel_cliente', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id')->orderBy('pedidos.id', 'desc')->get();
+            ])->select('pedidos.*', 'users.name', 'direcciones_clientes.nombre as nombre_cliente', 'direcciones_clientes.telefono as tel_cliente', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos_puntos.id_punto_pedido as id_from')->orderBy('pedidos.id', 'desc')->get();
             
             $pedidosExt = PedidoPunto::join('repartidores', 'pedidos_puntos.id_repartidor', '=', 'repartidores.id')->join('pedidos', 'pedidos_puntos.id_pedido', '=', 'pedidos.id')
             ->join('puntos_repartos', 'pedidos_puntos.id_punto', '=', 'puntos_repartos.id')->leftJoin('puntos_repartos as ptn_null', 'pedidos_puntos.id_punto_pedido', '=', 'ptn_null.id')
@@ -127,7 +127,7 @@ class PedidoController extends Controller
             ['repartidores.id', $id],
             ['pedidos_puntos.estado', 0],
             ['pedidos.show_pedido', 1],            
-        ])->whereIn('pedidos.estado', [5, 9])->select('pedidos.*' /* 'users.name as title' */, 'pedidos.sku as title', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id')->orderBy('pedidos.id', 'desc')->get();
+        ])->whereIn('pedidos.estado', [5, 9])->select('pedidos.*' /* 'users.name as title' */, 'pedidos.sku as title', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos_puntos.id_punto_pedido as id_from')->orderBy('pedidos.id', 'desc')->get();
         
         // Pedidos externos 0
         $pedidosExt = PedidoPunto::join('repartidores', 'pedidos_puntos.id_repartidor', '=', 'repartidores.id')->join('pedidos', 'pedidos_puntos.id_pedido', '=', 'pedidos.id')
@@ -256,15 +256,17 @@ class PedidoController extends Controller
             DB::transaction(function () use($request, $pedido, $punto) {
                 $direccion = $request->direccion;
                 
-                $lastId = PedidoPunto::latest()->value('id');
+                /* $lastId = PedidoPunto::latest()->value('id');
 
                 PedidoPunto::create([
                     'id_pedido' => $pedido,
                     'id_punto' => $punto,
                     'id_punto_pedido' => $lastId+1
-                ]);
+                ]); */
                 
                 Pedido::where('id', $pedido)->update(['estado' => 9, 'direccion_entrega' => $direccion]);
+
+                $this->logChanges($pedido, $request->user('api')->id, 'El repartidor ha aceptado el pedido.');
 
                 $expo = ExpoNotification::where('id_user',$request->user('api')->id)->get();
                 $messages = [           
@@ -296,7 +298,7 @@ class PedidoController extends Controller
             ->where([
                 ['repartidores.id', $id],
                 ['pedidos_puntos.estado', 4],
-                ['pedidos.estado', ],
+                ['pedidos.estado', 11],
             ])
             ->select(DB::raw("CONCAT('altura: ', pedidos.alto, ', ', 'anchura: ', pedidos.ancho, ', ', 'profundidad: ', pedidos.profundidad) as size"),'pedidos_puntos.id_repartidor', 
             'puntos_repartos.*', 'pedidos_puntos.id as id_pedido', 'pedidos_puntos.created_at as fecha', 'pedidos.envio', 'pedidos.sku', 'pedidos.peso', 'pedidos.fragil', 'ptn_null.direccion as ptn_null', 
@@ -326,6 +328,8 @@ class PedidoController extends Controller
                     'show_pedido' => 0
                 ]);
 
+                $this->logChanges($idPP, $request->user('api')->id, 'El repartidor ha aceptado el pedido.');
+
                 $expo = ExpoNotification::where('id_user',$request->user('api')->id)->get();
                 $messages = [           
                     new ExpoMessage([
@@ -349,6 +353,8 @@ class PedidoController extends Controller
                 Pedido::where('id', $request->id)->update(['estado' => 5]);
                 PedidoPunto::where('id', $request->id_ext)->update(['estado' => 0]);
 
+                $this->logChanges($request->id, $request->user('api')->id, 'El repartidor ha aceptado el pedido.');
+                
                 $expo = ExpoNotification::where('id_user',$request->user('api')->id)->get();
                 $messages = [           
                     new ExpoMessage([
@@ -390,7 +396,7 @@ class PedidoController extends Controller
         }
     }
 
-    public function clientProblem($email, $pedido)
+    public function clientProblem($email, $pedido, $ext, Request $request)
     {
         try {
             $cambios = CambioPedido::where([
@@ -401,9 +407,43 @@ class PedidoController extends Controller
             
             if (!$cambios) {
                 \Mail::to($email)->send(new ClientTrouble($email, $pedido));
+
+                $this->logChanges($pedido, $request->user('api')->id, 'Pedido no entregado. Motivo: cliente no se encontraba en su domicilio.');
             } else {
-                \Mail::to($email)->send(new ClientTroubleRepeat());              
+                \Mail::to($email)->send(new ClientTroubleRepeat());
+                $this->logChanges($pedido, $request->user('api')->id, 'Pedido no entregado. Motivo: cliente no se encontraba en su domicilio, por segunda ocasión.');              
             }
+
+            DB::transaction(function () use($pedido, $ext) {
+                Pedido::where('id', $pedido)->update(['estado' => 11]);
+                PedidoPunto::where('id', $ext)->update(['estado' => 4]);
+            });
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(),], 500);
+        }
+    }
+
+    public function logChanges($id_p, $id_r, $accion/* , $id_z = null */)
+    {
+        try {
+            /* LogChangePedido::create([
+                'id_pedido' => $id_p,
+                'id_repartidor' => $id_r,
+                'accion' => $accion,  
+                11 principal
+                4 externo
+                al aceptar:
+                12 principal
+                5 externo
+            ]); */
+            
+            $idRepartidor = Repartidor::where('id_usuario', $id_r)->value('id');
+
+            $log = new LogChangePedido();
+            $log->id_pedido = $id_p;
+            $log->id_repartidor = $idRepartidor;
+            $log->accion = $accion;
+            $log->save();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage(),], 500);
         }

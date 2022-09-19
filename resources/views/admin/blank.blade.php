@@ -269,12 +269,12 @@
                           </a>
                         </li>
 
-                        <li class="nav-item" id="direccion-cliente-final-admin">
+                      {{--   <li class="nav-item" id="direccion-cliente-final-admin">
                           <a class="nav-link" href="{{ url('/administracion/direcciones-clientes-finales') }}">
                             <i class="typcn typcn-flag menu-icon"></i>
                             <span class="menu-title">Direcciones de clientes</span>
                           </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item" id="pedidos-puntos-admin">
                           <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos') }}">

@@ -118,6 +118,6 @@ Route::group([
         Route::get('onComplete/{id}/{idP}/{idPP}', 'PedidoController@ifId');
         Route::post('onCompleteButNotId', 'PedidoController@noId');
         Route::post('pedidos/finishStates', 'PedidoController@finishState');
-        Route::post('entrega-mail/{email}/{id_pedido}', 'PedidoController@clientProblem');
+        Route::get('entrega-mail/{email}/{id_pedido}/{ext}', 'PedidoController@clientProblem');
     });
 });

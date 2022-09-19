@@ -11,7 +11,7 @@ class DireccionCliente extends Component
 {
     use LivewireAlert;
     public $nombre,$dui,$telefono,$referencia,$direccion,$whatsapp,$correo,$id_direccion,$estado,$old_estado;
-    public $departamentos = [],$municipios = [],$municipio,$departamento;
+    public $departamentos = [],$municipios = [],$municipio,$departamento,$comercio,$comercio_nombre,$direcciones = [];
     protected $rules = [
         'nombre' => 'required',
         'direccion' => 'required',
@@ -57,7 +57,8 @@ class DireccionCliente extends Component
         'disableDireccion',
 
         'deleteQuestionDireccionRecogida',
-        'disableQuestionDireccion'
+        'disableQuestionDireccion',
+        'assignComercioOwner'
     ];
 
 
@@ -73,7 +74,7 @@ class DireccionCliente extends Component
 
     public function redirectDireccionRecogida()
     {
-        return redirect('/administracion/direcciones-clientes-finales');
+        return redirect('/administracion/datos-cliente');
     }
 
     public function assigDireccionRecogida($direccion)
@@ -92,12 +93,23 @@ class DireccionCliente extends Component
        $this->departamento = Municipio::where('id',$this->municipio)->value('id_departamento');
     }
 
+    public function assignComercioOwner($comercio)
+    {
+
+       $this->comercio = $comercio['id'];
+       $this->comercio_nombre = $comercio['nombre'];
+
+    }
 
     public function createDireccion()
     {
         $this->validate();
         try {
+            $direccionCount = DireccionClienteModel::count();
+            $direccionCountComercio = DireccionClienteModel::where('id_comercio', $this->comercio)->count();
+
             $direccion = new DireccionClienteModel;
+            $direccion->cod = $direccionCount.$direccionCountComercio.$this->departamento.$this->municipio;
             $direccion->nombre = $this->nombre;
             $direccion->direccion = $this->direccion;
             $direccion->dui = $this->dui;
@@ -107,6 +119,7 @@ class DireccionCliente extends Component
             $direccion->id_municipio = $this->municipio;
             $direccion->referencia = $this->referencia;
             $direccion->id_usuario = Auth::user()->id;
+            $direccion->id_comercio = $this->comercio;
             $direccion->save();
             $this->alert('success', 'Dirección guardada con éxito', [
                 'position' => 'center',
@@ -265,6 +278,10 @@ class DireccionCliente extends Component
 
         if ($this->departamento) {
             $this->municipios = Municipio::where('id_departamento',$this->departamento)->get();
+        }
+
+        if ($this->comercio) {
+            $this->direcciones = DireccionClienteModel::where('id_comercio',$this->comercio)->get();
         }
 
         return view('livewire.admin.direccion-cliente');

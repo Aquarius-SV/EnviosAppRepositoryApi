@@ -19,6 +19,8 @@ class DireccionClienteModel extends Model
         'referencia',
         'id_usuario',
         'numero_whatsapp',
-        'correo'  
+        'correo',
+        'id_comercio',
+        'cod'
     ];
 }

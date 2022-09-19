@@ -192,6 +192,7 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
   <script src="{{ asset('vendors/fontawesome/all.min.js') }}"></script>
   <script src="{{ asset('assets/js/theme.js') }}"></script>
+  <script src="{{ asset('assets/js/lottie-player.js') }}"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Rubik:wght@300;400;500;600;700;800&amp;display=swap"
     rel="stylesheet">

@@ -106,13 +106,14 @@ class RegisterComercio extends Component
                     $comercio->dui = $this->dui;
                     $comercio->id_usuario = $user->id;
                     $comercio->direccion = $this->direccion;
+                    $comercio->id_municipio = $this->municipio;
                     $comercio->save();
                     DB::commit();
                     Auth::login($user);
                 return redirect('/pedidos');
                 } catch (\Throwable $th) {
                     DB::rollBack();
-                    $this->addError('email', 'Ocurrió un error, intenta nuevamente.');
+                    $this->addError('email', 'Ocurrió un error, intenta nuevamente');
                 }
                
             }                        

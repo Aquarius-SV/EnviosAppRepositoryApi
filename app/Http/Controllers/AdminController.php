@@ -71,7 +71,7 @@ class AdminController extends Controller
 
     public function direccionesRecogida()
     {
-        $direcciones = Direccion::where('id_usuario',Auth::user()->id)->get();
+        $direcciones = Direccion::where('id_usuario',Auth::user()->id)->whereNull('id_comercio')->get();
         return view('admin.direcciones-recogidas')->with('direcciones',$direcciones);
     }
 

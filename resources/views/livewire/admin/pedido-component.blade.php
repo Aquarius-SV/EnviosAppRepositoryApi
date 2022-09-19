@@ -21,7 +21,33 @@
                   </div>
                 @endif --}}
                 <h3 class="text-center text-black">Direcciones y datos del cliente</h3>    
-                <hr>       
+                <hr>    
+                <div class="mb-3">
+                  <label for="">Comercio <span class="text-danger">*</span></label>
+                  <select class="form-select @error('comercio') is-invalid @enderror" aria-label="Seleciona" wire:model="comercio">
+                    <option selected style="display: none">Seleciona un comercio</option>
+                    @forelse ($comercios as $cm)
+                    <option value="{{ $cm->id }}">{{ $cm->nombre }}-{{ $cm->cod }}</option>
+                    @empty
+                    <option >No hay comercios disponibles</option>
+                    @endforelse                                                           
+                  </select>
+                  @error('comercio') <span class="text-danger">{{ $message }}</span> @enderror
+               </div>   
+
+
+                <div class="mb-3">
+                  
+                  <label for="">Tipo de direcciones de recogida</label>
+
+                  <select class="form-select" aria-label="Seleciona" wire:model="opt">
+                    <option selected style="display: none">Seleciona una opción</option>
+                    <option value="1">Punto de reparto</option>
+                    <option value="2">Comercio</option>
+                    
+                  </select>
+                </div>
+
                 <div class="mb-3">
                   <label for="direccionR" class="form-label">Dirección de recogida  <span class="text-danger">*</span> </label>               
                   <select class="form-select @error('direccion_recogida') is-invalid @enderror" aria-label="Selecciona una dirección" wire:model="direccion_recogida">
@@ -36,10 +62,14 @@
                 </div>
                 
                 <div class="mb-3">
+                  
                   <label for="">Dirección del cliente <span class="text-danger">*</span></label>
                   <select class="form-select @error('direccion_cliente') is-invalid @enderror" wire:model="direccion_cliente">
-                    <option style="display: none" selected>Selecciona una dirección</option>
+                    <option style="display: none" selected >Selecciona una dirección</option>
                     @forelse ($direcciones_clientes as $drc)
+                    {{-- @if ($loop->first)
+                    <option style="display: none" selected >Selecciona una dirección</option>
+                    @endif --}}
                     <option value="{{ $drc->id }}">Nombre:{{ $drc->nombre}}-DUI:{{ $drc->dui }}</option>
                     @empty
                     <option>No hay direcciones disponibles</option>
@@ -48,18 +78,7 @@
                   @error('direccion_cliente') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                
-               <div class="mb-3">
-                  <label for="">Comercio <span class="text-danger">*</span></label>
-                  <select class="form-select @error('comercio') is-invalid @enderror" aria-label="Seleciona" wire:model="comercio">
-                    <option selected style="display: none">Seleciona un comercio</option>
-                    @forelse ($comercios as $cm)
-                    <option value="{{ $cm->id }}">{{ $cm->nombre }}</option>
-                    @empty
-                    <option >No hay comercios disponibles</option>
-                    @endforelse                                                           
-                  </select>
-                  @error('comercio') <span class="text-danger">{{ $message }}</span> @enderror
-               </div>
+               
   
                 {{-- <div class="mb-3">
                   <a href="#" type="button" class="bold" wire:click="showNewDireccion">@if($step == null) Nueva dirección @else Seleccionar dirección @endif</a>

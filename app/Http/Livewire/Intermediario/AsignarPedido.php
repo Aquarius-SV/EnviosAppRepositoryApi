@@ -147,21 +147,22 @@ class AsignarPedido extends Component
                 ->where('pedidos.id',$this->pedido)->value('direcciones_clientes.direccion');
                 $direccionRecogida = PuntoReparto::where('id',$this->puntoRepartoCreator)->value('direccion');
 
-                /* $pedido = new PedidoPunto;
+                $pedido = new PedidoPunto;
                 $pedido->id_pedido = $this->pedido;
-                $pedido->id_punto = $this->punto;
+                $pedido->id_punto = $this->puntoRepartoCreator;
                 $pedido->id_repartidor = $this->repartidor;
                 $pedido->estado = 3;               
-                $pedido->save(); */
+                $pedido->save();
 
                 PedidoPunto::where('id',$this->pedido_punto)->update([
-                    'estado' => 3,
-                    
+                    'estado' => 1,
+                    'show_pedido' => 0                    
                 ]);
                 Pedido::where('id',$this->pedido)->update([
                     'estado' => 5,
                     'direccion_recogida' => $direccionRecogida,
-                    'direccion_entrega' => $direccionEntrega
+                    'direccion_entrega' => $direccionEntrega,
+                    'show_pedido' =>0
                 ]);
                 $log = new LogChangePedido;
                 $log->id_pedido = $this->pedido;

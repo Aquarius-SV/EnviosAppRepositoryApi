@@ -34,8 +34,8 @@ class PedidoComponent extends Component
     public $municipio_envio,$departamento_envio,$municipios_envios = [],$direcciones_clientes = [];
 
     public $step,$direccion_cliente;
-    public $comercios = [],$puntos = [],$punto,$comercio,$contenido;
-
+    public $comercios = [],$puntos = [],$punto,$comercio,$contenido,$direcciones_defaults = [];
+    public $opt;
 
 
     public $listeners = ['reset'=>'resetInput','confirmed','asigPedido'=>'asingPedido'];
@@ -275,9 +275,6 @@ class PedidoComponent extends Component
 
 
 
-
-
-
     public function render()
     {
         if ($this->zoneSelected <> null) {
@@ -310,23 +307,43 @@ class PedidoComponent extends Component
         } 
 
 
+        if ($this->opt == 2) {
+            if ($this->comercio) {
+                $this->direcciones = Direccion::where([
+                    ['id_comercio',$this->comercio],
+                    ['estado',1]
+                ])->get();                           
+            }
+        } 
+        if ($this->opt == 1){
 
-       
-        $this->direcciones = Direccion::where([
-            ['id_usuario',Auth::id()],
-            ['estado',1]
-        ])->get();
-        $this->direcciones_clientes = User::join('direcciones_clientes','direcciones_clientes.id_usuario','=','users.id')
-        ->join('municipios','municipios.id','=','direcciones_clientes.id_municipio')
-        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
-        ->where([
-            ['direcciones_clientes.id_usuario',Auth::user()->id],
-            ['direcciones_clientes.estado',1]
-        ])
-        ->select('direcciones_clientes.*','municipios.nombre as municipio',
-        'departamentos.nombre as departamento','departamentos.id as id_departamento')->get();
+            $this->direcciones = Direccion::where([
+                ['id_usuario',Auth::id()],
+                ['estado',1]
+            ])->whereNull('id_comercio')->get();
+        }
+        
+        if ($this->comercio) {
+            /* $this->direcciones = Direccion::where([
+                ['id_comercio',$this->comercio],
+                ['estado',1]
+            ])->get(); */
 
-        $this->comercios = Comercio::get();
+            $this->direcciones_clientes = User::join('direcciones_clientes','direcciones_clientes.id_usuario','=','users.id')
+            ->join('municipios','municipios.id','=','direcciones_clientes.id_municipio')
+            ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+            ->where([
+                ['direcciones_clientes.id_comercio',$this->comercio],
+                ['direcciones_clientes.estado',1]
+            ])
+            ->select('direcciones_clientes.*','municipios.nombre as municipio',
+            'departamentos.nombre as departamento','departamentos.id as id_departamento')->get();
+
+
+        }
+               
+
+        $this->comercios = Comercio::where('id_usuario',Auth::user()->id)->get();
 
 
         return view('livewire.admin.pedido-component');

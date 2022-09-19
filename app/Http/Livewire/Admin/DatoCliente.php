@@ -3,34 +3,54 @@
 namespace App\Http\Livewire\Admin;
 
 use Livewire\Component;
-use App\Models\{Comercio,PedidoComercio,Departamento,Municipio};
+use App\Models\{Comercio,PedidoComercio,Departamento,Municipio,Direccion};
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Illuminate\Support\Facades\Auth;
 class DatoCliente extends Component
 {
     use LivewireAlert;
-    public $nombre,$telefono,$direccion,$id_comercio;
+    public $nombre,$telefono,$direccion,$id_comercio,$encargado,$tel_encargado,$dui;
     public $municipios = [],$departamentos = [],$municipio,$departamento;
+    public $direccion_recogida,$nombre_direccion_recogida,$comercio,$direcciones_comercios = [],$nombre_comercio,$id_direccion_comercio;
+
     protected $rules = [
         'nombre' => 'required',
-        'telefono' => 'required|min:8|max:9',
-        'direccion' => 'required',
+        'encargado' => 'required',
 
+        'telefono' => 'required|min:8|max:9',
+        'tel_encargado' => 'required|min:8|max:9',
+
+        'direccion' => 'required',
+        'dui' => 'required|min:9|max:10',
+        
         'departamento' => 'required',
         'municipio' => 'required',
     ];
 
     protected $messages = [
         'nombre.required' => 'El nombre es obligatorio',
+        'encargado.required' => 'El nombre es obligatorio',
 
         'telefono.required' => 'El telefono es obligatorio',
         'telefono.min' => 'Debe contener un mínimo :min de caracteres',
         'telefono.max' => 'Debe conterner un máximo :max de caracteres',
 
+        'tel_encargado.required' => 'El telefono es obligatorio',
+        'tel_encargado.min' => 'Debe contener un mínimo :min de caracteres',
+        'tel_encargado.max' => 'Debe conterner un máximo :max de caracteres',
+
         'direccion.required' => 'La dirección es obligatoria',
 
         'departamento.required' => 'El departamento es obligatorio',
-        'municipio.required' => 'El municipio es obligatorio'
+        'municipio.required' => 'El municipio es obligatorio',
+
+        'dui.required' => 'El DUI es obligatorio',
+        'dui.min'=> 'El DUI debe contener un mínimo de :min caracteres',
+        'dui.max'=> 'El DUI debe contener un máximo de :max caracteres',
+
+        'nombre_direccion_recogida.required' => 'El nombre es obligatorio',
+
+        'direccion_recogida.required' => 'La dirección es obligatoria',
 
     ];
 
@@ -38,7 +58,9 @@ class DatoCliente extends Component
         'redirectToComercio',
         'assignComercio',
         'deteleQuestion',
-        'deteleComercio'
+        'deteleComercio',
+        'assignComercioToDireccion',
+        'assignDireccionComercio'
     ];
 
     public function updated($propertyName)
@@ -60,6 +82,10 @@ class DatoCliente extends Component
         $this->direccion = $comercio['direccion'];
         $this->municipio = $comercio['id_municipio'];
 
+        $this->encargado = $comercio['nombre_encargado'];
+        $this->tel_encargado = $comercio['telefono_encargado'];
+        $this->dui = $comercio['dui'];
+
         $this->departamento = Municipio::join('departamentos','departamentos.id','=','municipios.id_departamento')->where('municipios.id',$comercio['id_municipio'])->value('departamentos.id');
     }
 
@@ -75,6 +101,9 @@ class DatoCliente extends Component
             $comercio->telefono = $this->telefono;
             $comercio->direccion = $this->direccion;
             $comercio->id_municipio = $this->municipio;
+            $comercio->dui = $this->dui;
+            $comercio->nombre_encargado = $this->encargado;
+            $comercio->telefono_encargado = $this->tel_encargado;
             $comercio->id_usuario = Auth::id();
             $comercio->save();
 
@@ -112,6 +141,9 @@ class DatoCliente extends Component
             $comercio->telefono = $this->telefono;
             $comercio->direccion = $this->direccion;
             $comercio->id_municipio = $this->municipio;
+            $comercio->dui = $this->dui;
+            $comercio->nombre_encargado = $this->encargado;
+            $comercio->telefono_encargado = $this->tel_encargado;
             $comercio->save();
 
             $this->alert('success', 'Comercio actualizado con éxito ', [
@@ -194,6 +226,65 @@ class DatoCliente extends Component
         
     }
 
+    public function assignComercioToDireccion($comercio)
+    {
+        $this->comercio = $comercio['id'];
+        $this->nombre_comercio = $comercio['nombre'];
+    }
+
+    public function assignDireccionComercio($dr)
+    {
+        $this->nombre_direccion_recogida = $dr['nombre'];
+        $this->direccion_recogida = $dr['direccion'];
+        $this->id_direccion_comercio = $dr['id'];
+    }
+
+    public function DireccioneRecogida()
+    {
+        $this->validate([
+            'direccion_recogida' => 'required',
+            'nombre_direccion_recogida' => 'required',
+        ]);
+
+        try {
+
+
+            if ($this->id_direccion_comercio) {
+                $direccion = Direccion::where('id',$this->id_direccion_comercio)->first();
+                $direccion->nombre  = $this->nombre_direccion_recogida;
+                $direccion->direccion = $this->direccion_recogida;                             
+                $direccion->save();
+            }else{
+                $direccion = new Direccion;
+                $direccion->nombre  = $this->nombre_direccion_recogida;
+                $direccion->direccion = $this->direccion_recogida;
+                $direccion->id_comercio = $this->comercio;
+                $direccion->id_usuario = Auth::id();
+                $direccion->save();
+            }
+
+
+           $title = ($this->id_direccion_comercio) ? 'actualizada' : 'guardada' ;
+
+           $this->alert('success', 'Dirección de recogida '.$title.' con éxito', [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => 'redirectToComercio',
+            'confirmButtonText' => 'Continuar',
+           ]);
+        } catch (\Throwable $th) {
+            $this->alert('error', 'Ocurrió un error inesperado, intenta nuevamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Entendido',
+            ]);
+        }
+    }
 
 
 
@@ -204,6 +295,9 @@ class DatoCliente extends Component
         $this->departamentos = Departamento::get();
         if ($this->departamento) {
             $this->municipios = Municipio::where('id_departamento',$this->departamento)->get();
+        }
+        if ($this->comercio) {
+           $this->direcciones_comercios = Direccion::where('id_comercio',$this->comercio)->get();
         }
         return view('livewire.admin.dato-cliente');
     }

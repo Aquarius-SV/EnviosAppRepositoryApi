@@ -14375,6 +14375,12 @@ a.close.disabled {
   }
 }
 
+@media (min-width: 992px) {
+  .modal-md{
+    max-width: 45%;
+  }
+}
+
 @media (min-width: 1200px) {
   .modal-xl {
     max-width: 1140px;
@@ -19139,6 +19145,10 @@ code {
 
 .demo-modal .modal-dialog.modal-lg {
   max-width: 100%;
+}
+
+.demo-modal .modal-dialog.modal-md {
+  max-width: 65%;
 }
 
 .loader-demo-box {

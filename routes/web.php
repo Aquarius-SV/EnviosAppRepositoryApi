@@ -160,3 +160,7 @@ Route::get('/verificate-email/{user}', function (Request $request) {
 
 Route::get('/eliminar-cuenta', 'EliminarCuentaController@index')/* ->middleware(['isnotlogin','emailisverify']) */;
 Route::get('/eliminar-cuenta/{email}', 'EliminarCuentaController@api');
+
+Route::get('/agendar-cita/{id_pedido}', function ($id) {
+    return view('agendar-cita')->with('id_pedido', $id);
+})->name('agendar.cita');

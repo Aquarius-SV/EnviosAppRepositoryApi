@@ -3,7 +3,7 @@
         <table class="table" id="myTable">
           <thead>
             <tr>
-              <th>Comercio</th>
+              <th>SKU</th>
               <th>Repartidor</th>
               <th>Nombre del cliente</th>
               <th>Fragil</th>
@@ -21,7 +21,7 @@
             @endphp
 
             <tr>               
-              <td>{{ $pd->comercio }}</td>
+              <td>{{ $pd->sku }}</td>
               <td>{{ $repartidor }}</td>
               <td>{{ $pd->nombre }}</td>
               <td>{{ ($pd->fragil == 0) ? 'No' : 'Si' ; }}</td>

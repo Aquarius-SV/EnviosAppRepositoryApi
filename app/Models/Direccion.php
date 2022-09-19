@@ -13,6 +13,7 @@ class Direccion extends Model
     protected $fillable = [
         'id_usuario ',
         'nombre',
-        'direccion'   
+        'direccion',
+        'id_comercio'
     ];
 }

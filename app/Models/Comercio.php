@@ -19,5 +19,6 @@ class Comercio extends Model
         'id_usuario',
         'id_municipio',
         'cod',
+        'nombre_encargado'
     ];
 }

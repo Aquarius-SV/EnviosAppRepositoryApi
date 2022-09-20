@@ -10,7 +10,7 @@
       <div class="card-body">       
         <h4 class="card-title">Datos comercios</h4>    
         @livewire('admin.dato-cliente')  
-        @livewire('admin.direccion-cliente')
+        
         <div class="table-responsive">
           <table  id="myTable" class="display nowrap table responsive" style="width:100%">
             <thead>
@@ -38,7 +38,7 @@
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#datoClienteModal" onclick="Livewire.emit('assignComercio',@js($com))">Editar</a></li>
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('deteleQuestion',@js($com->id))">Eliminar</a></li>
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#listaDireccionesModal" onclick="Livewire.emit('assignComercioToDireccion',@js($com))">Direcciones</a></li>
-                          <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assignComercioOwner',@js($com))" data-bs-toggle="modal" data-bs-target="#listDireccionEntregaModal">Clientes</a></li>
+                          {{-- <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assignComercioOwner',@js($com))" data-bs-toggle="modal" data-bs-target="#listDireccionEntregaModal">Clientes</a></li> --}}
                         </ul>
                       </div>
 

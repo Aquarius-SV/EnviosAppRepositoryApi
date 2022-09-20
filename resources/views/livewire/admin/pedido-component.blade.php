@@ -61,22 +61,55 @@
                   @error('direccion_recogida') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 
-                <div class="mb-3">
+               {{--  <div class="mb-3">
                   
                   <label for="">Dirección del cliente <span class="text-danger">*</span></label>
                   <select class="form-select @error('direccion_cliente') is-invalid @enderror" wire:model="direccion_cliente">
                     <option style="display: none" selected >Selecciona una dirección</option>
                     @forelse ($direcciones_clientes as $drc)
-                    {{-- @if ($loop->first)
-                    <option style="display: none" selected >Selecciona una dirección</option>
-                    @endif --}}
+                    
                     <option value="{{ $drc->id }}">Nombre:{{ $drc->nombre}}-DUI:{{ $drc->dui }}</option>
                     @empty
                     <option>No hay direcciones disponibles</option>
                     @endforelse                 
                   </select>
                   @error('direccion_cliente') <span class="text-danger">{{ $message }}</span> @enderror
+                </div> --}}
+
+                {{-- {{ $direccion_cliente }}
+                {{ $cod_search }} --}}
+                <div class="mb-3">
+                  
+                  <label for="">Digita el código del cliente</label>
+                  <input type="text" class="form-control" wire:model="cod_search"> 
+                  <button type="button" class="btn btn-primary mt-1" wire:click="searchDireccionCliente">Buscar</button>
                 </div>
+
+                  
+                <div class="mb-3" >
+                  
+                  <label for="">Dirección del cliente <span class="text-danger">*</span></label>
+                  <select class="form-select @error('direccion_cliente') is-invalid @enderror" wire:model="direccion_cliente">
+                    <option style="display: none" selected >Selecciona una dirección</option>
+                    @forelse ($direcciones_clientes as $drc)                   
+                    <option value="{{ $drc->id }}" selected>Nombre:{{ $drc->nombre}}-DUI:{{ $drc->dui }}</option>
+                    @empty
+                    <option>No hay direcciones disponibles</option>
+                    @endforelse
+                  </select>
+                  @error('direccion_cliente') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+                {{-- @if ($cod_search)
+                <div class="mb-3" wire:ignore>
+                  @forelse ($direcciones_clientes as $drc)
+                      <input type="radio" wire:model="direccion_cliente" value="{{ $drc->id }}" >
+                      Nombre: {{ $drc->nombre}}-DUI: {{ $drc->dui }}
+                  @empty
+                      
+                  @endforelse
+                </div>
+                @endif --}}
+                
                
                
   

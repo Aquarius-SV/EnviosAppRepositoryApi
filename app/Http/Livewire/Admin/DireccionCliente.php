@@ -74,7 +74,7 @@ class DireccionCliente extends Component
 
     public function redirectDireccionRecogida()
     {
-        return redirect('/administracion/datos-cliente');
+        return redirect('/administracion/direcciones-clientes-finales');
     }
 
     public function assigDireccionRecogida($direccion)
@@ -106,10 +106,8 @@ class DireccionCliente extends Component
         $this->validate();
         try {
             $direccionCount = DireccionClienteModel::count();
-            $direccionCountComercio = DireccionClienteModel::where('id_comercio', $this->comercio)->count();
-
             $direccion = new DireccionClienteModel;
-            $direccion->cod = $direccionCount.$direccionCountComercio.$this->departamento.$this->municipio;
+            $direccion->cod = $direccionCount.$this->departamento.$this->municipio;
             $direccion->nombre = $this->nombre;
             $direccion->direccion = $this->direccion;
             $direccion->dui = $this->dui;
@@ -118,8 +116,7 @@ class DireccionCliente extends Component
             $direccion->correo = $this->correo;
             $direccion->id_municipio = $this->municipio;
             $direccion->referencia = $this->referencia;
-            $direccion->id_usuario = Auth::user()->id;
-            $direccion->id_comercio = $this->comercio;
+            $direccion->id_usuario = Auth::user()->id;            
             $direccion->save();
             $this->alert('success', 'Dirección guardada con éxito', [
                 'position' => 'center',

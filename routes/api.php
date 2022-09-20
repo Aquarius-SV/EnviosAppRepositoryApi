@@ -119,5 +119,6 @@ Route::group([
         Route::post('onCompleteButNotId', 'PedidoController@noId');
         Route::post('pedidos/finishStates', 'PedidoController@finishState');
         Route::get('entrega-mail/{email}/{id_pedido}/{ext}', 'PedidoController@clientProblem');
+        Route::post('pedidos/devolucion/{id}/{ext}', 'PedidoController@devolucionProduto');
     });
 });

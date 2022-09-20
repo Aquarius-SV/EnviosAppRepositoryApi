@@ -16,7 +16,7 @@ class PedidosList extends Component
        ->join('municipios','municipios.id','=','pedidos.id_municipio')->join('departamentos','departamentos.id','=','municipios.id_departamento')
        ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')
        ->select('pedidos.*','users.name as comercio','municipios.nombre as municipio','departamentos.nombre as departamento'
-       ,'departamentos.id as id_departamento','direcciones_clientes.*')->get();
+       ,'departamentos.id as id_departamento','direcciones_clientes.*','pedidos.id as id_pedido')->get();
 
         return view('livewire.admin.pedidos-list');
     }

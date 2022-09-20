@@ -112,7 +112,7 @@ class AdminController extends Controller
         ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')             
         ->select('municipios.nombre as municipio','departamentos.nombre as departamento','pedidos.*','pedidos_puntos.estado as estado_detalle','pedidos.estado as estado_pedido',
         'pedidos_puntos.id_repartidor as id_repartidor_pedido_punto','direcciones_clientes.nombre','direcciones_clientes.telefono',
-        'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto')
+        'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
         ->where([
             ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
         ])->get();

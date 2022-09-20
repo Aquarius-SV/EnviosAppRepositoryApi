@@ -21,7 +21,7 @@
             @endphp
 
             <tr>               
-              <td>{{ $pd->sku }}</td>
+              <td>{{ $pd->id_pedido }}</td>
               <td>{{ $repartidor }}</td>
               <td>{{ $pd->nombre }}</td>
               <td>{{ ($pd->fragil == 0) ? 'No' : 'Si' ; }}</td>
@@ -31,7 +31,7 @@
               
              
               <td class="text-center"> 
-                <button type="button" class="btn"   data-bs-toggle="modal" data-bs-target="#detalleHistorialModal" onclick="Livewire.emit('historialPedido',@js($pd->id))">
+                <button type="button" class="btn"   data-bs-toggle="modal" data-bs-target="#detalleHistorialModal" onclick="Livewire.emit('historialPedido',@js($pd->id_pedido))">
                   <span class="iconify" data-icon="typcn:document-text" style="color: 2b80ff;" data-width="30"></span>
                 </button>
                 {{-- @if ($pedido->estado === 0)

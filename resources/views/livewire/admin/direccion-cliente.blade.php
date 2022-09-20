@@ -1,9 +1,12 @@
 <div>
     
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#direccionEntregaModal">
+      <i class="typcn typcn-plus"></i>Nuevo
+    </button>
+  
 
 
-
-    <div class="modal fade" id="listDireccionEntregaModal" tabindex="-1" aria-labelledby="listDireccionEntregaModalLabel" aria-hidden="true" wire:ignore.self>
+    {{-- <div class="modal fade" id="listDireccionEntregaModal" tabindex="-1" aria-labelledby="listDireccionEntregaModalLabel" aria-hidden="true" wire:ignore.self>
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,7 +66,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
 
 

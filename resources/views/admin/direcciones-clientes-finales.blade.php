@@ -14,11 +14,12 @@
           <table  id="myTable" class="display nowrap table responsive" style="width:100%">
             <thead>
               <tr>
+                <th>Cod</th>
                 <th class="text-start">Nombre</th>
                 <th>DUI</th>               
                 <th class="text-start">Teléfono</th>
                 <th class="text-start">Dirección</th>                                              
-                <th>Referencia</th>
+                
                 <th class="text-start">Whatsapp</th>
                 <th class="text-start">Correo</th>
                 <th class="text-center">Estado</th>
@@ -28,11 +29,11 @@
             <tbody>                         
               @foreach ($direcciones as $dr) 
                   <tr>
+                    <td>{{ $dr->cod }}</td>
                     <td>{{ $dr->nombre }}</td>
                     <td>{{ $dr->dui }}</td>
                     <td>{{ $dr->telefono }}</td>
-                    <td>{{ $dr->direccion }}</td>
-                    <td>{{ ($dr->referencia) ? $dr->referencia : 'Sin referencia' ; }}</td>
+                    <td>{{ $dr->direccion }}</td>                    
                     <td>{{ $dr->numero_whatsapp }}</td>
                     <td>{{ $dr->correo }}</td>
                     <td class="text-center">{{ ($dr->estado == 0 ) ? 'Desactivada' : 'Activa' ; }}</td>
@@ -42,6 +43,7 @@
                           <i class="typcn typcn-th-menu"></i>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assigDireccionRecogida',@js($dr))" data-bs-toggle="modal" data-bs-target="#detalleDireccionClienteModal">Detalle</a></li>
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#direccionRecogidaModal"
                              onclick="Livewire.emit('assigDireccionRecogida',@js($dr))">Editar</a></li>
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('deleteQuestionDireccionRecogida',@js($dr->id))">Eliminar</a></li>

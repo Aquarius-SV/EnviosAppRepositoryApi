@@ -129,7 +129,9 @@ class PedidoController extends Controller
             ['repartidores.id', $id],
             ['pedidos_puntos.estado', 0],
             ['pedidos.show_pedido', 1],            
-        ])->whereIn('pedidos.estado', [5, 9])->select(DB::raw("CONCAT('altura: ', pedidos.alto, ', ', 'anchura: ', pedidos.ancho, ', ', 'profundidad: ', pedidos.profundidad) as size"), 'pedidos.*' /* 'users.name as title' */, 'pedidos.sku as title', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos_puntos.id_punto_pedido as id_from', 'direcciones_clientes.telefono as tel_cliente', 'direcciones_clientes.nombre as nombre_cliente')->orderBy('pedidos.id', 'desc')->get();
+        ])->whereIn('pedidos.estado', [5, 9])->select(DB::raw("CONCAT('altura: ', pedidos.alto, ', ', 'anchura: ', pedidos.ancho, ', ', 'profundidad: ', pedidos.profundidad) as size"), 'pedidos.*' /* 'users.name as title' */, 
+        'pedidos.sku as title', 'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos_puntos.id_punto_pedido as id_from', 'direcciones_clientes.telefono as tel_cliente', 
+        'direcciones_clientes.nombre as nombre_cliente', 'direcciones_clientes.correo as correo_cliente')->orderBy('pedidos.id', 'desc')->get();
         
         // Pedidos externos 0
         $pedidosExt = PedidoPunto::join('repartidores', 'pedidos_puntos.id_repartidor', '=', 'repartidores.id')->join('pedidos', 'pedidos_puntos.id_pedido', '=', 'pedidos.id')
@@ -143,7 +145,7 @@ class PedidoController extends Controller
             ->select(DB::raw("CONCAT('altura: ', pedidos.alto, ', ', 'anchura: ', pedidos.ancho, ', ', 'profundidad: ', pedidos.profundidad) as size"),'pedidos_puntos.id_repartidor', 
             'puntos_repartos.*', 'pedidos_puntos.id as id_pedido', 'pedidos_puntos.created_at as fecha', 'pedidos.envio', 'pedidos.sku', 'pedidos.peso', 'pedidos.fragil', 'ptn_null.direccion as ptn_null', 
             'ptn_null.telefono as tlfn', 'direcciones_clientes.nombre as nombre_cliente', 'direcciones_clientes.telefono as tel_cliente', 'pedidos_puntos.id_punto_pedido as id_from', 
-            'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos.sku as title', 'pedidos_puntos.estado as pp_estado', 'pedidos.id', 'pedidos.estado', 'pedidos.direccion_recogida', 'pedidos.direccion_entrega')
+            'pedidos_puntos.id as ext_id', 'pedidos.id as pp_id', 'pedidos.sku as title', 'pedidos_puntos.estado as pp_estado', 'pedidos.id', 'pedidos.estado', 'pedidos.direccion_recogida', 'pedidos.direccion_entrega', 'direcciones_clientes.correo as correo_cliente')
             ->orderBy('pedidos_puntos.id', 'desc')->get();
 
         $array = [

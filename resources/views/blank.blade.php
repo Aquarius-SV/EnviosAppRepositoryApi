@@ -34,7 +34,7 @@
                 href="#home">Inicio</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#envios">Envíos</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#aplicaciones">Aplicaciones</a>                                 
-              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/GPSTracker-new.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
+              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/AQPaqueteria.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
             </li>
             
           </ul>

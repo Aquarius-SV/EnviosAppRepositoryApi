@@ -8,7 +8,7 @@ class DetallePedido extends Component
 {
     public $direccion_recogida,$direccion_entrega,$referencia,$departamento,$municipio,
     $tel_cliente,$cliente,$dui,$peso,$alto,$ancho,$profundidad,$fragil,$embalaje,$envio,
-    $repartidor,$estado,$zona,$comercio,$contenido;
+    $repartidor,$estado,$zona,$comercio,$contenido,$pago;
 
     protected $listeners = [
         'assignDetalle'
@@ -41,7 +41,7 @@ class DetallePedido extends Component
         $this->fragil = $detalle['fragil'];
         $this->zona = $detalle['zona'];
         $this->contenido = $detalle['contenido'];
-
+        $this->pago = $detalle['pago'];
         $this->comercio = PedidoComercio::join('comercios','comercios.id','=','pedidos_comercios.id_comercio')
         ->join('pedidos','pedidos.id','=','pedidos_comercios.id_pedido')->where('pedidos_comercios.id_pedido',$detalle['pedido_id'])->value('comercios.nombre');
 

@@ -31,6 +31,10 @@
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#detalleComercioModal" onclick="Livewire.emit('assignComercio',@js($cmc))">
                                           <i class="typcn typcn-document-text text-info"></i>
                                         </button>
+
+                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#fechasModal" onclick="Livewire.emit('assignComercioDate',@js($cmc->id))">
+                                          <i class="typcn typcn-chart-bar text-success"></i>
+                                        </button>
                                       </td>
                                     </tr>
                                 @empty
@@ -45,6 +49,7 @@
     </div>
     @livewire('admin.comercio-registro')
     @livewire('admin.detalle-comercio')
+    @livewire('admin.lista-pedido-comercio')
 @endsection
 
 @push('scripts')

@@ -28,6 +28,9 @@ const AdminComercio = document.getElementById("admin-comercios");
 const AdminReparto = document.getElementById("admin-repartos");
 const AdminUserReparto = document.getElementById("admin-users-repartos");
 
+const AdminZonasRepartos = document.getElementById('admin-zonas-repartos');
+
+
 const CreacionPedidosAdmin = document.getElementById("creacion-pedidos-admin");
 const DireccionesRecogidasAdmin = document.getElementById(
     "direcciones-recogida-admin"
@@ -38,6 +41,10 @@ const DireccionesClienteFinal = document.getElementById(
 );
 
 const PedidosPuntosAdmin = document.getElementById("pedidos-puntos-admin");
+
+const PedidosPuntosAdminReasignacion = document.getElementById("pedidos-puntos-admin-reasignacion");
+const PedidosPuntosAdminRecibido = document.getElementById("pedidos-puntos-admin-recibidos");
+const PedidosPuntosAdminEntregado = document.getElementById("pedidos-puntos-admin-entregados");
 
 switch (url) {
     case "/pedidos":
@@ -112,6 +119,12 @@ switch (url) {
         MenuAdminSubMenu.classList.remove("collapse");
         break;
 
+        case "/administracion/zonas-reparto":
+        AdminZonasRepartos.classList.add("active");
+        MenuAdminMenu.classList.add("active");
+        MenuAdminSubMenu.classList.remove("collapse");
+        break;
+
 
 
 
@@ -144,6 +157,25 @@ switch (url) {
 
         case "/administracion/pedidos-puntos-repartos":
             PedidosPuntosAdmin.classList.add("active");
+            MenuPedidoMenu.classList.add("active");
+            MenuPedidoSubMenu.classList.remove("collapse");
+        break;
+
+        case "/administracion/pedidos-puntos-repartos-reasignacion":
+            PedidosPuntosAdminReasignacion.classList.add("active");
+            MenuPedidoMenu.classList.add("active");
+            MenuPedidoSubMenu.classList.remove("collapse");
+        break;
+
+
+        case "/administracion/pedidos-puntos-repartos-recibidos":
+            PedidosPuntosAdminRecibido.classList.add("active");
+            MenuPedidoMenu.classList.add("active");
+            MenuPedidoSubMenu.classList.remove("collapse");
+        break;
+
+        case "/administracion/pedidos-puntos-repartos-entregados":
+            PedidosPuntosAdminEntregado.classList.add("active");
             MenuPedidoMenu.classList.add("active");
             MenuPedidoSubMenu.classList.remove("collapse");
         break;

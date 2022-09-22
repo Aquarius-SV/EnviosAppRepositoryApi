@@ -21,7 +21,7 @@
                 <th class="text-start">Comercio</th>
                 <th>Repartidor</th>               
                 <th class="text-start">Cliente</th>
-                <th class="text-start">Teléfono del cliente</th>                                              
+                <th class="text-start">WhatsApp</th>                                              
                 <th>Estado</th>
                 <th class="text-center">QR cliente</th>
                 <th class="text-center">QR repartidor</th>
@@ -44,7 +44,7 @@
                 <td class="text-start">
                   {{ $pedido->nombre }}
                  </td>
-                <td class="text-start">{{ $pedido->telefono }}</td>                               
+                <td class="text-start">{{ $pedido->numero_whatsapp }}</td>                               
                 <td>
                   @switch($pedido->pedido_estado)
                   @case(0)
@@ -85,7 +85,7 @@
                 <td class="text-center">
                   <div data-bs-toggle="tooltip" data-bs-placement="top"
                   title="Click para descargar" >
-                    <a class="btn" href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->generate(json_encode(['id' =>  $pedido->id ]))); !!} " download="qr-pedido-{{ $pedido->id }}">
+                    <a class="btn" href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->generate(json_encode(['id' =>  $pedido->pedido_id ]))); !!} " download="qr-pedido-{{ $pedido->pedido_id }}">
                       
                       <i class="typcn typcn-download mx-0 text-info" ></i>
                     </a>
@@ -95,7 +95,7 @@
                 <td class="text-center">
                   <div data-bs-toggle="tooltip" data-bs-placement="top"
                   title="Click para ver" >
-                    <a class="btn" type="button" data-bs-toggle="modal" data-bs-target="#imagenQR" onclick="Livewire.emit('assignPedidoID',@js($pedido->id))">                      
+                    <a class="btn" type="button" data-bs-toggle="modal" data-bs-target="#imagenQR" onclick="Livewire.emit('assignPedidoID',@js($pedido->pedido_id))">                      
                       <i class="typcn typcn-eye mx-0 text-success" ></i>
                     </a>
 
@@ -104,8 +104,24 @@
                   </div>
                 </td>
                 <td class="text-center">
-                  
-                  <button type="button" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) disabled @else @endif   class="btn" data-toggle="modal" data-target="#UpdateModal" onclick="Livewire.emit('assingpedido',@js($pedido))">
+                  <div class="dropdown dropstart" >
+                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >
+                      <i class="typcn typcn-th-menu mx-0"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" >
+                      <li><a class="dropdown-item" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) disabled @else @endif  type="button"  data-toggle="modal"
+                         data-target="#UpdateModal" onclick="Livewire.emit('assingpedido',@js($pedido))">Editar</a></li>
+
+                      <li><a class="dropdown-item" type="button" data-toggle="modal" data-target="#detalleModal"
+                         onclick="Livewire.emit('assignDetalle',@js($pedido), @js($pedido->id_repartidor))">Detalle</a></li>
+                        @if ($pedido->pago == 0)
+                        <li><a class="dropdown-item" type="button" onclick="Livewire.emit('pagoQuestion',@js($pedido->pedido_id))">Marcar como pagado</a></li>
+                        @endif
+                      
+                    </ul>
+                  </div>
+                  {{-- <button type="button" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) disabled @else @endif   class="btn" 
+                    data-toggle="modal" data-target="#UpdateModal" onclick="Livewire.emit('assingpedido',@js($pedido))">
                     <i class="typcn typcn-edit mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
                       title=" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) Acción deshabilitada @else Editar pedido @endif"></i>
                   </button>
@@ -127,7 +143,7 @@
                     <i class="typcn typcn-arrow-repeat mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="Reasignar repartidor"></i>
                   </button>
-                  @endif
+                  @endif --}}
                  {{--  <button type="button" class="btn" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) disabled @else @endif>
                     <i class="typcn typcn-cancel mx-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="@if($pedido->pedido_estado === 0 ||$pedido->pedido_estado === 1 ) Cancelar pedido  @else Acción deshabilitada  @endif "></i>

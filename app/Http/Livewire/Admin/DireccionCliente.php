@@ -12,6 +12,7 @@ class DireccionCliente extends Component
     use LivewireAlert;
     public $nombre,$dui,$telefono,$referencia,$direccion,$whatsapp,$correo,$id_direccion,$estado,$old_estado;
     public $departamentos = [],$municipios = [],$municipio,$departamento,$comercio,$comercio_nombre,$direcciones = [];
+    public $code,$name;
     protected $rules = [
         'nombre' => 'required',
         'direccion' => 'required',
@@ -58,7 +59,8 @@ class DireccionCliente extends Component
 
         'deleteQuestionDireccionRecogida',
         'disableQuestionDireccion',
-        'assignComercioOwner'
+        'assignComercioOwner',
+        'assignCarta'
     ];
 
 
@@ -269,6 +271,16 @@ class DireccionCliente extends Component
             ]);
        }
     }
+
+
+    public function assignCarta($data)
+    {
+        $this->code = $data['cod'];
+        $this->name = $data['nombre'];
+    }
+
+
+
     public function render()
     {
         $this->departamentos = Departamento::get();

@@ -21,7 +21,7 @@
             @endphp
 
             <tr>               
-              <td>{{ $pd->id_pedido }}</td>
+              <td>{{ $pd->sku }}</td>
               <td>{{ $repartidor }}</td>
               <td>{{ $pd->nombre }}</td>
               <td>{{ ($pd->fragil == 0) ? 'No' : 'Si' ; }}</td>

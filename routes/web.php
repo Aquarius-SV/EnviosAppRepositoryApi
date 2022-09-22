@@ -107,7 +107,14 @@ Route::middleware(['isnotlogin','emailisverify','roleR','roleC','RoleI'])->prefi
 
     Route::get('/pedidos-puntos-repartos','AdminController@IndexPedidosPunto');
 
+    Route::get('/pedidos-puntos-repartos-reasignacion','AdminController@IndexPedidosPuntoReasignacion');
+
+    Route::get('/pedidos-puntos-repartos-recibidos','AdminController@IndexPedidosPuntoRecibido');
+
+    Route::get('/pedidos-puntos-repartos-entregados','AdminController@IndexPedidosPuntoEntregado');
+
     Route::get('/comercios','AdminController@indexComercios');
+    Route::get('/zonas-reparto','AdminController@indexZonasReparto');
 });
 
 

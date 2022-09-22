@@ -23135,7 +23135,7 @@ body.avgrund-active {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   padding: 0;
-  width: 255px;
+  width: 275px;
   z-index: 11;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -23372,7 +23372,7 @@ body.avgrund-active {
   margin-bottom: 0;
   margin-top: 0;
   list-style: none;
-  padding: 0.25rem 0 0 0.5rem;
+  padding: 0.25rem 0 0 0rem;
 }
 
 .sidebar .nav.sub-menu .nav-item {
@@ -23404,7 +23404,7 @@ body.avgrund-active {
 
 .sidebar .nav.sub-menu .nav-item .nav-link {
   color: #939393;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 1.7rem;
   position: relative;
   font-size: 0.75rem;
   line-height: 1;
@@ -24423,7 +24423,7 @@ body.avgrund-active {
   }
   .sidebar-light.sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
     background: #fff;
-  }
+  }25px
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapse,
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapsing {
     display: block;
@@ -24445,11 +24445,11 @@ body.avgrund-active {
     box-shadow: -4px 4px 7px 0px rgba(182, 185, 189, 0.25);
   }
   .sidebar-icon-only .sidebar .nav.sub-menu {
-    padding: 0 0 0 1.5rem;
+    padding: 0 0 0 0rem;
   }
   .sidebar-icon-only .sidebar .nav.sub-menu .nav-item .nav-link {
     text-align: left;
-    padding-left: 20px;
+    padding-left: 25px;
   }
   .sidebar-icon-only .main-panel {
     width: calc(100% - 70px);

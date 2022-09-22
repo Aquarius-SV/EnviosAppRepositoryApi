@@ -350,7 +350,7 @@
                     <tr>
                       <td>
                         <h1 style=" text-align: center;color:#F95C19;" >{{ env('APP_NAME') }}</h1>
-                        <p>Este es tu codigo de verificación, introduce el codigo en si respectivo apartado.</p>
+                        <p>Este es tu código de verificación, introduce el código en su respectivo apartado.</p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
@@ -366,7 +366,7 @@
                             </tr>
                           </tbody>
                         </table>
-                        <p>Si no has solicitado este codigo de verificación, ignora este correo electrónico.</p>
+                        <p>Si no has solicitado este código de verificación, ignora este correo electrónico.</p>
                         
                       </td>
                     </tr>
@@ -383,7 +383,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Traffico</span>
+                    <span class="apple-link">{{ env('APP_NAME ') }}</span>
                     
                   </td>
                 </tr>

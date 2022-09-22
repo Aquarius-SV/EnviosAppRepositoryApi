@@ -29,6 +29,6 @@ class CodeVerification extends Mailable
     public function build()
     {
         return $this->from('example.pruebas.app@gmail.com', 'Codigo de Verificación')
-        ->subject('Tu codigo de verificación')->view('email.cod-verification')->with('codigo', $this->codigo);
+        ->subject('Tu código de verificación: '.$this->codigo)->view('email.cod-verification')->with('codigo', $this->codigo);
     }
 }

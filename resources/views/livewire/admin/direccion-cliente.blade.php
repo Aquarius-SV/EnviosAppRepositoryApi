@@ -343,6 +343,79 @@
 
 
 
+    <div class="modal fade" id="cartaModal" tabindex="-1" aria-labelledby="cartaModalLabel" aria-hidden="true" wire:ignore.self>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title col-11 text-center" id="cartaModalLabel">Carta de presentación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{-- <div class="col-md-12">
+              <div class="card p-3 mb-2">
+                  <div class="d-flex justify-content-between">
+                      <div class="d-flex flex-row align-items-center">
+                          <div style="width: 50px;
+                          height: 50px;
+                          background-color: #eee;
+                          border-radius: 15px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-size: 39px"> <img class="img-fluid" src="{{ asset('assets/img/gallery/logo.png') }}" alt="card image"> </div>
+                          <div class="ms-2 " style=" font-weight: 300;
+                          font-size: 13px">
+                              <h6 class="mb-0">{{ env('APP_NAME') }}</h6> 
+                          </div>
+                      </div>
+                      
+                  </div>
+                  <div class="mt-5">
+                      <h3 class="heading">Nombre: {{ $name }}</h3>
+                      <br>
+                      <h3 class="heading">Código: {{ $code }}</h3>
+                     
+                  </div>
+              </div>
+            </div> --}}
+           
+            {{-- <div class="card" style="width: 18rem;">
+              <img class="img-fluid" src="{{ asset('assets/img/gallery/logo.png') }}" alt="card image">
+              <div class="card-body">
+                <h5 class="card-title">{{ env('APP_NAME') }}</h5>
+                <h3 class="heading">Nombre: {{ $name }}</h3>
+                <br>
+                <h3 class="heading">Código: {{ $code }}</h3>
+                
+              </div>
+            </div> --}}
+            <div class="container">
+              <div class="row text-center text-white">
+                  <div class="col-xl-12 col-sm-12 mb-5" >
+                    <div class="bg-white rounded shadow-sm py-5 px-4" style="background: linear-gradient(to right, #F95C19, #ee7724, #ff9b4f, #ffcd49);"> 
+                      <img src="{{ asset('assets/img/gallery/logo.png') }}" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                      <h4 class="mb-1">{{ env('APP_NAME') }}</h4>
+                      <br>
+                      <h5 class="mb-2">Nombre: {{ $name }}</h5><span class=" text-uppercase">Código: {{ $code }}</span>
+                        
+                    </div>
+                  </div>
+              </div>
+            </div>
+            
+
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 
 
 

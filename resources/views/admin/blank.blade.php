@@ -27,10 +27,10 @@
   <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="{{ url("/pedidos") }}"><img src="{{ asset('admin/images/logo.svg') }}"
+        <a class="navbar-brand brand-logo" href="{{ url("/pedidos") }}"><img src="{{ asset('assets/img/gallery/logo2.svg') }}"
             alt="logo" /></a>
         <a class="navbar-brand brand-logo-mini" href="{{ url("/pedidos") }}"><img
-            src="{{ asset('admin/images/logo-mini.svg') }}" alt="logo" /></a>
+            src="{{ asset('assets/img/gallery/logo2.svg') }}" alt="logo" /></a>
         <button class="navbar-toggler navbar-toggler align-self-center d-none d-lg-flex" type="button"
           data-toggle="minimize">
           <span class="typcn typcn-th-menu"></span>
@@ -192,7 +192,7 @@
                   @case(1)
 
                   <li class="nav-item" id="menu-administracion-li">
-                    <a class="nav-link" data-toggle="collapse" href="#administracion-menu-div" aria-expanded="false" aria-controls="administracion-menu-div">
+                    <a class="nav-link" data-toggle="collapse" href="#administracion-menu-div" aria-expanded="false" aria-controls="administracion-menu-div" >
                       <i class="typcn typcn-briefcase menu-icon"></i>
                       <span class="menu-title">Administración</span>
                       <i class="typcn typcn-chevron-right menu-arrow"></i>
@@ -207,7 +207,7 @@
                         </li>
                         <li class="nav-item" id="admin-repartidores">
                           <a class="nav-link" href="{{ url('administracion/repartidores') }}">
-                            <i class="typcn typcn-user menu-icon"></i>
+                            <i class="typcn typcn-group menu-icon"></i>
                             <span class="menu-title">Repartidores</span>
                           </a>
                         </li>
@@ -235,6 +235,13 @@
                           <a class="nav-link" href="{{ url('administracion/administradores-puntos-reparto') }}">
                             <i class="typcn typcn-user menu-icon"></i>
                             <span class="menu-title">Administradores de puntos</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="admin-zonas-repartos">
+                          <a class="nav-link" href="{{ url('administracion/zonas-reparto') }}">
+                            <i class="typcn typcn-location menu-icon"></i>
+                            <span class="menu-title">Zonas de reparto</span>
                           </a>
                         </li>
 
@@ -272,14 +279,35 @@
                         <li class="nav-item" id="direccion-cliente-final-admin">
                           <a class="nav-link" href="{{ url('/administracion/direcciones-clientes-finales') }}">
                             <i class="typcn typcn-flag menu-icon"></i>
-                            <span class="menu-title">Direcciones de clientes</span>
+                            <span class="menu-title">Direcciones de clientes finales</span>
                           </a>
                         </li>
 
                         <li class="nav-item" id="pedidos-puntos-admin">
                           <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos') }}">
                             <i class="typcn typcn-briefcase menu-icon"></i>
-                            <span class="menu-title">Pedidos de punto</span>
+                            <span class="menu-title">Pedidos de en transito</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="pedidos-puntos-admin-reasignacion">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos-reasignacion') }}">
+                            <i class="typcn typcn-arrow-repeat menu-icon"></i>
+                            <span class="menu-title">Pedidos reasignación</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="pedidos-puntos-admin-recibidos">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos-recibidos') }}">
+                            <i class="typcn typcn-arrow-down-thick menu-icon"></i>
+                            <span class="menu-title">Pedidos recibidos</span>
+                          </a>
+                        </li>
+
+                        <li class="nav-item" id="pedidos-puntos-admin-entregados">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos-entregados') }}">
+                            <i class="typcn typcn-input-checked menu-icon"></i>
+                            <span class="menu-title">Pedidos entregados</span>
                           </a>
                         </li>
 

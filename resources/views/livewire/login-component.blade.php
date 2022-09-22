@@ -4,7 +4,7 @@
                     
   
         <div class="form-outline mb-4">
-          <input type="email" id="form2Example11" class="form-control @error('email') is-invalid @enderror" placeholder="Correo Electrónico" wire:model="email" />            
+          <input type="email" id="form2Example11" class="form-control @error('email') is-invalid @enderror" placeholder="Correo electrónico" wire:model="email" />            
           @error('email') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 

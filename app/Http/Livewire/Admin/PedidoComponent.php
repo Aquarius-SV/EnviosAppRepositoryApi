@@ -35,10 +35,10 @@ class PedidoComponent extends Component
 
     public $step,$direccion_cliente;
     public $comercios = [],$puntos = [],$punto,$comercio,$contenido,$direcciones_defaults = [];
-    public $opt,$cod_search;
+    public $opt,$cod_search,$pedido;
 
 
-    public $listeners = ['reset'=>'resetInput','confirmed','asigPedido'=>'asingPedido'];
+    public $listeners = ['reset'=>'resetInput','confirmed','asigPedido'=>'asingPedido','pagoQuestion','pedidoPagado'];
 
 
     protected $rules = [
@@ -286,6 +286,51 @@ class PedidoComponent extends Component
 
 
 
+    public function pagoQuestion($pedido)
+    {
+        $this->pedido = $pedido;
+        $this->alert('question', '¿Marcar como pedido pagado?', [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => 'pedidoPagado',
+            'showCancelButton' => true,
+            'onDismissed' => '',
+            'cancelButtonText' => 'Cancelar',
+            'confirmButtonText' => 'Si, pedido pagado',
+        ]);
+        
+    }
+
+    public function pedidoPagado()
+    {
+        try {
+            Pedido::where('id', '=', $this->pedido)->update([
+                'pago' => 1
+            ]);
+            $this->alert('success', 'Pedido marcado como pagado', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => 'confirmed',
+                'confirmButtonText' => 'Continuar',
+            ]);
+        } catch (\Throwable $th) {
+            $this->alert('error', 'Ocurrió un error, intenta nuevamente.', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Entendido',
+            ]);
+        }
+    }
+
+
+
     public function render()
     {
         if ($this->zoneSelected <> null) {
@@ -333,6 +378,8 @@ class PedidoComponent extends Component
                 ['estado',1]
             ])->whereNull('id_comercio')->get();
         }
+
+       
                                                         
 
         $this->comercios = Comercio::where('id_usuario',Auth::user()->id)->get();

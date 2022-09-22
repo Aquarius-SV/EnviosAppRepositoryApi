@@ -44,6 +44,7 @@ class Pedido extends Model
         'id_dato_cliente',
         'contenido',
         'show_pedido',
+        'pago'
     ];
 
 

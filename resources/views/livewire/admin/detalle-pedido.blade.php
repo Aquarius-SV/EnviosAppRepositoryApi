@@ -24,6 +24,23 @@
               <form>
                 <h3 class="text-center text-black">Direcciones y datos del cliente</h3>    
                 <hr> 
+                <label for="">Pago</label>
+                @switch($pago)
+                    @case(0)
+                    <div class="alert alert-danger text-center" role="alert">
+                      No pagado
+                    </div> 
+                        @break
+                    @case(1)
+                    <div class="alert alert-success text-center" role="alert">
+                     Pagado
+                    </div> 
+                        @break
+                    @default
+                        
+                @endswitch
+
+
                 <div class="mb-3">
                     <label for="">Comercio</label>
                     <input type="text" class="form-control" disabled wire:model="comercio">
@@ -144,17 +161,17 @@
                  
                  @break
                  @case(6)
-                 <div class="alert alert-success" role="alert">
+                 <div class="alert alert-success text-center" role="alert">
                    Entregado
                  </div>                  
                  @break
                  @case(7)
-                 <div class="alert alert-danger" role="alert">
+                 <div class="alert alert-danger text-center" role="alert">
                    Rechazado
                  </div>                  
                  @break
                  @case(8)
-                 <div class="alert alert-danger" role="alert">
+                 <div class="alert alert-danger text-center" role="alert">
                    No entregado
                  </div>                   
                  @break

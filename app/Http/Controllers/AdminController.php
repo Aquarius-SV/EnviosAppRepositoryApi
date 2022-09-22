@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{User, Repartidor,Pedido,PuntoReparto,Direccion,DireccionClienteModel,Comercio,DetallePuntoReparto};
+use App\Models\{User, Repartidor,Pedido,PuntoReparto,Direccion,DireccionClienteModel,Comercio,DetallePuntoReparto,Zona};
 use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
@@ -113,15 +113,101 @@ class AdminController extends Controller
         ->select('municipios.nombre as municipio','departamentos.nombre as departamento','pedidos.*','pedidos_puntos.estado as estado_detalle','pedidos.estado as estado_pedido',
         'pedidos_puntos.id_repartidor as id_repartidor_pedido_punto','direcciones_clientes.nombre','direcciones_clientes.telefono',
         'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
+        ->where([            
+            ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
+        ])->whereIn('pedidos_puntos.estado',[0,3])->get();
+        
+
+        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','en trancito');
+
+    }
+
+
+
+    public function IndexPedidosPuntoReasignacion()
+    {
+        $zoneUser = DetallePuntoReparto::join('puntos_repartos','puntos_repartos.id','=','detalles_puntos_repartos.id_punto_reparto')
+        ->join('users','users.id','=','detalles_puntos_repartos.id_usuario')->join('municipios','municipios.id','=','puntos_repartos.id_municipio')
+        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+        ->where('detalles_puntos_repartos.id_usuario',Auth::user()->id)
+        ->select('municipios.id as municipio','departamentos.id as departamento','departamentos.nombre as departamento_nombre',
+        'detalles_puntos_repartos.id_punto_reparto','puntos_repartos.nombre as punto_reparto')->first();
+
+
+        $allPedidos = Pedido::join('pedidos_puntos','pedidos_puntos.id_pedido','pedidos.id')
+        ->join('municipios','municipios.id','=','pedidos.id_municipio')->join('departamentos','departamentos.id','=','municipios.id_departamento')   
+        ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')             
+        ->select('municipios.nombre as municipio','departamentos.nombre as departamento','pedidos.*','pedidos_puntos.estado as estado_detalle','pedidos.estado as estado_pedido',
+        'pedidos_puntos.id_repartidor as id_repartidor_pedido_punto','direcciones_clientes.nombre','direcciones_clientes.telefono',
+        'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
         ->where([
+            ['pedidos_puntos.estado',1],
+            ['pedidos_puntos.show_pedido',1],
             ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
         ])->get();
         
 
-        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto);
-
+        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','para reasignación');
 
     }
+
+
+    public function IndexPedidosPuntoRecibido()
+    {
+        $zoneUser = DetallePuntoReparto::join('puntos_repartos','puntos_repartos.id','=','detalles_puntos_repartos.id_punto_reparto')
+        ->join('users','users.id','=','detalles_puntos_repartos.id_usuario')->join('municipios','municipios.id','=','puntos_repartos.id_municipio')
+        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+        ->where('detalles_puntos_repartos.id_usuario',Auth::user()->id)
+        ->select('municipios.id as municipio','departamentos.id as departamento','departamentos.nombre as departamento_nombre',
+        'detalles_puntos_repartos.id_punto_reparto','puntos_repartos.nombre as punto_reparto')->first();
+
+
+        $allPedidos = Pedido::join('pedidos_puntos','pedidos_puntos.id_pedido','pedidos.id')
+        ->join('municipios','municipios.id','=','pedidos.id_municipio')->join('departamentos','departamentos.id','=','municipios.id_departamento')   
+        ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')             
+        ->select('municipios.nombre as municipio','departamentos.nombre as departamento','pedidos.*','pedidos_puntos.estado as estado_detalle','pedidos.estado as estado_pedido',
+        'pedidos_puntos.id_repartidor as id_repartidor_pedido_punto','direcciones_clientes.nombre','direcciones_clientes.telefono',
+        'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
+        ->where([
+            ['pedidos_puntos.estado',1],
+            ['pedidos_puntos.show_pedido',0],
+            ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
+        ])->get();
+        
+
+        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','recibidos');
+
+    }
+
+
+
+    public function IndexPedidosPuntoEntregado()
+    {
+        $zoneUser = DetallePuntoReparto::join('puntos_repartos','puntos_repartos.id','=','detalles_puntos_repartos.id_punto_reparto')
+        ->join('users','users.id','=','detalles_puntos_repartos.id_usuario')->join('municipios','municipios.id','=','puntos_repartos.id_municipio')
+        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+        ->where('detalles_puntos_repartos.id_usuario',Auth::user()->id)
+        ->select('municipios.id as municipio','departamentos.id as departamento','departamentos.nombre as departamento_nombre',
+        'detalles_puntos_repartos.id_punto_reparto','puntos_repartos.nombre as punto_reparto')->first();
+
+
+        $allPedidos = Pedido::join('pedidos_puntos','pedidos_puntos.id_pedido','pedidos.id')
+        ->join('municipios','municipios.id','=','pedidos.id_municipio')->join('departamentos','departamentos.id','=','municipios.id_departamento')   
+        ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')             
+        ->select('municipios.nombre as municipio','departamentos.nombre as departamento','pedidos.*','pedidos_puntos.estado as estado_detalle','pedidos.estado as estado_pedido',
+        'pedidos_puntos.id_repartidor as id_repartidor_pedido_punto','direcciones_clientes.nombre','direcciones_clientes.telefono',
+        'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
+        ->where([
+            ['pedidos_puntos.estado',2],            
+            ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
+        ])->get();
+        
+
+        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','entregados');
+
+    }
+
+
 
     public function indexComercios()
     {
@@ -129,6 +215,16 @@ class AdminController extends Controller
         ->select('users.name as encargado','users.email as correo','comercios.*')->get();
 
         return view('admin.comercios')->with('comercios',$comercios);
+    }
+
+    public function indexZonasReparto()
+    {
+        $zonas = Zona::join('municipios','municipios.id','=','zonas.id_municipio')
+        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+        ->select('departamentos.id as id_departamento','departamentos.nombre as departamento','municipios.id as id_municipio','municipios.nombre as municipio','zonas.*')
+        ->get();
+
+        return view('admin.zonas-repartos')->with('zonas',$zonas);
     }
 
 

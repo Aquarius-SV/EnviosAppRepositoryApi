@@ -7,7 +7,7 @@
     <div class="col-lg-12 d-flex grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Todos los pedidos en movimiento de: {{ $zona}}</h4>        
+          <h4 class="card-title">Todos los pedidos {{ $type }} de: {{ $zona}}</h4>        
           @livewire('pedidos.detalle-modal-component') 
           {{-- @livewire('intermediario.aceptar-pedido') --}}
           @livewire('pedidos.qr-pedido')
@@ -90,7 +90,7 @@
                       <i class="typcn typcn-clipboard mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="Detalle de pedido"></i>
                     </button>
-                    @if ($pedido->estado_detalle == 0)
+                    @if ($pedido->estado_detalle == 0 && $pedido->id_repartidor_pedido_punto == null)
                     <a  class="btn" type="button" data-bs-toggle="modal" data-bs-target="#imagenQR" onclick="Livewire.emit('assignPedidoID',@js($pedido->id_pedido))">
                       <i class="typcn typcn-arrow-minimise mx-0 text-success" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="Recepción de pedido"></i>

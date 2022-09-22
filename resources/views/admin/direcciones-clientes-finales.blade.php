@@ -43,13 +43,16 @@
                           <i class="typcn typcn-th-menu"></i>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assigDireccionRecogida',@js($dr))" data-bs-toggle="modal" data-bs-target="#detalleDireccionClienteModal">Detalle</a></li>
+                          <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assigDireccionRecogida',@js($dr))" data-bs-toggle="modal"
+                             data-bs-target="#detalleDireccionClienteModal">Detalle</a></li>
+                          <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#cartaModal" onclick="Livewire.emit('assignCarta',@js($dr))">Carta presentación</a></li>
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#direccionRecogidaModal"
                              onclick="Livewire.emit('assigDireccionRecogida',@js($dr))">Editar</a></li>
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('deleteQuestionDireccionRecogida',@js($dr->id))">Eliminar</a></li>
                           @if ($dr->estado == 1)
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('disableQuestionDireccion',@js($dr->id))">Desactivar</a></li>
                           @endif
+                          
                           
                         </ul>
                       </div>

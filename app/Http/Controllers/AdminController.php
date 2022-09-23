@@ -118,7 +118,7 @@ class AdminController extends Controller
         ])->whereIn('pedidos_puntos.estado',[0,3])->get();
         
 
-        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','en trancito');
+        return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','en tránsito');
 
     }
 

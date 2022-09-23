@@ -260,7 +260,7 @@
                         <li class="nav-item" id="creacion-pedidos-admin">
                           <a class="nav-link" href="{{ url('/administracion/creacion-pedidos') }}">
                             <i class="typcn typcn-clipboard menu-icon"></i>
-                            <span class="menu-title">Lista de pedido</span>
+                            <span class="menu-title">Lista de pedidos</span>
                           </a>
                         </li>
                         <li class="nav-item" id="direcciones-recogida-admin">
@@ -286,14 +286,14 @@
                         <li class="nav-item" id="pedidos-puntos-admin">
                           <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos') }}">
                             <i class="typcn typcn-briefcase menu-icon"></i>
-                            <span class="menu-title">Pedidos de en transito</span>
+                            <span class="menu-title">Pedidos en tránsito</span>
                           </a>
                         </li>
 
                         <li class="nav-item" id="pedidos-puntos-admin-reasignacion">
                           <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos-reasignacion') }}">
                             <i class="typcn typcn-arrow-repeat menu-icon"></i>
-                            <span class="menu-title">Pedidos reasignación</span>
+                            <span class="menu-title">Pedidos para reasignación</span>
                           </a>
                         </li>
 

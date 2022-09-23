@@ -35,8 +35,8 @@ class PedidoComponent extends Component
 
     public $step,$direccion_cliente;
     public $comercios = [],$puntos = [],$punto,$comercio,$contenido,$direcciones_defaults = [];
-    public $opt,$cod_search,$pedido;
-
+    public $opt,$cod_search,$pedido,$cod_search_comercio;
+   
 
     public $listeners = ['reset'=>'resetInput','confirmed','asigPedido'=>'asingPedido','pagoQuestion','pedidoPagado'];
 
@@ -111,7 +111,9 @@ class PedidoComponent extends Component
         $this->resetValidation();
         $this->reset(['repartidor','zoneSelected','direccion_recogida','direccion_entrega','tel_cliente',
         'peso','alto','ancho','profundidad','embalaje','fragil','envio','cliente','dui',
-        'municipio','departamento','municipios','tipo_zona']);
+        'municipio','departamento','municipios','tipo_zona','referencia','municipio_envio',
+        'departamento_envio','direccion_cliente','punto','comercio','contenido','opt','cod_search',
+        'pedido','cod_search_comercio']);
     }
     
     public function confirmed()
@@ -147,6 +149,11 @@ class PedidoComponent extends Component
             ['direcciones_clientes.cod',$this->cod_search],
             ['direcciones_clientes.estado',1]
         ])->value('direcciones_clientes.id');
+    }
+
+    public function searchComercio()
+    {
+        $this->comercio = Comercio::where('cod',$this->cod_search_comercio)->value('id');
     }
 
 

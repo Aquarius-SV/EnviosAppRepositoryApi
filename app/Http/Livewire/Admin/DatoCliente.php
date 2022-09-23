@@ -12,6 +12,7 @@ class DatoCliente extends Component
     public $nombre,$telefono,$direccion,$id_comercio,$encargado,$tel_encargado,$dui;
     public $municipios = [],$departamentos = [],$municipio,$departamento;
     public $direccion_recogida,$nombre_direccion_recogida,$comercio,$direcciones_comercios = [],$nombre_comercio,$id_direccion_comercio;
+   
 
     protected $rules = [
         'nombre' => 'required',
@@ -60,7 +61,9 @@ class DatoCliente extends Component
         'deteleQuestion',
         'deteleComercio',
         'assignComercioToDireccion',
-        'assignDireccionComercio'
+        'assignDireccionComercio',
+        'resetDatosComercio',
+        'resetDataDirecciones'
     ];
 
     public function updated($propertyName)
@@ -73,6 +76,19 @@ class DatoCliente extends Component
         return redirect('/administracion/datos-cliente');
     }
 
+    public function resetDatosComercio()
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->reset(['nombre','telefono','id_comercio','encargado','tel_encargado','dui','municipio','departamento','direccion']);
+    }
+
+    public function resetDataDirecciones()
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->reset(['direccion_recogida','nombre_direccion_recogida','comercio','nombre_comercio','id_direccion_comercio']);
+    }
 
     public function assignComercio($comercio)
     {

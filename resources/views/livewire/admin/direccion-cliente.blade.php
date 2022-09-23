@@ -341,8 +341,6 @@
 
 
 
-
-
     <div class="modal fade" id="cartaModal" tabindex="-1" aria-labelledby="cartaModalLabel" aria-hidden="true" wire:ignore.self>
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -350,45 +348,7 @@
             <h5 class="modal-title col-11 text-center" id="cartaModalLabel">Carta de presentación</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            {{-- <div class="col-md-12">
-              <div class="card p-3 mb-2">
-                  <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px;
-                          height: 50px;
-                          background-color: #eee;
-                          border-radius: 15px;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                          font-size: 39px"> <img class="img-fluid" src="{{ asset('assets/img/gallery/logo.png') }}" alt="card image"> </div>
-                          <div class="ms-2 " style=" font-weight: 300;
-                          font-size: 13px">
-                              <h6 class="mb-0">{{ env('APP_NAME') }}</h6> 
-                          </div>
-                      </div>
-                      
-                  </div>
-                  <div class="mt-5">
-                      <h3 class="heading">Nombre: {{ $name }}</h3>
-                      <br>
-                      <h3 class="heading">Código: {{ $code }}</h3>
-                     
-                  </div>
-              </div>
-            </div> --}}
-           
-            {{-- <div class="card" style="width: 18rem;">
-              <img class="img-fluid" src="{{ asset('assets/img/gallery/logo.png') }}" alt="card image">
-              <div class="card-body">
-                <h5 class="card-title">{{ env('APP_NAME') }}</h5>
-                <h3 class="heading">Nombre: {{ $name }}</h3>
-                <br>
-                <h3 class="heading">Código: {{ $code }}</h3>
-                
-              </div>
-            </div> --}}
+          <div class="modal-body">            
             <div class="container">
               <div class="row text-center text-white">
                   <div class="col-xl-12 col-sm-12 mb-5" >
@@ -401,24 +361,20 @@
                     </div>
                   </div>
               </div>
-            </div>
-            
-
-            
+            </div>                        
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>            
           </div>
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
 </div>
+@push('scripts')
+  <script>
+    var direccionEntregaModal = document.getElementById('direccionEntregaModal')
+    direccionEntregaModal.addEventListener('hidden.bs.modal', function (event) {
+      Livewire.emit('resetDataDireccionFinal');
+    });
+  </script>
+@endpush

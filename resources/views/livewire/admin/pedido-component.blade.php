@@ -1,7 +1,7 @@
 <div>
     <div class=" card-description">
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PedidoModal"><i
-        class="typcn typcn-plus mx-0"></i> Nuevo pedido</button>         
+        class="typcn typcn-plus mx-0"></i> Nuevo</button>         
       <div class="modal fade" id="PedidoModal" tabindex="-1" aria-labelledby="PedidoModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
@@ -22,6 +22,16 @@
                 @endif --}}
                 <h3 class="text-center text-black">Direcciones y datos del cliente</h3>    
                 <hr>    
+
+                <div class="mb-3">
+                  
+                  <label for="">Digita el código del comercio</label>
+                  <input type="text" class="form-control" wire:model="cod_search_comercio"> 
+                  <button type="button" class="btn btn-primary mt-2 mb-2" wire:click="searchComercio">Buscar comercio</button>
+                </div>
+
+
+
                 <div class="mb-3">
                   <label for="">Comercio <span class="text-danger">*</span></label>
                   <select class="form-select @error('comercio') is-invalid @enderror" aria-label="Seleciona" wire:model="comercio">
@@ -80,15 +90,15 @@
                 {{ $cod_search }} --}}
                 <div class="mb-3">
                   
-                  <label for="">Digita el código del cliente</label>
+                  <label for="">Digita el código del cliente final</label>
                   <input type="text" class="form-control" wire:model="cod_search"> 
-                  <button type="button" class="btn btn-primary mt-1" wire:click="searchDireccionCliente">Buscar</button>
+                  <button type="button" class="btn btn-primary mt-2 mb-2" wire:click="searchDireccionCliente">Buscar cliente final</button>
                 </div>
 
                   
                 <div class="mb-3" >
                   
-                  <label for="">Dirección del cliente <span class="text-danger">*</span></label>
+                  <label for="">Dirección del cliente final<span class="text-danger">*</span></label>
                   <select class="form-select @error('direccion_cliente') is-invalid @enderror" wire:model="direccion_cliente">
                     <option style="display: none" selected >Selecciona una dirección</option>
                     @forelse ($direcciones_clientes as $drc)                   

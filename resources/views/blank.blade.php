@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ env('APP_NAME') }} | Envíos en Chalatenango</title>
+  <title>{{ env('APP_NAME') }} | Llevamos tus paquetes a la puerta de tu casa</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicons/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicons/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicons/favicon-16x16.png') }}">
@@ -23,7 +23,7 @@
       data-navbar-on-scroll="data-navbar-on-scroll">
       <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
-          <img src="{{ asset('assets/img/gallery/logo.png') }}" height="60" alt="..." />
+          <img src="{{ asset('assets/img/gallery/logo-4.png') }}" height="60" alt="..." />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -101,7 +101,7 @@
               <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                 <!-- Links -->
                 <h6 class="text-uppercase fw-bold mb-4">
-                  Por qué usar nuestros servicios
+                  ¿Por qué usar nuestros servicios?
                 </h6>
                 <p>
                   <a href="#!" class="text-reset">Como enviar un paquete</a>
@@ -120,7 +120,7 @@
               <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                 <!-- Links -->
                 <h6 class="text-uppercase fw-bold mb-4">
-                  Quiénes somos
+                  Quienes somos
                 </h6>
                 <p>
                   <a href="#!" class="text-reset">Conócenos</a>

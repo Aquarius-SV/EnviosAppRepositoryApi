@@ -54,3 +54,11 @@
         </div>
       </div>
 </div>
+@push('scripts')
+  <script>
+    var direccionRecogidaModal = document.getElementById('direccionRecogidaModal')
+    direccionRecogidaModal.addEventListener('hidden.bs.modal', function (event) {
+        Livewire.emit('resetDataDireccionRecogida');
+    });
+  </script>
+@endpush

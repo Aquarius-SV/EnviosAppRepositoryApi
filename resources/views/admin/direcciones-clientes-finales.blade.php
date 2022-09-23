@@ -46,7 +46,7 @@
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assigDireccionRecogida',@js($dr))" data-bs-toggle="modal"
                              data-bs-target="#detalleDireccionClienteModal">Detalle</a></li>
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#cartaModal" onclick="Livewire.emit('assignCarta',@js($dr))">Carta presentación</a></li>
-                          <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#direccionRecogidaModal"
+                          <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#direccionEntregaModal"
                              onclick="Livewire.emit('assigDireccionRecogida',@js($dr))">Editar</a></li>
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('deleteQuestionDireccionRecogida',@js($dr->id))">Eliminar</a></li>
                           @if ($dr->estado == 1)

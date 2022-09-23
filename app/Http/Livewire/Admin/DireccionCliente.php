@@ -13,6 +13,7 @@ class DireccionCliente extends Component
     public $nombre,$dui,$telefono,$referencia,$direccion,$whatsapp,$correo,$id_direccion,$estado,$old_estado;
     public $departamentos = [],$municipios = [],$municipio,$departamento,$comercio,$comercio_nombre,$direcciones = [];
     public $code,$name;
+
     protected $rules = [
         'nombre' => 'required',
         'direccion' => 'required',
@@ -60,7 +61,8 @@ class DireccionCliente extends Component
         'deleteQuestionDireccionRecogida',
         'disableQuestionDireccion',
         'assignComercioOwner',
-        'assignCarta'
+        'assignCarta',
+        'resetDataDireccionFinal'
     ];
 
 
@@ -77,6 +79,12 @@ class DireccionCliente extends Component
     public function redirectDireccionRecogida()
     {
         return redirect('/administracion/direcciones-clientes-finales');
+    }
+    public function resetDataDireccionFinal()
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->reset(['nombre','dui','telefono','referencia','direccion','whatsapp','correo','id_direccion','estado','old_estado']);
     }
 
     public function assigDireccionRecogida($direccion)

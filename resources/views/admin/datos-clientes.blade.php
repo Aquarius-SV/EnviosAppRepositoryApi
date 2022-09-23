@@ -17,7 +17,7 @@
               <tr>
                 <th>Cod</th>
                 <th>Nombre del comercio</th>
-                <th>Telefono del comercio</th>               
+                <th>Teléfono del comercio</th>               
                 <th class="text-start">Dirección</th>   
                 <th class="text-center">Acciones</th>             
               </tr>

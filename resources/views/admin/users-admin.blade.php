@@ -19,7 +19,7 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">DUI</th>
                                 <th scope="col">Dirección de residencia</th>
-                                <th scope="col">Telefono</th>
+                                <th scope="col">Teléfono</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Acciones</th>
                               </tr>

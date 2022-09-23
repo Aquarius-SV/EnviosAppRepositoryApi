@@ -20,7 +20,7 @@ class DireccionRecogida extends Component
         'nombre.required' => 'El nombre es obligatorio',
         'direccion.required' => 'La dirección es obligatoria'
     ];
-
+    
     protected $listeners = [
         'redirectDireccionRecogida',
         'assigDireccionRecogida',
@@ -28,7 +28,8 @@ class DireccionRecogida extends Component
         'disableDireccion',
 
         'deleteQuestionDireccionRecogida',
-        'disableQuestionDireccion'
+        'disableQuestionDireccion',
+        'resetDataDireccionRecogida'
     ];
 
 
@@ -43,6 +44,13 @@ class DireccionRecogida extends Component
     {
         $previous = url()->previous();
         return redirect($previous);
+    }
+
+    public function resetDataDireccionRecogida()
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->reset(['nombre','direccion','id_direccion','estado','old_estado']);
     }
 
     public function assigDireccionRecogida($direccion)

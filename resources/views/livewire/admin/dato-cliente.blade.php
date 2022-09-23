@@ -171,30 +171,21 @@
 
 
 
-{{-- @push('scripts')
+@push('scripts')
 <script>
-  $(document).ready( function () {    
-      $('#listTable').DataTable({
-        "order" : [[ 0, 'desc' ]],
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
-          },
-          "rowReorder": {
-                "selector": "td:nth-child(0)",
-                
-            },
-            
-            "responsive": true
-      });
-  } );
+  var datoClienteModal = document.getElementById('datoClienteModal')
+  datoClienteModal.addEventListener('hidden.bs.modal', function (event) {
+    Livewire.emit('resetDatosComercio');
+  });
 
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
+  var direccionRecogidaModal = document.getElementById('direccionRecogidaModal')
+  direccionRecogidaModal.addEventListener('hidden.bs.modal', function (event) {
+    Livewire.emit('resetDataDirecciones');
+  });
+
   
 </script>    
-@endpush --}}
+@endpush
 
 
 

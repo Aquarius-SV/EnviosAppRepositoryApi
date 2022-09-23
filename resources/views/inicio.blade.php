@@ -4,7 +4,7 @@
 
 @section('content')
 <section id="home">
-    <div class="bg-holder" style="background-image:url(assets/img/gallery/header-delivery-final-hd.png);background-position:center;background-size:cover;">
+    <div class="bg-holder">
     </div>
     <!--/.bg-holder-->
 
@@ -74,7 +74,7 @@
             <span class="text-primary">
               Comercio: 
             </span> 
-            Registra tú negocio para que puedas enviar a tus clientes sus pedidos.  
+            Registra tu negocio para que puedas enviar a tus clientes sus pedidos.  
             <br>
             <br>
           
@@ -96,7 +96,7 @@
   <!-- ============================================-->
 
 
-  <!--<section class="bg-primary-gradient" id="faq">
+{{--   <!--<section class="bg-primary-gradient" id="faq">
     <div class="bg-holder" style="background-image:url(assets/img/gallery/faq-bg.png);background-position:right;background-size:contain;">
     </div>
     <div class="container">
@@ -352,5 +352,5 @@
 
   </section>-->
   <!-- <section> close ============================-->
-  <!-- ============================================-->
+  <!-- ============================================--> --}}
 @endsection

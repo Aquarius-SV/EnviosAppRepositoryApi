@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="a2sEK1hYDP0eNnPdQIMmy91xT1rfmYMMJ0WxMvrMAos" />
   <title>{{ env('APP_NAME') }} | Llevamos tus paquetes a la puerta de tu casa</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicons/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicons/favicon-32x32.png') }}">
@@ -13,7 +14,10 @@
   <meta name="msapplication-TileImage" content="{{ asset('assets/img/favicons/mstile-150x150.png') }}">
   <meta name="theme-color" content="#ffffff">
   <link href="{{ asset('assets/css/theme.css') }}" rel="stylesheet" />
-  
+
+  <meta name="description" content="Llevamos tus paquetes a la puerta de tu casa. Te apoyamos en el comercio electrónico, llevamos los paquetes del comercio al cliente.
+  Utiliza nuestra plataforma para enviar los pedidos del comercio electrónico a tus clientes, registra tu comercio o regístrate como repartidor">
+  <meta name="keywords" content="envíos, repartidor, paquetes, paquetería, productos perecederos, verdura, ropa, envió de ropa, envío de verduras, envío de productos perecederos, paquetería salvadoreña, paquetería local, envíos locales, envíos de productos varios, envíos de ropa, envíos de ropa local, envíos de paquetes el salvador, envíos de productos en apopa, apopa, envios, shipments, delivery person, packages, parcels, perishable products, vegetables, clothing, shipment of clothing, shipment of vegetables, shipment of perishable products, salvadoran parcel, local parcel, local shipments, shipments of miscellaneous products, clothing shipments, local clothing shipments , shipments of packages el salvador, shipments of products in apopa, apopa, shipments."/>
   @livewireStyles
 
 </head>
@@ -34,7 +38,8 @@
                 href="#home">Inicio</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#envios">Envíos</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#aplicaciones">Aplicaciones</a>                                 
-              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/AQPaqueteria.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
+              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/AQPaqueteria2.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
+              <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="{{ url('/rastreo-pedido') }}">Rastreo</a>     
             </li>
             
           </ul>
@@ -49,6 +54,9 @@
         </div>
       </div>
     </nav>
+    <a href="https://api.whatsapp.com/send?phone=50371921807&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20precios." class="float" target="_blank">
+      <i class="fab fa-whatsapp my-float"></i>
+    </a>
     @yield('content')
     
 

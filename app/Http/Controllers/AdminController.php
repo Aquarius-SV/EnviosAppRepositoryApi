@@ -12,7 +12,7 @@ class AdminController extends Controller
         $deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')
         
         ->join('datos_vehiculos','datos_vehiculos.id_user','=','users.id')        
-        ->select('users.*','users.estado as estado','users.created_at','repartidores.*','repartidores.id as repartidor','datos_vehiculos.*')->get();  
+        ->select('users.*','users.estado as estado','users.created_at','repartidores.*','repartidores.id as repartidor','datos_vehiculos.*','users.id as id_user')->get();  
 
         return view('admin.repartidores-admin')->with('repartidores',$deliveries);
     }

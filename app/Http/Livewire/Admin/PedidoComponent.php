@@ -215,7 +215,7 @@ class PedidoComponent extends Component
             $logPunto->id_pedido = $pedido->id;
             $logPunto->id_repartidor = $this->repartidor;
             $logPunto->id_zona = $this->zoneSelected;
-            $logPunto->accion = 'Pedido asignado asignado a punto de reparto.';
+            $logPunto->accion = 'Pedido asignado a punto de reparto.';
             $logPunto->save();
 
             DB::commit();

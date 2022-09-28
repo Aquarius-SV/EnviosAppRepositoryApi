@@ -10,6 +10,7 @@
       <div class="card-body">
         <h4 class="card-title">Repartidores</h4>        
         @livewire('admin.repartidores-component')
+        @livewire('delete-user')
         <div class="table-responsive">
           <table class="display nowrap table responsive" style="width:100%" id="myTable">
             <thead>
@@ -50,6 +51,13 @@
                   <button type="button" class="btn"  data-bs-toggle="modal" data-bs-target="#detalleRepartidor" onclick="Livewire.emit('assingRepartidor',@js($rp))">
                     <span class="iconify" data-icon="typcn:document-text" style="color: 2b80ff;" data-width="30"></span>
                   </button>
+
+                  @if ($rp->estado == 1)
+                  <button type="button" class="btn"  data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="Livewire.emit('assingUser',@js($rp->id_user))">
+                    <span class="iconify" data-icon="typcn:delete" style="color: #ff0000;" data-width="30"></span>
+                  </button>
+                  @endif
+                  
                   {{-- @if ($pedido->estado === 0)
                   <button type="button" class="btn" onclick="Livewire.emit('acceptQuestion',@js($pedido->id_pedido) )" >
                     <span class="iconify" data-icon="typcn:input-checked" style="color: #2b80ff;" data-width="30"></span>

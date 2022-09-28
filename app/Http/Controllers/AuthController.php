@@ -24,7 +24,7 @@ class AuthController extends Controller
             'telefono' => 'required|string|min:8|max:12',
             'dui' => 'required|string|min:9|max:10',
             'nit' => 'required|string|min:9|max:10',
-            'licencia' => 'required|string|min:17|max:17',
+            'licencia' => 'required|string|min:10|max:17',
             'zonas' => 'required|array',
             'placa' => 'required|string|min:6|max:7',
             'modelo' => 'required|string|min:3|max:45',

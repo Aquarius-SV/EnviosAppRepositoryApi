@@ -40,7 +40,7 @@ class LoginComponent extends Component
                 $this->addError('email', 'No puedes acceder como repartidor,debes utilizar la app móvil.');
             }else{
                 if ($checkUser->estado == 0) {
-                    $this->addError('email', 'Usuario eliminado, no puede acceder.');
+                    $this->addError('email', 'Usuario eliminado, no puedes acceder a tu cuenta.');
                 }else {
                     $credentials = [
                         'email' => $this->email,

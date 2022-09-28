@@ -38,6 +38,7 @@
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#datoClienteModal" onclick="Livewire.emit('assignComercio',@js($com))">Editar</a></li>
                           <li><a class="dropdown-item" type="button" onclick="Livewire.emit('deteleQuestion',@js($com->id))">Eliminar</a></li>
                           <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#listaDireccionesModal" onclick="Livewire.emit('assignComercioToDireccion',@js($com))">Direcciones</a></li>
+                          <li><a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#cartaModal" onclick="Livewire.emit('assignCarta',@js($com))">Carta presentación</a></li>
                           {{-- <li><a class="dropdown-item" type="button" onclick="Livewire.emit('assignComercioOwner',@js($com))" data-bs-toggle="modal" data-bs-target="#listDireccionEntregaModal">Clientes</a></li> --}}
                         </ul>
                       </div>

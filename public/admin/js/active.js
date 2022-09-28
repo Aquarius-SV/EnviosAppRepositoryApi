@@ -89,40 +89,41 @@ switch (url) {
     case "/administracion":
         AdminInicio.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        
+        MenuAdminSubMenu.classList.add("show");
         break;
     case "/administracion/repartidores":
         AdminRepartidor.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
     case "/administracion/pedidos":
         AdminPedidos.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
 
     case "/administracion/comercios":
         AdminComercio.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
 
     case "/administracion/puntos-de-reparto":
         AdminReparto.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
     case "/administracion/administradores-puntos-reparto":
         AdminUserReparto.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
 
         case "/administracion/zonas-reparto":
         AdminZonasRepartos.classList.add("active");
         MenuAdminMenu.classList.add("active");
-        MenuAdminSubMenu.classList.remove("collapse");
+        MenuAdminSubMenu.classList.add("show");
         break;
 
 

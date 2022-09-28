@@ -31,7 +31,7 @@ class SendMailApi extends Mailable
     public function build()
     {
         return $this->from('example@example.com', env('APP_NAME'))
-        /* ->('Confirma tú correo electrónico') */
+        ->subject('Confirma tú correo electrónico')
         /* ->view('emails.orders.shipped')->with($this->data)->with($this->email); */
         ->markdown('email.api-mail', [
             'url' => $this->data,

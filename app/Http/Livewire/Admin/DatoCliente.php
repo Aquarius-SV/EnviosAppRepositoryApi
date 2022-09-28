@@ -13,6 +13,7 @@ class DatoCliente extends Component
     public $municipios = [],$departamentos = [],$municipio,$departamento;
     public $direccion_recogida,$nombre_direccion_recogida,$comercio,$direcciones_comercios = [],$nombre_comercio,$id_direccion_comercio;
    
+    public $code,$name;
 
     protected $rules = [
         'nombre' => 'required',
@@ -63,12 +64,18 @@ class DatoCliente extends Component
         'assignComercioToDireccion',
         'assignDireccionComercio',
         'resetDatosComercio',
-        'resetDataDirecciones'
+        'resetDataDirecciones',
+        'assignCarta'
     ];
 
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+    }
+    public function assignCarta($data)
+    {
+        $this->code = $data['cod'];
+        $this->name = $data['nombre'];
     }
 
     public function redirectToComercio()

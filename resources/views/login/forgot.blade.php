@@ -1,6 +1,6 @@
 @extends('login.auth')
 
-@section('title','Olvide mi contraseña')
+@section('title','Olvidé mi contraseña')
     
 
 

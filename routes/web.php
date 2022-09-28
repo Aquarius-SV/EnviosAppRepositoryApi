@@ -53,9 +53,7 @@ Route::get('/registro-comercio', function (Request $request) {
 
 
 
-/* Route::get('/test', function () {
-    return view('login.new-password');
-}); */
+
 
 Route::get('/', function () {
     return view('inicio');
@@ -69,13 +67,17 @@ Route::get('/inicio-sesion', function () {
     return view('login.login');
 })->middleware('islogin');
 
-Route::get('/registro', function () {
+/* Route::get('/registro', function () {
     return view('login.register');
-})->middleware('islogin');
+})->middleware('islogin'); */
 
 /* Route::get('/registro-repartidor', function () {
     return view('login.register-driver');
 })->middleware('islogin'); */
+
+Route::get('/rastreo-pedido', function () {
+    return view('tracker');
+});
 
 /*Comercio */
 Route::get('/pedidos','PedidoRenderController@index')->middleware(['isnotlogin','emailisverify','roleR','roleA','RoleI']);
@@ -93,7 +95,11 @@ Route::get('/mis-pedidos','PedidoRenderController@pedidosRepartidor')->middlewar
 
 /*Administracion*/
 Route::middleware(['isnotlogin','emailisverify','roleR','roleC','RoleI'])->prefix('administracion')->group(function () {
-    Route::get('/','AdminController@IndexRepartidores');
+    Route::get('/', function () {
+    return view('admin.inicio');
+    });
+    
+  
     Route::get('/repartidores','AdminController@IndexRepartidores');  
     Route::get('/pedidos','AdminController@IndexPedidos');
     Route::get('/puntos-de-reparto','AdminController@IndexRepartos');

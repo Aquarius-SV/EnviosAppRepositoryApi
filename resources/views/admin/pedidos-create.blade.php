@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-body">       
         <h4 class="card-title">Todos los pedidos</h4>
-        @livewire('admin.update-pedido')             
+                  
         @livewire('pedidos.qr-pedido')
         @livewire('admin.pedido-component')
         @livewire('admin.detalle-pedido')
@@ -109,8 +109,13 @@
                       <i class="typcn typcn-th-menu mx-0"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" >
-                      <li><a class="dropdown-item" @if($pedido->pedido_estado === 6 || $pedido->pedido_estado === 7) disabled @else @endif  type="button"  data-toggle="modal"
-                         data-target="#UpdateModal" onclick="Livewire.emit('assingpedido',@js($pedido))">Editar</a></li>
+                      @if($pedido->pedido_estado == 0 || $pedido->pedido_estado == 5 || $pedido->pedido_estado == 9) 
+                      <li><a class="dropdown-item"  type="button"  data-toggle="modal"
+                        data-target="#UpdateModal" onclick="Livewire.emit('assingpedido',@js($pedido))">Editar</a></li>
+                      @else 
+                      
+                      @endif
+                     
 
                       <li><a class="dropdown-item" type="button" data-toggle="modal" data-target="#detalleModal"
                          onclick="Livewire.emit('assignDetalle',@js($pedido), @js($pedido->id_repartidor))">Detalle</a></li>
@@ -158,6 +163,7 @@
     </div>
   </div>
 </div>
+@livewire('admin.update-pedido')   
 @endsection
 
 

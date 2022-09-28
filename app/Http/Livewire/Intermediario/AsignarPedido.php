@@ -168,7 +168,7 @@ class AsignarPedido extends Component
                 $log->id_pedido = $this->pedido;
                 $log->id_repartidor = $this->repartidor;
                 $log->id_zona = $this->zona;
-                $log->accion = 'Pedido reasignado desde punto de reparto: '.$this->nombrePunto.' hacia el cliente final.';
+                $log->accion = 'Pedido reasignado desde punto de reparto hacía el cliente final.';
                 $log->save();
 
 

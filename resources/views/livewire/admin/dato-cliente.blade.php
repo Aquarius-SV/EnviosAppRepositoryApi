@@ -167,6 +167,38 @@
         </div>
       </div>
 
+
+
+
+      <div class="modal fade" id="cartaModal" tabindex="-1" aria-labelledby="cartaModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title col-11 text-center" id="cartaModalLabel">Carta de presentación</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">            
+              <div class="container">
+                <div class="row text-center text-white">
+                    <div class="col-xl-12 col-sm-12 mb-5" >
+                      <div class="bg-white rounded shadow-sm py-5 px-4" style="background: linear-gradient(to right, #F95C19, #ee7724, #ff9b4f, #ffcd49);"> 
+                        <img src="{{ asset('assets/img/gallery/logo.png') }}" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                        <h4 class="mb-1">{{ env('APP_NAME') }}</h4>
+                        <br>
+                        <h5 class="mb-2">Nombre: {{ $name }}</h5><span class=" text-uppercase">Código: {{ $code }}</span>
+                          
+                      </div>
+                    </div>
+                </div>
+              </div>                        
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>            
+            </div>
+          </div>
+        </div>
+      </div>
+
 </div>
 
 

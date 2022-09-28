@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{{ env('APP_NAME') }}| Envios en Chalatenango</title>
+  <title>{{ env('APP_NAME') }} | Envios en Chalatenango</title>
   <link rel="stylesheet" href="{{ asset('admin/vendors/typicons.font/font/typicons.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"

@@ -31,6 +31,6 @@ class StatusPedido extends Mailable
     public function build()
     {
         return $this->from('example.pruebas.app@gmail.com', 'Tu pedido No '.$this->numero.' a actualizado su estado')
-        ->subject('Traffico - El pedido No '.$this->numero)->view('email.status-pedidos')->with('numero', $this->numero)->with('state',$this->state);
+        ->subject(env('APP_NAME').' - El pedido No '.$this->numero)->view('email.status-pedidos')->with('numero', $this->numero)->with('state',$this->state);
     }
 }

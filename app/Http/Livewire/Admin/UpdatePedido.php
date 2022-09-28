@@ -29,6 +29,8 @@ class UpdatePedido extends Component
     public $peso,$alto,$ancho,$profundidad,$fragil,$embalaje;
     public $envio,$tipo_zona,$id_pedido,$repartidor,$contenido;
     public $direcciones_clientes = [],$comercios = [],$id_pedido_comercio,$comercio,$direccion_cliente;
+    public $cod_search_comercio,$cod_search,$opt,$direcciones = [],$loader = false;
+
     protected $listeners = [
         'assingpedido',
         'confirmed'
@@ -135,12 +137,25 @@ class UpdatePedido extends Component
 
         $this->comercio = $datosComercio->comercio;
         $this->id_pedido_comercio = $datosComercio->id_pedido;
+
+        $checkTypeDireccion = Direccion::where([
+            ['id_comercio',$this->comercio],
+            ['direccion',$this->direccion_recogida]
+        ])->value('id');
+        if ($checkTypeDireccion) {
+            $this->opt = 2;
+        }else{
+            $this->opt = 1;
+        }
+
+
     }
 
     public function updatePedido()
     {
         $this->validate();
         try {
+            $this->loader = true;
             DB::beginTransaction();
             Pedido::where('id',$this->id_pedido)->update([
                 'direccion_recogida'=> $this->direccion_recogida,
@@ -185,6 +200,7 @@ class UpdatePedido extends Component
                 (new Expo)->send($messages)->to([$ex->expo_token])->push();
             }
             DB::commit();
+            $this->loader = false;
             $this->alert('success', 'Pedido actualizado con éxito', [
                 'position' => 'center',
                 'timer' => '',
@@ -207,21 +223,59 @@ class UpdatePedido extends Component
         }
     }
 
+
+
+
+    public function searchDireccionCliente()
+    {
+        $this->direccion_cliente = User::join('direcciones_clientes','direcciones_clientes.id_usuario','=','users.id')
+        ->join('municipios','municipios.id','=','direcciones_clientes.id_municipio')
+        ->join('departamentos','departamentos.id','=','municipios.id_departamento')
+        ->where([
+            ['direcciones_clientes.cod',$this->cod_search],
+            ['direcciones_clientes.estado',1]
+        ])->value('direcciones_clientes.id');
+    }
+
+    public function searchComercio()
+    {
+        $this->comercio = Comercio::where('cod',$this->cod_search_comercio)->value('id');
+    }
+
+
+
+
+
+
+
     public function render()
     {
         $this->departamentos = Departamento::get();
         if ($this->departamento) {
             $this->municipios = Municipio::where('id_departamento',$this->departamento)->get();
         }
-        if ($this->departamento_envio) {
-            $this->municipios_envios = Municipio::where('id_departamento',$this->departamento_envio)->get();
+        if ($this->opt == 2) {
+            if ($this->comercio) {
+                $this->direcciones = Direccion::where([
+                    ['id_comercio',$this->comercio],
+                    ['estado',1]
+                ])->get();                           
+            }
+        } 
+        if ($this->opt == 1){
+
+            $this->direcciones = Direccion::where([
+                ['id_usuario',Auth::id()],
+                ['estado',1]
+            ])->whereNull('id_comercio')->get();
         }
-        $this->direcciones = Direccion::where('id_usuario',Auth::id())->get();
+        
+        //$this->direcciones = Direccion::where('id_usuario',Auth::id())->get();
         $this->direcciones_clientes = User::join('direcciones_clientes','direcciones_clientes.id_usuario','=','users.id')
         ->join('municipios','municipios.id','=','direcciones_clientes.id_municipio')
         ->join('departamentos','departamentos.id','=','municipios.id_departamento')
         ->where([
-            ['direcciones_clientes.id_usuario',Auth::user()->id],
+            
             ['direcciones_clientes.estado',1]
         ])
         ->select('direcciones_clientes.*','municipios.nombre as municipio',
@@ -230,4 +284,14 @@ class UpdatePedido extends Component
         $this->comercios = Comercio::get();
         return view('livewire.admin.update-pedido');
     }
+
+
+
+
+
+    
+
+
+
+
 }

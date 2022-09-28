@@ -77,13 +77,13 @@
             Registra tu negocio para que puedas enviar a tus clientes sus pedidos.  
             <br>
             <br>
-          
+          {{-- 
             <span class="text-primary mt-5">
               Contacto: 
             </span> 
             <a type="button" class="btn btn-whatsapp btn-circle" href="https://api.whatsapp.com/send?phone=50371921807&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20precios." class="float" target="_blank">
               <i class="fab fa-whatsapp my-float"></i>
-            </a>
+            </a> --}}
           </p>
          
         </div>

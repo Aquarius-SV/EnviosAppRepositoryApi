@@ -162,7 +162,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" wire:click="reassignPedido">Asignar</button>
+              <button type="button" class="btn btn-primary"wire:click="reassignPedido" >Asignar</button>
             </div>
           </div>
         </div>

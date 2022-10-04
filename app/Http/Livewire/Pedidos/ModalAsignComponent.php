@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Pedidos;
 
 use Livewire\Component;
 use App\Models\Zona;
-use App\Models\{Repartidor,Departamento,Municipio};
+use App\Models\{Repartidor,Departamento,Municipio,PedidoPunto,User,PuntoReparto};
 use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -14,6 +14,7 @@ use ExpoSDK\Expo;
 use ExpoSDK\ExpoMessage;
 use App\Models\ExpoNotification;
 use Illuminate\Support\Facades\URL;
+use DB;
 class ModalAsignComponent extends Component
 {
     use LivewireAlert;
@@ -24,7 +25,7 @@ class ModalAsignComponent extends Component
     public $repartidor;
     public $municipios = [],$departamentos = [];
     public $departamento,$municipio;
-    public $listeners = ['resetInputAsign'=>'resetInput','redirectPedidos','asingIdPedido'=>'asign'];
+    public $listeners = ['resetInputAsign'=>'resetInput','redirectPedidos','asingIdPedido'=>'asign','checkEntregado','questionEntregado','questionPagado','checkpago'];
     
 
     protected $rules = [
@@ -61,10 +62,20 @@ class ModalAsignComponent extends Component
     {
         $this->validate();
         try {
+            DB::beginTransaction();
             Pedido::where('id',$this->id_pedido)->update([
-                'id_repartidor' => $this->repartidor,
-                'estado' => 0
+                'id_repartidor' => $this->repartidor, 
+                
             ]);
+
+            $pedidoPunto = new PedidoPunto;
+            $pedidoPunto->id_pedido = $this->id_pedido;
+            $pedidoPunto->id_punto =  PuntoReparto::where('nombre','Punto de reparto administrador')->value('id');
+            $pedidoPunto->save();
+
+
+
+
             $repartdorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
             $expo = ExpoNotification::where('id_user',$repartdorEmail->id)->get();
             $numero = $this->id_pedido;
@@ -81,8 +92,8 @@ class ModalAsignComponent extends Component
                 foreach ($expo as $ex ) {
                     (new Expo)->send($messages)->to([$ex->expo_token])->push();
             }
-
-            $this->dispatchBrowserEvent('closeModalReasign'); 
+            DB::commit();
+           /*  $this->dispatchBrowserEvent('closeModalReasign');  */
             $this->alert('success', 'Pedido reasignado correctamente', [
                     'position' => 'center',
                     'timer' => '',
@@ -92,8 +103,9 @@ class ModalAsignComponent extends Component
                     'confirmButtonText' => 'Continuar',
             ]);
         } catch (\Throwable $th) {
-            $this->dispatchBrowserEvent('closeModalReasign'); 
-            $this->alert('error', 'Ocurrió un error, intenta nuevamente', [
+            DB::rollBack();
+            /* $this->dispatchBrowserEvent('closeModalReasign');  */
+            $this->alert('error', $th->getMessage() /* 'Ocurrió un error, intenta nuevamente' */, [
                 'position' => 'center',
                 'timer' => '',
                 'toast' => false,
@@ -140,4 +152,93 @@ class ModalAsignComponent extends Component
         
         return view('livewire.pedidos.modal-asign-component');
     }
+
+
+    public function questionEntregado($pedido)
+    {
+        $this->id_pedido = $pedido;
+        $this->alert('question', '¿Marcar como entregado este pedido?', [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => 'checkEntregado',
+            'confirmButtonText' => 'Si',
+            'showCancelButton' => true,
+            'onDismissed' => '',
+            'cancelButtonText' => 'Cancelar',
+           ]);
+    }
+
+    public function checkEntregado()
+    {
+        try {
+            Pedido::where('id',$this->id_pedido)->update([
+                'estado' => 6
+            ]);
+            $this->alert('success', 'Pedido marcado con entregado correctamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => 'redirectPedidos',
+                'confirmButtonText' => 'Continuar',
+            ]);
+        } catch (\Throwable $th) {
+            $this->alert('error',  'Ocurrió un error, intenta nuevamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Entendido',
+            ]);
+        }
+    }
+
+
+    public function questionPagado($pedido)
+    {
+        $this->id_pedido = $pedido;
+        $this->alert('question', '¿Marcar como pagado este pedido?', [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => 'checkpago',
+            'confirmButtonText' => 'Si',
+            'showCancelButton' => true,
+            'onDismissed' => '',
+            'cancelButtonText' => 'Cancelar',
+        ]);
+    }
+
+    public function checkpago()
+    {
+        try {
+            Pedido::where('id',$this->id_pedido)->update([
+                'pago' => 1
+            ]);
+            $this->alert('success', 'Pedido marcado con pagado correctamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => 'redirectPedidos',
+                'confirmButtonText' => 'Continuar',
+            ]);
+        } catch (\Throwable $th) {
+            $this->alert('error',  'Ocurrió un error, intenta nuevamente', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Entendido',
+            ]);
+        }
+    }
+
+
+
 }

@@ -3,6 +3,11 @@
 
 
 @section('content')
+
+
+  
+
+
 <section id="home">
     <div class="bg-holder">
     </div>
@@ -29,7 +34,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 text-center mb-6 mb-md-0 order-0 order-md-1">
-            <img class="img-fluid" src="assets/img/gallery/about-delivery.png" alt="Imagen sobre nosotros de la pagina principal de envios" />
+            <img class="img-fluid" src="assets/img/gallery/about-delivery.webp" alt="Imagen sobre nosotros de la pagina principal de envios" />
         </div>
         <div class="col-md-6 text-center text-md-start mb-6">
           <h4 class="text-danger">Envíos</h4>
@@ -60,7 +65,7 @@
 
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-6 text-center mb-6 mb-md-0"><img class="w-100" src="assets/img/gallery/apply-delivery.png" alt="..." /></div>
+        <div class="col-md-6 text-center mb-6 mb-md-0"><img class="w-100" src="assets/img/gallery/apply-delivery.webp" alt="..." /></div>
         <div class="col-md-6 text-center text-md-start mb-6 px-4">
           <h4 class="text-danger text-uppercase">Como aplicar a nuestros servicios</h4>
           <p class="my-5 fs-1 pe-xl-7">

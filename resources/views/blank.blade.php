@@ -34,12 +34,12 @@
             class="navbar-toggler-icon"> </span></button>
         <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto pt-2 pt-lg-0 font-base">
-            <li class="nav-item px-2 " data-anchor="data-anchor"><a class="nav-link fw-medium text-black" aria-current="page"
-                href="#home">Inicio</a></li>
+            <li class="nav-item px-2" ><a class="nav-link fw-medium text-black" aria-current="page"
+                href="{{ url('/') }}">Inicio</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#envios">Envíos</a></li>
               <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="#aplicaciones">Aplicaciones</a>                                 
-              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/AQPaqueteria2.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
-              <li class="nav-item px-2" data-anchor="data-anchor"><a class="nav-link text-black" href="{{ url('/rastreo-pedido') }}">Rastreo</a>     
+              <li class="nav-item px-2" ><a class="nav-link text-black" href="app/AQPaqueteria.apk" download="AQ-paqueteria.apk" rel="noopener noreferrer" target="_blank">Aplicación móvil</a>
+              <li class="nav-item px-2" ><a class="nav-link text-black" href="{{ url('/rastreo-pedido') }}">Rastreo</a>     
             </li>
             
           </ul>
@@ -54,7 +54,7 @@
         </div>
       </div>
     </nav>
-    <a href="https://api.whatsapp.com/send?phone=50371921807&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20precios." class="float" target="_blank">
+    <a href="https://api.whatsapp.com/send?phone=50361507786&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20precios." class="float" target="_blank">
       <i class="fab fa-whatsapp my-float"></i>
     </a>
     @yield('content')

@@ -7,7 +7,6 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Direcciones de clientes</h4>
-                
                 @livewire('direccion-cliente')
                 <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#direccionClienteModal"><i class="typcn typcn-plus"></i>Nueva</button>
                 <div class="table-responsive">
@@ -15,10 +14,10 @@
                         <thead>
                           <tr>
                             <th >Nombre</th>
+                            <th>Código</th>
                             <th >DUI</th>
                             <th >Teléfono</th>
-                            <th >Dirección</th>
-                            <th >Referencia</th>
+                            <th >Dirección</th>                            
                             <th >Departamento</th>
                             <th >Municipio</th>
                             <th class="text-center">Acciones</th>
@@ -28,10 +27,10 @@
                           @foreach ($direcciones as $dr)
                             <tr>
                                 <td>{{ $dr->nombre }}</td>
+                                <td>{{ $dr->cod }}</td>
                                 <td>{{ $dr->dui }}</td>
                                 <td>{{ $dr->telefono }}</td>
-                                <td>{{ $dr->direccion }}</td>
-                                <td>{{ ($dr->referencia) ? $dr->referencia : 'Sin referencia'}}</td>
+                                <td>{{ $dr->direccion }}</td>                                
                                 <td>{{ $dr->departamento }}</td>
                                 <td>{{ $dr->municipio }}</td>
                                 <td class="text-center">

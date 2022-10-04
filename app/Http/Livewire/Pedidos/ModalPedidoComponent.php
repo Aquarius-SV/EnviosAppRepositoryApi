@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Pedidos;
 
 use Livewire\Component;
-use App\Models\{Zona,Repartidor,Pedido,User,Municipio,Departamento,Direccion,Comercio,LogChangePedido};
+use App\Models\{Zona,Repartidor,Pedido,User,Municipio,Departamento,Direccion,Comercio,LogChangePedido,PedidoComercio,PedidoPunto};
 use Illuminate\Support\Facades\Notification;
 use App\Models\ExpoNotification;
 use Illuminate\Support\Facades\Auth;
@@ -38,8 +38,8 @@ class ModalPedidoComponent extends Component
         'direccion_recogida'=> 'required',
         /* 'direccion_entrega'=> 'required|min:20', */
         /* 'tel_cliente'=> 'required|min:8|max:20|regex:/^[0-9]{8}$/', */
-        'repartidor' => 'required',
-        'zoneSelected' => 'required',
+       /*  'repartidor' => 'required',
+        'zoneSelected' => 'required', */
 
         'peso' => 'required|numeric|min:0',
         'alto' => 'required|numeric|min:0',
@@ -48,15 +48,16 @@ class ModalPedidoComponent extends Component
 
         'embalaje' => 'required',
         'fragil' => 'required',
-        'envio' => 'required',
+
+        /* 'envio' => 'required', */
 
         'contenido' => 'required',
         /*'dui' => 'required|min:9|max:10',
         'referencia' => 'nullable|min:10|max:255', */
         
 
-        'municipio_envio' => 'required',
-        'departamento_envio' => 'required',        
+        /* 'municipio_envio' => 'required',
+        'departamento_envio' => 'required',   */      
     ];
 
     protected $messages = [
@@ -71,8 +72,8 @@ class ModalPedidoComponent extends Component
         'tel_cliente.max' => 'Debe contener un máximo de :max caracteres',
         'tel_cliente.regex' => 'Formato no valido', */
 
-        'repartidor.required'=>'Debes selecionar un repartidor',
-        'zoneSelected.required'=>'Debes selecionar una zona de entrega',
+       /*  'repartidor.required'=>'Debes selecionar un repartidor',
+        'zoneSelected.required'=>'Debes selecionar una zona de entrega', */
 
         'peso.required'=>'El peso del paquete es obligatorio',
         'peso.numeric'=>'El peso únicamente admite datos numéricos',
@@ -93,7 +94,7 @@ class ModalPedidoComponent extends Component
         
         'embalaje.required'=>'Debes seleccioner el tipo de embalaje',
         'fragil.required'=>'Debes seleccionar si el paquete',
-        'envio.required'=>'Debes seleccionar el tipo de envío',
+       /*  'envio.required'=>'Debes seleccionar el tipo de envío', */
 
         'contenido.required'=>'La descripción del contenido es obligatoria',
         /* 'dui.required'=>'El DUI del cliente es obligatorio',
@@ -103,8 +104,8 @@ class ModalPedidoComponent extends Component
         'referencia.min' => 'La referencia de dirección debe contener un mínimo de :min caracteres',
         'referencia.max' => 'La referencia de dirección debe contener un máximo de :max caracteres', */
 
-        'departamento.required'=>'Debes seleccionar el departamento',
-        'municipio.required'=>'Debes seleccionar el municipio',                                
+        /* 'departamento.required'=>'Debes seleccionar el departamento',
+        'municipio.required'=>'Debes seleccionar el municipio',     */                            
     ];
 
     public function resetInput()
@@ -136,8 +137,7 @@ class ModalPedidoComponent extends Component
             $this->step  = 1;
         }else{
             $this->step  = null;
-        }
-        
+        }        
     }
 
 
@@ -151,6 +151,7 @@ class ModalPedidoComponent extends Component
 
             $pedido = new Pedido;
             $pedido->id_dato_cliente = $this->direccion_cliente; 
+
             $pedidoCOunt = Pedido::select('id')->count();
             $codComercio = Comercio::join('users','users.id','=','comercios.id_usuario')->where('comercios.id_usuario',Auth::user()->id)->value('cod');
 
@@ -164,14 +165,15 @@ class ModalPedidoComponent extends Component
             $pedido->id_municipio = $data->id_municipio;
             $pedido->direccion_entrega = $data->direccion;
             $pedido->direccion_recogida = $this->direccion_recogida;
+            $pedido->negocio = 1;
             $pedido->id_usuario = Auth::user()->id;
-            $pedido->id_repartidor = $this->repartidor;            
+                     
             $pedido->peso = $this->peso;            
             $pedido->fragil = $this->fragil;
             $pedido->alto = $this->alto;
             $pedido->ancho = $this->ancho;
             $pedido->profundidad = $this->profundidad;            
-            $pedido->envio = $this->envio;
+            $pedido->envio = 'Normal';
             $pedido->tipo_embalaje = $this->embalaje;       
             $pedido->zona = 1;
             $pedido->contenido = $this->contenido;
@@ -184,10 +186,16 @@ class ModalPedidoComponent extends Component
             $log->accion = 'Pedido creado y asignado.';
             $log->save();
 
+            $comecio = Comercio::where('id_usuario',Auth::user()->id)->value('id');
+            $pedidoComercio = new PedidoComercio;
+            $pedidoComercio->id_pedido = $pedido->id;
+            $pedidoComercio->id_comercio = $comecio;
+            $pedidoComercio->save();
+
 
 
             DB::commit();
-            $repartidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
+           /*  $repartidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
             $userNotification = User::where('id',$repartidorEmail->id)->select('users.*')->get();
             $expo = ExpoNotification::where('id_user',$repartidorEmail->id)->get();
             $numero = $pedido->id;
@@ -210,7 +218,7 @@ class ModalPedidoComponent extends Component
             ]),];
             foreach ($expo as $ex ) {
                 (new Expo)->send($messages)->to([$ex->expo_token])->push();
-            }
+            } */
 
 
             //$this->dispatchBrowserEvent('closeModal'); 
@@ -234,7 +242,7 @@ class ModalPedidoComponent extends Component
 
         } catch (\Throwable $th) {
             DB::rollBack();
-             $this->dispatchBrowserEvent('closeModal'); 
+             /* $this->dispatchBrowserEvent('closeModal'); */ 
             $this->alert('warning',$th->getMessage(), [
                 'position' => 'center',
                 'timer' => '',

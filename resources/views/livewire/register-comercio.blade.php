@@ -1,5 +1,7 @@
 <div>
     <form>
+        <h4 class="text-center">Datos del encargado</h4>
+        <hr>
         <div class="form-outline mb-3">
             <input type="text" class="form-control mb-1   @error('name') is-invalid @enderror" placeholder="Nombre" wire:model="name" />
             @error('name') <span class="text-danger">{{ $message }}</span> @enderror
@@ -20,6 +22,9 @@
             @error('dui') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 
+        <hr>
+        <h4 class="text-centers">Datos del comercio</h4>
+        <hr>
         <div class="form-outline mb-3">
             <input type="text" class="form-control mb-1   @error('comercio') is-invalid @enderror" placeholder="Nombre del comercio" wire:model="comercio" />
             @error('comercio') <span class="text-danger">{{ $message }}</span> @enderror

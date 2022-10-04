@@ -115,7 +115,7 @@ class AdminController extends Controller
         'direcciones_clientes.dui','pedidos.id as id_pedido','pedidos_puntos.id as id_pedido_punto','pedidos_puntos.id_punto','pedidos_puntos.show_pedido as show_pedido_punto_pedido')
         ->where([            
             ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
-        ])->whereIn('pedidos_puntos.estado',[0,3])->get();
+        ])->whereIn('pedidos_puntos.estado',[0,3])->whereNull('pedidos.negocio')->get();
         
 
         return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','en tránsito');
@@ -143,8 +143,9 @@ class AdminController extends Controller
         ->where([
             ['pedidos_puntos.estado',1],
             ['pedidos_puntos.show_pedido',1],
-            ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
-        ])->get();
+            ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],     
+                   
+        ])->whereNull('pedidos.negocio')->get();
         
 
         return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','para reasignación');
@@ -172,7 +173,7 @@ class AdminController extends Controller
             ['pedidos_puntos.estado',1],
             ['pedidos_puntos.show_pedido',0],
             ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
-        ])->get();
+        ])->whereNull('pedidos.negocio')->get();
         
 
         return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','recibidos');
@@ -200,7 +201,7 @@ class AdminController extends Controller
         ->where([
             ['pedidos_puntos.estado',2],            
             ['pedidos_puntos.id_punto',$zoneUser->id_punto_reparto],            
-        ])->get();
+        ])->whereNull('pedidos.negocio')->get();
         
 
         return view('admin.pedidos-puntos-repartos')->with('allp',$allPedidos)->with('zona',$zoneUser->punto_reparto)->with('type','entregados');
@@ -225,6 +226,21 @@ class AdminController extends Controller
         ->get();
 
         return view('admin.zonas-repartos')->with('zonas',$zonas);
+    }
+
+
+
+
+    public function indexPedidosComerciosForAdmin()
+    {
+       $pedidos = Pedido::join('pedidos_comercios','pedidos_comercios.id_pedido','=','pedidos.id')
+       ->join('comercios','pedidos_comercios.id_comercio','=','comercios.id')
+       ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')
+       ->where('pedidos.negocio',1)
+       ->select('comercios.nombre as comercio','pedidos.*','direcciones_clientes.nombre','direcciones_clientes.telefono')->get();
+
+
+       return view('admin.pedidos-comercios')->with('pedidos', $pedidos);
     }
 
 

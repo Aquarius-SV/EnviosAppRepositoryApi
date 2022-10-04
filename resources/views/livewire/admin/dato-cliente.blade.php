@@ -105,6 +105,31 @@
                     @error('direccion_recogida') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="mb-3">
+                  <label for="">Departamento</label>
+                  <select class="form-select  @error('departamento') is-invalid @enderror" aria-label="Seleciona" wire:model="departamento">
+                      <option selected style="display: none">Seleciona</option>
+                      @forelse ($departamentos as $dp)
+                      <option value="{{ $dp->id }}">{{ $dp->nombre }}</option>
+                      @empty
+                      <option>No hay opciones disponibles</option>
+                      @endforelse                                                        
+                    </select>
+                    @error('departamento') <span class="text-danger">{{ $message }}</span> @enderror
+              </div>
+              <div class="mb-3">
+                  <label for="">Municipio</label>
+                  <select class="form-select @error('municipio') is-invalid @enderror" aria-label="Seleciona" wire:model="municipio">
+                      <option selected style="display: none">Seleciona</option>
+                      @forelse ($municipios as $mc)
+                      <option value="{{ $mc->id }}">{{ $mc->nombre }}</option>
+                      @empty
+                      <option>No hay opciones disponibles</option>
+                      @endforelse                                                        
+                    </select>
+                    @error('municipio') <span class="text-danger">{{ $message }}</span> @enderror
+              </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

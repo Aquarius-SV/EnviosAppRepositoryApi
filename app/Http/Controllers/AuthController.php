@@ -32,7 +32,10 @@ class AuthController extends Controller
             'color' => 'required|string|min:4|max:45',
             'tipo' => 'required|string|min:4|max:45',
             'peso' => 'required',
-            'size' => 'required',
+            'size' => 'nullable',
+            'alto' =>'required|string',
+            'ancho' => 'required|string',
+            'profundidad' => 'required|string',
         ]);
 
         try {
@@ -74,7 +77,12 @@ class AuthController extends Controller
             $vehiculo->color = $request->color;
             $vehiculo->id_user = $user->id;
             $vehiculo->peso = $request->peso;
-            $vehiculo->size = $request->size;
+            /* $vehiculo->size = $request->size; */
+
+            $vehiculo->alto = $request->alto;
+            $vehiculo->profundidad = $request->profundidad;
+            $vehiculo->ancho = $request->ancho;
+
             $vehiculo->saveOrFail();
 
             // Registramos las zonas de desplazo del repartidor

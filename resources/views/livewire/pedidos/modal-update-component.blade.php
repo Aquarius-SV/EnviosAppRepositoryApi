@@ -51,7 +51,7 @@
                   <select class="form-select" wire:model="direccion_cliente">
                     <option style="display: none" selected>Selecciona una dirección</option>
                     @forelse ($direcciones_clientes as $drc)
-                    <option value="{{ $drc->id }}">{{ $drc->nombre}}-{{ $drc->dui }}</option>
+                    <option value="{{ $drc->id }}">Nombre: {{ $drc->nombre}} DUI:{{ $drc->dui }}</option>
                     @empty
                     <option>No hay direcciones disponibles</option>
                     @endforelse                 
@@ -182,7 +182,7 @@
                   </div>
                 </div>
                
-                <hr>
+               {{--  <hr>
                 <h3 class="text-center text-black">Envío</h3>    
                 <hr> 
                 <div class="row">
@@ -197,7 +197,7 @@
                   </div>
     
                  
-                </div>    
+                </div>  --}}   
                 {{--  <div class="row">
                   <div class="mb-3 col-6">
                     <label for="">Departamento <span class="text-danger">*</span></label>

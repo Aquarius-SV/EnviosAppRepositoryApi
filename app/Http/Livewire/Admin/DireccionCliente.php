@@ -21,7 +21,7 @@ class DireccionCliente extends Component
         'telefono' => 'required|min:8|max:9',
         
         'whatsapp' => 'required|min:8|max:9',
-        'correo' => 'required|email',
+        'correo' => 'nullable|email',
 
         'departamento' => 'required',
         'municipio' => 'required',
@@ -34,18 +34,18 @@ class DireccionCliente extends Component
 
         'dui.required' => 'El DUI es obligatorio',
         'dui.min' => 'Debe contener un mínimo de :min caracteres',
-        'dui.max' => 'Debe contener un máximo de :min caracteres',
+        'dui.max' => 'Debe contener un máximo de :max caracteres',
 
 
         'telefono.required' => 'El teléfono es obligatorio',
         'telefono.min' => 'Debe contener un mínimo de :min caracteres',
-        'telefono.max' => 'Debe contener un máximo de :min caracteres',
+        'telefono.max' => 'Debe contener un máximo de :max caracteres',
 
         'whatsapp.required' => 'El teléfono con whatsapp es obligatorio',
         'whatsapp.min' => 'Debe contener un mínimo de :min caracteres',
-        'whatsapp.max' => 'Debe contener un máximo de :min caracteres',
+        'whatsapp.max' => 'Debe contener un máximo de :max caracteres',
 
-        'correo.required' => 'El correo es obligatorio',
+        
         'correo.email' => 'Formato no valido',
 
         'municipio.required' => 'El municipio es obligatorio',

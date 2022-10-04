@@ -55,7 +55,8 @@ class AsignarPedido extends Component
 
     protected $listeners = [
         'assignPedido',
-        'redirectToRoute'
+        'redirectToRoute',
+        'assignRepartidor'
     ];
 
     public function assignPedido($pedido)
@@ -70,6 +71,67 @@ class AsignarPedido extends Component
     {
         $url = url()->previous();
         return redirect($url);
+    }
+
+    public function assignRepartidor($pedido)
+    {
+        $this->id_pedido = $pedido;
+    }
+
+    public function savePedido()
+    {
+        try {
+            $pedido = new PedidoPunto;
+            $pedido->id_pedido = $pedido;
+            /* $pedido->id_punto = $this->puntoRepartoCreator; */
+            $pedido->id_repartidor = $this->repartidor;
+            $pedido->show_pedido = 0 ;
+            $pedido->estado = 3;               
+            $pedido->save();
+
+            $repartidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
+            $userNotification = User::where('id',$repartidorEmail->id)->select('users.*')->get();
+            $expo = ExpoNotification::where('id_user',$repartidorEmail->id)->get();
+            $numero =$pedido;
+            $state = 'El pedido No '.$numero.' se te a asignado. Entra a la aplicación para aceptar o denegar el pedido';
+            $to = $repartidorEmail->email;
+                    
+            Pedido::emailToUsersPedido($to,$numero,$state);
+
+            $data = [                
+                'concepto' => $state
+            ];
+            
+            Notification::send($userNotification , new StatePedido($data));                       
+            
+            //EXPO
+            $messages = [           
+            new ExpoMessage([
+                'title' => 'Asignación de pedido',
+                'body' => $state,
+            ]),];
+            foreach ($expo as $ex ) {
+                (new Expo)->send($messages)->to([$ex->expo_token])->push();
+            }
+
+            $this->alert('success', 'Pedido asignado con éxito', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => 'redirectToRoute',
+                'confirmButtonText' => 'Entendido',
+               ]);
+    } catch (\Throwable $th) {
+        $this->alert('error', $th->getMessage(), [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => '',
+            'confirmButtonText' => 'Entendido',
+           ]);
+    }
     }
 
 
@@ -150,7 +212,7 @@ class AsignarPedido extends Component
                 $pedido = new PedidoPunto;
                 $pedido->id_pedido = $this->pedido;
                 $pedido->id_punto = $this->puntoRepartoCreator;
-                $pedido->id_repartidor = $this->repartidor;
+                $pedido->id_repartidor = $this->repartidor;                
                 $pedido->estado = 3;               
                 $pedido->save();
 

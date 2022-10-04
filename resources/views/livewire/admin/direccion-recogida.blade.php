@@ -24,6 +24,35 @@
                 @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror                                 
              </div>
 
+             <div class="mb-3">
+              <label for="">Departamento</label>
+              <select class="form-select @error('departamento') is-invalid @enderror" aria-label="Seleciona" wire:model="departamento">
+                <option selected>Seleciona</option>
+                @forelse ($departamentos as $dp)
+                <option value="{{ $dp->id }}">{{ $dp->nombre }}</option>
+                @empty
+                <option >No hay opciones disponibles</option>    
+                @endforelse                                                
+              </select>
+              @error('departamento') <span class="text-danger">{{ $message }}</span> @enderror 
+             </div>
+
+
+             <div class="mb-3">
+              <label for="">Municipio</label>
+              <select class="form-select @error('municipio') is-invalid @enderror" aria-label="Seleciona" wire:model="municipio">
+                <option selected>Seleciona</option>
+                @forelse ($municipios as $mc)
+                <option value="{{ $mc->id }}">{{ $mc->nombre }}</option>
+                @empty
+                <option >No hay opciones disponibles</option>    
+                @endforelse   
+              </select>
+              @error('municipio') <span class="text-danger">{{ $message }}</span> @enderror 
+             </div>
+
+
+
              @if ($id_direccion)
              <div class="mb-3">
               <label for="">Estado</label>

@@ -20,6 +20,9 @@ class DatoVehiculo extends Model
         'color',
         'id_user',
         'peso',
-        'size'
+        'size',
+        'alto',
+        'ancho',
+        'profundidad'
     ];
 }

@@ -29,7 +29,7 @@ class DireccionCliente extends Component
         'direccion' => 'required',
         'departamento' => 'required',
         'municipio' => 'required',
-        'correo' => 'required',
+        'correo' => 'email|nullable',
     ];
 
     protected $messages = [
@@ -44,8 +44,12 @@ class DireccionCliente extends Component
         'departamento.required' => 'El departamento es obligatorio',
         'municipio.required' => 'El municipio es obligatorio',
 
-        'correo.required' => 'El correo electrónico es obligatorio'
+        'correo.email' => 'Formato no valido'
     ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 
     public function redirectDireccion()
     {
@@ -78,7 +82,9 @@ class DireccionCliente extends Component
     {
         $this->validate();       
         try {
+            $direccionCount = DireccionClienteModel::count();
             $direccion = new DireccionClienteModel;
+            $direccion->cod = $direccionCount.$this->departamento.$this->municipio;
             $direccion->telefono = $this->telefono;
             $direccion->direccion = $this->direccion;
             $direccion->referencia = $this->referencia;
@@ -101,7 +107,7 @@ class DireccionCliente extends Component
                 'confirmButtonText' => 'Continuar',
                ]);
         } catch (\Throwable $th) {            
-            $this->alert('error', 'Ocurrió un error intenta nuevamente', [
+            $this->alert('error', $th->getMessage()/* 'Ocurrió un error intenta nuevamente' */, [
                 'position' => 'center',
                 'timer' => '',
                 'toast' => false,

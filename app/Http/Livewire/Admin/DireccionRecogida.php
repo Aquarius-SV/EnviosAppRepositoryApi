@@ -3,22 +3,26 @@
 namespace App\Http\Livewire\Admin;
 
 use Livewire\Component;
-use App\Models\{Direccion,Pedido};
+use App\Models\{Direccion,Pedido,Departamento,Municipio};
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 class DireccionRecogida extends Component
 {
     use LivewireAlert;
-    public $nombre,$direccion,$id_direccion,$estado,$old_estado;
+    public $nombre,$direccion,$id_direccion,$estado,$old_estado,$departamentos = [],$municipios = [],$departamento,$municipio;
 
     protected $rules = [
         'nombre' => 'required',
         'direccion' => 'required',
+        'departamento' => 'required',
+        'municipio' => 'required',
     ];
 
     protected $messages = [
         'nombre.required' => 'El nombre es obligatorio',
-        'direccion.required' => 'La dirección es obligatoria'
+        'direccion.required' => 'La dirección es obligatoria',
+        'departamento.required' => 'El departamento es obligatorio',
+        'mmunicipio.required' => 'El municipio es obligatorio',
     ];
     
     protected $listeners = [
@@ -60,6 +64,10 @@ class DireccionRecogida extends Component
        $this->nombre = $direccion['nombre'];
        $this->estado = $direccion['estado'];
        $this->old_estado = $direccion['estado'];
+       $this->municipio = $direccion['id_municipio'];
+       $this->departamento = Municipio::join('departamentos', 'departamentos.id','=','municipios.id_departamento')->where('municipios.id',$direccion['id_municipio'])
+       ->value('departamentos.id');
+
     }
 
 
@@ -70,6 +78,7 @@ class DireccionRecogida extends Component
             $direccion = new Direccion;
             $direccion->nombre = $this->nombre;
             $direccion->direccion = $this->direccion;
+            $direccion->id_municipio = $this->municipio;
             $direccion->id_usuario = Auth::user()->id;
             $direccion->save();
             $this->alert('success', 'Dirección guardada con éxito', [
@@ -99,7 +108,8 @@ class DireccionRecogida extends Component
             $direccion = Direccion::where('id',$this->id_direccion)->first();
             $direccion->nombre = $this->nombre;
             $direccion->direccion = $this->direccion;    
-            $direccion->estado = $this->estado;        
+            $direccion->estado = $this->estado;   
+            $direccion->id_municipio = $this->municipio;     
             $direccion->save();
             $this->alert('success', 'Dirección actualizada con éxito', [
                 'position' => 'center',
@@ -223,6 +233,10 @@ class DireccionRecogida extends Component
 
     public function render()
     {
+        $this->departamentos = Departamento::get();
+        if ($this->departamento) {
+            $this->municipios = Municipio::where('id_departamento',$this->departamento)->get();
+        }
         return view('livewire.admin.direccion-recogida');
     }
 }

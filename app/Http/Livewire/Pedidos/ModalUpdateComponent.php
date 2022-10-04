@@ -49,11 +49,11 @@ class ModalUpdateComponent extends Component
 
         'embalaje' => 'required',
         'fragil' => 'required',
-        'envio' => 'required',
+        /* 'envio' => 'required', */
 
         'cliente' => 'required',
-        'dui' => 'required|min:9|max:10',
-        'referencia' => 'nullable|min:10|max:255',
+        /* 'dui' => 'required|min:9|max:10',
+        'referencia' => 'nullable|min:10|max:255', */
         
 
     ];
@@ -84,15 +84,15 @@ class ModalUpdateComponent extends Component
         
         'embalaje.required'=>'Debes seleccioner el tipo de embalaje',
         'fragil.required'=>'Debes seleccionar si el paquete',
-        'envio.required'=>'Debes seleccionar el tipo de envío',
+        /* 'envio.required'=>'Debes seleccionar el tipo de envío', */
 
         'cliente.required'=>'El nombre del cliente es obligatorio',
-        'dui.required'=>'El DUI del cliente es obligatorio',
+        /* 'dui.required'=>'El DUI del cliente es obligatorio',
         'dui.max'=>'Debe contener un máximo de :max caracteres',
         'dui.min'=>'Debe contener un mínimo de :min caracteres',
         
         'referencia.min' => 'La referencia de dirección debe contener un mínimo de :min caracteres',
-        'referencia.max' => 'La referencia de dirección debe contener un máximo de :max caracteres',
+        'referencia.max' => 'La referencia de dirección debe contener un máximo de :max caracteres', */
 
        
 
@@ -144,13 +144,12 @@ class ModalUpdateComponent extends Component
                 'ancho' => $this->ancho,
                 'profundidad' => $this->profundidad,
                 'fragil' => $this->fragil,
-                'tipo_embalaje' => $this->embalaje,
-                'envio' => $this->envio,  
+                'tipo_embalaje' => $this->embalaje,                
                 'contenido' => $this->contenido,          
             ]);
 
 
-            $repartidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
+           /*  $repartidorEmail = Repartidor::join('users','users.id','=','repartidores.id_usuario')->where('repartidores.id',$this->repartidor)->select('users.email','users.id')->first();
             $userNotification = User::where('id',$repartidorEmail->id)->select('users.*')->get();
             $expo = ExpoNotification::where('id_user',$repartidorEmail->id)->get();
 
@@ -173,7 +172,7 @@ class ModalUpdateComponent extends Component
             ]),];
             foreach ($expo as $ex ) {
                 (new Expo)->send($messages)->to([$ex->expo_token])->push();
-            }
+            } */
             $this->alert('success', 'Pedido actualizado con éxito', [
                 'position' => 'center',
                 'timer' => '',

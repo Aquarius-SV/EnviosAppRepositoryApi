@@ -17,8 +17,7 @@
           <table  id="myTable" class="display nowrap table responsive" style="width:100%">
             <thead>
               <tr>
-                <th class="text-center">SKU</th>
-                <th>Repartidor</th>               
+                <th class="text-center">SKU</th>                        
                 <th class="text-start">Cliente</th>
                 <th class="text-start">Teléfono del cliente</th>                                              
                 <th>Estado</th>
@@ -36,9 +35,7 @@
                 <td class="text-center">
                   {{ $pedido->sku }}
                 </td>
-                <td>
-                  {{ $repartidor }}
-                </td>
+                
                 <td class="text-start">
                   {{ $pedido->nombre }}
                  </td>

@@ -13,6 +13,9 @@ const Pendientes = document.getElementById("pendientes");
 const Completados = document.getElementById("completados");
 const Rechazados = document.getElementById("rechazados");
 const DireccionCliente = document.getElementById("direcciones-clientes");
+const MisDirecciones = document.getElementById("mis-direcciones"); 
+
+
 
 const MisPedidos = document.getElementById("mis-Rpedidios");
 
@@ -46,11 +49,13 @@ const PedidosPuntosAdminReasignacion = document.getElementById("pedidos-puntos-a
 const PedidosPuntosAdminRecibido = document.getElementById("pedidos-puntos-admin-recibidos");
 const PedidosPuntosAdminEntregado = document.getElementById("pedidos-puntos-admin-entregados");
 
+const PedidosComerciosAdmin = document.getElementById("comercios-pedidos-admin");
+
 switch (url) {
     case "/pedidos":
         Inicio.classList.add("active");
         break;
-    case "/pedidos/pendientes":
+  /*   case "/pedidos/pendientes":
         Pendientes.classList.add("active");
         break;
     case "/pedidos/completados":
@@ -58,15 +63,19 @@ switch (url) {
         break;
     case "/pedidos/rechazados":
         Rechazados.classList.add("active");
-        break;
+        break; */
     case "/mis-pedidos":
         MisPedidos.classList.add("active");
         break;
-    case "/pedidos/devoluciones":
+   /*  case "/pedidos/devoluciones":
         Devoluciones.classList.add("active");
-        break;
+        break; */
     case "/pedidos/direcciones-clientes":
         DireccionCliente.classList.add("active");
+        break;
+
+        case "/pedidos/mis-direcciones":
+            MisDirecciones.classList.add("active");
         break;
 
     case "/puntos-repartos/":
@@ -135,49 +144,56 @@ switch (url) {
     case "/administracion/creacion-pedidos":
         CreacionPedidosAdmin.classList.add("active");
         MenuPedidoMenu.classList.add("active");
-        MenuPedidoSubMenu.classList.remove("collapse");
+        MenuPedidoSubMenu.classList.add("show");
         break;
 
     case "/administracion/direcciones-recogida":
         DireccionesRecogidasAdmin.classList.add("active");
         MenuPedidoMenu.classList.add("active");
-        MenuPedidoSubMenu.classList.remove("collapse");
+         MenuPedidoSubMenu.classList.add("show");
         break;
 
     case "/administracion/datos-cliente":
         DatosClientes.classList.add("active");
         MenuPedidoMenu.classList.add("active");
-        MenuPedidoSubMenu.classList.remove("collapse");
+         MenuPedidoSubMenu.classList.add("show");
         break;
 
     case "/administracion/direcciones-clientes-finales":
         DireccionesClienteFinal.classList.add("active");
         MenuPedidoMenu.classList.add("active");
-        MenuPedidoSubMenu.classList.remove("collapse");
+         MenuPedidoSubMenu.classList.add("show");
         break;
 
         case "/administracion/pedidos-puntos-repartos":
             PedidosPuntosAdmin.classList.add("active");
             MenuPedidoMenu.classList.add("active");
-            MenuPedidoSubMenu.classList.remove("collapse");
+             MenuPedidoSubMenu.classList.add("show");
         break;
 
         case "/administracion/pedidos-puntos-repartos-reasignacion":
             PedidosPuntosAdminReasignacion.classList.add("active");
             MenuPedidoMenu.classList.add("active");
-            MenuPedidoSubMenu.classList.remove("collapse");
+             MenuPedidoSubMenu.classList.add("show");
         break;
 
 
         case "/administracion/pedidos-puntos-repartos-recibidos":
             PedidosPuntosAdminRecibido.classList.add("active");
             MenuPedidoMenu.classList.add("active");
-            MenuPedidoSubMenu.classList.remove("collapse");
+             MenuPedidoSubMenu.classList.add("show");
         break;
 
         case "/administracion/pedidos-puntos-repartos-entregados":
             PedidosPuntosAdminEntregado.classList.add("active");
             MenuPedidoMenu.classList.add("active");
-            MenuPedidoSubMenu.classList.remove("collapse");
+             MenuPedidoSubMenu.classList.add("show");
+        break;
+
+
+        case "/administracion/pedidos-comercios":
+            PedidosComerciosAdmin.classList.add("active");
+            MenuPedidoMenu.classList.add("active");
+             MenuPedidoSubMenu.classList.add("show");
         break;
 }

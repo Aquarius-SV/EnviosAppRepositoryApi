@@ -135,7 +135,7 @@
               <li class="nav-item" id="inicio">
                 <a class="nav-link " href="{{ url('/pedidos') }}">
                   <i class="typcn typcn-home menu-icon"></i>
-                  <span class="menu-title">Inicio</span>
+                  <span class="menu-title">Pedidos</span>
                 </a>
               </li>
               
@@ -157,12 +157,12 @@
                   <span class="menu-title">Pedidos rechazados</span>
                 </a>
               </li> --}}
-              <li class="nav-item" id="devoluciones">
+             {{--  <li class="nav-item" id="devoluciones">
                 <a class="nav-link" href="{{ url('/pedidos/devoluciones') }}">
                   <i class="typcn typcn-arrow-loop menu-icon"></i>
                   <span class="menu-title">Devoluciones</span>
                 </a>
-              </li>
+              </li> --}}
 
               <li class="nav-item" id="direcciones-clientes">
                 <a class="nav-link" href="{{ url('/pedidos/direcciones-clientes') }}">
@@ -257,6 +257,17 @@
                     </a>
                     <div class="collapse" id="pedidos-menu-div">
                       <ul class="nav flex-column sub-menu">
+
+                        <li class="nav-item" id="comercios-pedidos-admin">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-comercios') }}">
+                            <i class="typcn typcn-clipboard menu-icon"></i>
+                            <span class="menu-title">Pedidos de comercios</span>
+                          </a>
+                        </li>
+
+
+
+
                         <li class="nav-item" id="creacion-pedidos-admin">
                           <a class="nav-link" href="{{ url('/administracion/creacion-pedidos') }}">
                             <i class="typcn typcn-clipboard menu-icon"></i>
@@ -310,6 +321,13 @@
                             <span class="menu-title">Pedidos entregados</span>
                           </a>
                         </li>
+
+                        {{-- <li class="nav-item" id="pedidos-puntos-admin-devolucion">
+                          <a class="nav-link" href="{{ url('/administracion/pedidos-puntos-repartos-devolucion') }}">
+                            <i class="typcn typcn-arrow-repeat menu-icon"></i>
+                            <span class="menu-title">Pedidos devolución</span>
+                          </a>
+                        </li> --}}
 
                       
                       </ul>

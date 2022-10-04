@@ -16,7 +16,7 @@ class PedidoRenderController extends Controller
      */
     public function index()
     {
-       $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
+       $allPedidos = Pedido::leftJoin('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
        ->join('municipios','municipios.id','=','pedidos.id_municipio')->join('departamentos','departamentos.id','=','municipios.id_departamento')
        ->join('direcciones_clientes','direcciones_clientes.id','=','pedidos.id_dato_cliente')
        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','municipios.nombre as municipio','departamentos.nombre as departamento'

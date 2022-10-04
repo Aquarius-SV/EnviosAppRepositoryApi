@@ -29,13 +29,18 @@
                         <input type="text" class="form-control @error('telefono') is-invalid @enderror" wire:model="telefono">
                         @error('telefono') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
+                    @if ($cliente)
+                    
+                    @else
                     <div class="checkbox mb-3">
                       <label>
                         <input type="checkbox" wire:click="sameTelefono"> Utilizar el mismo
                       </label>
                     </div>
+                    @endif
+                  
                     <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Teléfono con whatsApp</label>
+                      <label for="exampleInputPassword1" class="form-label">Teléfono con WhatsApp</label>
                       <input type="text" class="form-control @error('telefono_wa') is-invalid @enderror" wire:model="telefono_wa">
                       @error('telefono_wa') <span class="text-danger">{{ $message }}</span> @enderror
                   </div>

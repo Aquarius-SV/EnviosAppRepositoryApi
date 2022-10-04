@@ -267,7 +267,7 @@ class PedidoComponent extends Component
         } catch (\Throwable $th) {
             DB::rollBack();
              //$this->dispatchBrowserEvent('closeModal'); 
-             $this->alert('error', 'Ocurrio un error, intenta nuevamente ', [
+             $this->alert('error', 'Ocurrió un error, intenta nuevamente ', [
                 'position' => 'center',
                 'timer' => '',
                 'toast' => false,
@@ -394,7 +394,7 @@ class PedidoComponent extends Component
         ->join('municipios','municipios.id','=','direcciones_clientes.id_municipio')
         ->join('departamentos','departamentos.id','=','municipios.id_departamento')
         ->where([
-           
+            ['direcciones_clientes.id_usuario',Auth::user()->id],
             ['direcciones_clientes.estado',1]
         ])
         ->select('direcciones_clientes.*','municipios.nombre as municipio',

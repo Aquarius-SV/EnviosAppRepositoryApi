@@ -14,6 +14,7 @@ class Direccion extends Model
         'id_usuario ',
         'nombre',
         'direccion',
-        'id_comercio'
+        'id_comercio',
+        'id_municipio'
     ];
 }

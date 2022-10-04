@@ -121,6 +121,9 @@ Route::middleware(['isnotlogin','emailisverify','roleR','roleC','RoleI'])->prefi
 
     Route::get('/comercios','AdminController@indexComercios');
     Route::get('/zonas-reparto','AdminController@indexZonasReparto');
+
+
+    Route::get('/pedidos-comercios','AdminController@indexPedidosComerciosForAdmin');
 });
 
 

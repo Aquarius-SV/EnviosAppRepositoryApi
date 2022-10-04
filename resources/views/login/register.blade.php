@@ -14,16 +14,12 @@
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="card-body p-md-5 mx-md-4">
-  
-                  <div class="text-center">
-                    <a href="{{ url('/') }}">
-                      <img src="{{ asset('assets/img/gallery/logo-login.png') }}" style="width: 185px;" alt="logo" class="mb-3">
-                    </a>
-                    
-                    
+                    <div class="text-center">                    
+                      <a href="{{ url('/') }}">
+                        <img src="{{ asset('assets/img/gallery/logo-login.webp') }}" style="width: 185px;" alt="logo" class="mb-3">
+                      </a>                                       
                     <h4 class="mt-1 mb-5 pb-1">{{ env('APP_NAME') }}</h4>
                   </div>
-  
                   @livewire('register-component')
   
                 </div>

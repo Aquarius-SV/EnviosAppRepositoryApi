@@ -260,6 +260,8 @@ class DatoCliente extends Component
         $this->nombre_direccion_recogida = $dr['nombre'];
         $this->direccion_recogida = $dr['direccion'];
         $this->id_direccion_comercio = $dr['id'];
+        $this->municipio = $dr['id_municipio'];
+        $this->departamento = Municipio::join('departamentos','departamentos.id','=','municipios.id_departamento')->where('municipios.id',$dr['id_municipio'])->value('departamentos.id');
     }
 
     public function DireccioneRecogida()
@@ -275,13 +277,15 @@ class DatoCliente extends Component
             if ($this->id_direccion_comercio) {
                 $direccion = Direccion::where('id',$this->id_direccion_comercio)->first();
                 $direccion->nombre  = $this->nombre_direccion_recogida;
-                $direccion->direccion = $this->direccion_recogida;                             
+                $direccion->direccion = $this->direccion_recogida;   
+                $direccion->id_municipio = $this->municipio;                          
                 $direccion->save();
             }else{
                 $direccion = new Direccion;
                 $direccion->nombre  = $this->nombre_direccion_recogida;
                 $direccion->direccion = $this->direccion_recogida;
                 $direccion->id_comercio = $this->comercio;
+                $direccion->id_municipio = $this->municipio;
                 $direccion->id_usuario = Auth::id();
                 $direccion->save();
             }

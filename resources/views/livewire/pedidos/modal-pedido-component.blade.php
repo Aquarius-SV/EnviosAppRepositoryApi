@@ -32,7 +32,7 @@
                 <select class="form-select" wire:model="direccion_cliente">
                   <option style="display: none" selected>Selecciona una dirección</option>
                   @forelse ($direcciones_clientes as $drc)
-                  <option value="{{ $drc->id }}">{{ $drc->nombre}}-{{ $drc->dui }}</option>
+                  <option value="{{ $drc->id }}">Nombre: {{ $drc->nombre}} DUI:{{ $drc->dui }}</option>
                   @empty
                   <option>No hay direcciones disponibles</option>
                   @endforelse                 
@@ -115,8 +115,8 @@
               <h3 class="text-center text-black">Datos del paquete</h3> 
               <hr>
               <div class="mb-3">
-                <label>Discripción del contenido</label>
-                <textarea class="form-control @error('contenido') is-invalid @enderror" placeholder="Discripción del contenido" style="height: 100px" wire:model="contenido"></textarea>                
+                <label>Descripción del contenido</label>
+                <textarea class="form-control @error('contenido') is-invalid @enderror" placeholder="Descripción del contenido" style="height: 100px" wire:model="contenido"></textarea>                
                 @error('contenido') <span class="text-danger">{{ $message }}</span> @enderror
              </div>
               <div class="row">
@@ -172,7 +172,7 @@
               </div>
              
               <hr>
-              <h3 class="text-center text-black">Envío</h3>    
+            {{--   <h3 class="text-center text-black">Envío</h3>    
               <hr> 
               <div class="row">
                 <div class="mb-3 col-12">
@@ -271,7 +271,7 @@
                     @endforelse
                   </div>
                 </div>                             
-                @endif
+                @endif --}}
             </form>
           </div>
           <div class="modal-footer">
